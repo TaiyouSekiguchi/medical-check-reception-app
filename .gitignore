@@ -24,3 +24,6 @@ go.work
 
 # my .gitignore
 backend/tmp
+database/postgres
+database/pgadmin
+.env
