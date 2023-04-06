@@ -1,5 +1,19 @@
 version: '3'
+
 services:
+
+  frontend:
+    build:
+      args:
+        - NODE_VER=16.17.1-slim
+      context: ./frontend
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ./frontend:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    ports:
+      - 5173:5173
 
   backend:
     build: backend
@@ -34,3 +48,6 @@ services:
       - ./database/pgadmin:/var/lib/pgadmin
     depends_on:
       - postgres
+
+volumes:
+  node_modules:
