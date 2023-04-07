@@ -21,11 +21,11 @@ func NewDB() *gorm.DB {
 		fmt.Printf("GO_ENV is not dev.\n")
 	}
 	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
-		os.Getenv("POSTGRES_USER"), // ok
-		os.Getenv("POSTGRES_PW"),   // ok
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PW"),
 		os.Getenv("POSTGRES_HOST"),
 		os.Getenv("POSTGRES_PORT"),
-		os.Getenv("POSTGRES_DB")) // ok
+		os.Getenv("POSTGRES_DB"))
 	fmt.Println(url)
 	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 	if err != nil {
