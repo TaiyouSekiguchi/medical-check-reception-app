@@ -19,14 +19,20 @@
     "prepare": "npx simple-git-hooks || :"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.5.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "framer-motion": "^10.11.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.10.0"
   },
   "devDependencies": {
     "@types/eslint": "^8.37.0",
     "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.0.1",
