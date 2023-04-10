@@ -1,5 +1,5 @@
 # Dockerfile
-FROM golang:1.18
+FROM golang:1.20
 
 # ログに出力する時間をJSTにするため、タイムゾーンを設定
 ENV TZ /usr/share/zoneinfo/Asia/Tokyo

@@ -8,24 +8,32 @@ services:
         - NODE_VER=16.17.1-slim
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: frontend
     tty: true
     volumes:
       - ./frontend:/home/node/app
-      - node_modules:/home/node/app/node_modules
+      - ./frontend/node_modules:/home/node/app/node_modules
     ports:
       - 5173:5173
+    networks:
+      - app-network
 
   backend:
     build: backend
+    container_name: backend
     volumes:
       - ./backend/:/go/src/app
     ports:
       - "8080:8080"
+    networks:
+      - app-network
+      - db-network
 
   postgres:
     image: postgres:15.1-alpine
+    container_name: postgres
     ports:
-      - 5434:5432
+      - 5432:5432
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -35,9 +43,12 @@ services:
     restart: always
     volumes:
       - ./database/postgres:/var/lib/postgresql/data
+    networks:
+      - db-network
 
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin
     restart: always
     ports:
       - 81:80
@@ -48,6 +59,12 @@ services:
       - ./database/pgadmin:/var/lib/pgadmin
     depends_on:
       - postgres
+    networks:
+      - db-network
 
-volumes:
-  node_modules:
+# volumes:
+#   node_modules:
+
+networks:
+  app-network:
+  db-network:
