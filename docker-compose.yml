@@ -12,7 +12,7 @@ services:
     tty: true
     volumes:
       - ./frontend:/home/node/app
-      - node_modules:/home/node/app/node_modules
+      - ./frontend/node_modules:/home/node/app/node_modules
     ports:
       - 5173:5173
     networks:
@@ -62,8 +62,8 @@ services:
     networks:
       - db-network
 
-volumes:
-  node_modules:
+# volumes:
+#   node_modules:
 
 networks:
   app-network:
