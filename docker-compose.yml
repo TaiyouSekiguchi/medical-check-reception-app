@@ -1,18 +1,17 @@
-version: '3'
+version: '3.7'
 
 services:
 
   frontend:
     build:
       args:
-        - NODE_VER=16.17.1-slim
+        - NODE_VER=18.15.0-slim
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
     tty: true
     volumes:
       - ./frontend:/home/node/app
-      - ./frontend/node_modules:/home/node/app/node_modules
     ports:
       - 5173:5173
     networks:
@@ -61,9 +60,6 @@ services:
       - postgres
     networks:
       - db-network
-
-# volumes:
-#   node_modules:
 
 networks:
   app-network:
