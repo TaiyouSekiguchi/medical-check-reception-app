@@ -21,9 +21,13 @@ export const useAuth = (): {
       console.log(username, password);
       console.log(API_URL);
 
-      // APIを POST /login にする
+      const data = {
+        username,
+        password,
+      };
+
       axios
-        .get<User>('/users/9')
+        .post<User>('/login', data)
         .then((res) => {
           if (res.data != null) {
             const isAdmin = true;
@@ -43,7 +47,7 @@ export const useAuth = (): {
     [navigate, setLoading, showMessage, setLoginUser]
   );
 
-  // Todo logout関数を作成する
+  // TODO logout関数を作成する
 
   return { login, loading };
 };
