@@ -4,7 +4,6 @@ import (
 	"backend/model"
 	"backend/repository"
 	"backend/validator"
-	"errors"
 	"os"
 	"time"
 
@@ -54,15 +53,10 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 		return "", err
 	}
 
-	// TODO 下のコメントアウトの内容に修正する
-	if user.Password != storedUser.Password {
-		return "", errors.New("wrong password")
+	err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
+	if err != nil {
+		return "", err
 	}
-
-	// err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
-	// if err != nil {
-	// 	return "", err
-	// }
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": storedUser.ID,
