@@ -30,6 +30,7 @@ export const useAuth = (): {
         .post<User>('/login', data)
         .then((res) => {
           if (res.data != null) {
+            // TODO 今後管理者機能を実装するために、暫定的にisAdminをtrueにしている
             const isAdmin = true;
             setLoginUser({ ...res.data, isAdmin });
             showMessage({ title: 'ログインしました', status: 'success' });
