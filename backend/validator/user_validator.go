@@ -4,7 +4,6 @@ import (
 	"backend/model"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
 type IUserValidator interface {
@@ -20,10 +19,9 @@ func NewUserValidator() IUserValidator {
 func (uv *userValidator) UserValidate(user model.User) error {
 	return validation.ValidateStruct(&user,
 		validation.Field(
-			&user.Email,
-			validation.Required.Error("email is required"),
+			&user.Username,
+			validation.Required.Error("username is required"),
 			validation.RuneLength(1, 30).Error("limited max 30 char"),
-			is.Email.Error("is not valid email format"),
 		),
 		validation.Field(
 			&user.Password,

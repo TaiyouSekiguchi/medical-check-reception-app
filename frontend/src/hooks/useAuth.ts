@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
+import { axios } from '../lib/axios';
 import { type User } from '../types/api/user';
 import { useLoginUser } from './useLoginUser';
 import { useMessage } from './useMessage';
 
 export const useAuth = (): {
-  login: (id: string) => void;
+  login: (username: string, password: string) => void;
   loading: boolean;
 } => {
   const navigate = useNavigate();
@@ -15,13 +16,22 @@ export const useAuth = (): {
   const [loading, setLoading] = useState(false);
 
   const login = useCallback(
-    (id: string) => {
+    (username: string, password: string) => {
       setLoading(true);
+      console.log(username, password);
+      console.log(API_URL);
+
+      const data = {
+        username,
+        password,
+      };
+
       axios
-        .get<User>(`https://jsonplaceholder.typicode.com/users/${id}`)
+        .post<User>('/login', data)
         .then((res) => {
           if (res.data != null) {
-            const isAdmin = res.data.id === 10;
+            // TODO 今後管理者機能を実装するために、暫定的にisAdminをtrueにしている
+            const isAdmin = true;
             setLoginUser({ ...res.data, isAdmin });
             showMessage({ title: 'ログインしました', status: 'success' });
             navigate('/home');
@@ -37,6 +47,8 @@ export const useAuth = (): {
     },
     [navigate, setLoading, showMessage, setLoginUser]
   );
+
+  // TODO logout関数を作成する
 
   return { login, loading };
 };

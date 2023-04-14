@@ -5,30 +5,41 @@ import { PrimaryButton } from 'components/atoms/button/PrimaryButton';
 
 export const Login: VFC = memo(() => {
   const { login, loading } = useAuth();
-  const [userId, setUserId] = useState('');
-  const onChangeUserId = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserId(e.target.value);
+
+  const [username, setUsername] = useState('');
+  const onChangeUserName = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const [password, setPassword] = useState('');
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
   };
 
   const onClickLogin = () => {
-    login(userId);
+    login(username, password);
   };
 
   return (
     <Flex align="center" justify="center" height="100vh">
       <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
         <Heading as="h1" size="lg" textAlign="center">
-          ユーザー管理アプリ
+          人間ドック受付アプリ
         </Heading>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
           <Input
-            placeholder="ユーザーID"
-            value={userId}
-            onChange={onChangeUserId}
+            placeholder="Username"
+            value={username}
+            onChange={onChangeUserName}
+          />
+          <Input
+            placeholder="Password"
+            value={password}
+            onChange={onChangePassword}
           />
           <PrimaryButton
-            disabled={userId === ''}
+            disabled={username === '' || password === '' || loading}
             loading={loading}
             onClick={onClickLogin}
           >
