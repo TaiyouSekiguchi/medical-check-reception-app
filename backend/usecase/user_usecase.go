@@ -12,7 +12,6 @@ import (
 )
 
 type IUserUsecase interface {
-	SignUp(user model.User) (model.UserResponse, error)
 	Login(user model.User) (string, error)
 }
 
@@ -23,25 +22,6 @@ type userUsecase struct {
 
 func NewUserUsecase(ur repository.IUserRepository, uv validator.IUserValidator) IUserUsecase {
 	return &userUsecase{ur, uv}
-}
-
-func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
-	if err := uu.uv.UserValidate(user); err != nil {
-		return model.UserResponse{}, err
-	}
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
-	if err != nil {
-		return model.UserResponse{}, err
-	}
-	newUser := model.User{Username: user.Username, Password: string(hash)}
-	if err := uu.ur.CreateUser(&newUser); err != nil {
-		return model.UserResponse{}, err
-	}
-	resUser := model.UserResponse{
-		ID:       newUser.ID,
-		Username: newUser.Username,
-	}
-	return resUser, nil
 }
 
 func (uu *userUsecase) Login(user model.User) (string, error) {

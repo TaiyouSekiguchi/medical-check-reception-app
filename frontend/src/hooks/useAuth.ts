@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../config';
 import { axios } from '../lib/axios';
 import { type User } from '../types/api/user';
 import { useLoginUser } from './useLoginUser';
@@ -8,6 +7,7 @@ import { useMessage } from './useMessage';
 
 export const useAuth = (): {
   login: (username: string, password: string) => void;
+  logout: () => void;
   loading: boolean;
 } => {
   const navigate = useNavigate();
@@ -18,8 +18,6 @@ export const useAuth = (): {
   const login = useCallback(
     (username: string, password: string) => {
       setLoading(true);
-      console.log(username, password);
-      console.log(API_URL);
 
       const data = {
         username,
@@ -48,7 +46,20 @@ export const useAuth = (): {
     [navigate, setLoading, showMessage, setLoginUser]
   );
 
-  // TODO logout関数を作成する
+  const logout = useCallback(() => {
+    setLoading(true);
+    axios
+      .post('/logout')
+      .then(() => {
+        setLoginUser(null);
+        showMessage({ title: 'ログアウトしました', status: 'success' });
+        navigate('/');
+      })
+      .catch(() => {
+        showMessage({ title: 'ログアウトできません', status: 'error' });
+        setLoading(false);
+      });
+  }, [navigate, setLoading, showMessage, setLoginUser]);
 
-  return { login, loading };
+  return { login, logout, loading };
 };

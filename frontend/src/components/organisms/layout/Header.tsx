@@ -1,11 +1,13 @@
 import { memo, useCallback, type VFC } from 'react';
 import { Box, Flex, Link, Heading, useDisclosure } from '@chakra-ui/react';
+import { useAuth } from 'hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { MenuIconButton } from 'components/atoms/button/MenuIconButton';
 import { MenuDrawer } from 'components/molecules/MenuDrawer';
 
 export const Header: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const onClickHome = useCallback(() => {
@@ -17,6 +19,9 @@ export const Header: VFC = memo(() => {
   const onClickSetting = useCallback(() => {
     navigate('/home/setting');
   }, [navigate]);
+  const onClickLogout = useCallback(() => {
+    logout();
+  }, [logout]);
 
   return (
     <>
@@ -48,8 +53,12 @@ export const Header: VFC = memo(() => {
           <Box pr={4}>
             <Link onClick={onClickUserManagement}>ユーザー一覧</Link>
           </Box>
-          <Link onClick={onClickSetting}>設定</Link>
+          <Box pr={4}>
+            <Link onClick={onClickSetting}>設定</Link>
+          </Box>
+          <Link onClick={onClickLogout}>ログアウト</Link>
         </Flex>
+
         <MenuIconButton onOpen={onOpen} />
       </Flex>
       <MenuDrawer
