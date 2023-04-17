@@ -12,15 +12,19 @@ import (
 func main() {
 	db := db.NewDB()
 
+	// User
 	userValidator := validator.NewUserValidator()
-
 	userRepository := repository.NewUserRepository(db)
-
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
-
 	userController := controller.NewUserController(userUsecase)
 
-	e := router.NewRouter(userController)
+	// Insured
+	// insuredValidator := validator.NewInsuredValidator() ok
+	insuredRepository := repository.NewInsuredRepository(db)
+	insuredUsecase := usecase.NewInsuredUsecase(insuredRepository)
+	insuredController := controller.NewInsuredController(insuredUsecase)
+
+	e := router.NewRouter(userController, insuredController)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
