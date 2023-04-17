@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -35,7 +36,13 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController) 
 	e.GET("/csrf", uc.CsrfToken)
 
 	// Insured
-	e.GET("/insureds", ic.GetAllInsureds)
+	i := e.Group("/insureds")
+	i.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+
+	i.GET("", ic.GetAllInsureds)
 
 	return e
 }
