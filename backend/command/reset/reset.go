@@ -12,11 +12,15 @@ func main() {
 	defer fmt.Println("Successfully Reset")
 	defer db.CloseDB(dbConn)
 
-	if err := dbConn.Migrator().DropTable(&model.User{}); err != nil {
-		log.Fatalf("Failed to drop table: %v", err)
+	models := []interface{}{&model.User{}, &model.Sex{}, &model.Insured{}}
+
+	for _, m := range models {
+		if err := dbConn.Migrator().DropTable(m); err != nil {
+			log.Fatalf("Failed to drop table: %v", err)
+		}
 	}
 
-	if err := dbConn.AutoMigrate(&model.User{}); err != nil {
+	if err := dbConn.AutoMigrate(&model.User{}, &model.Sex{}, &model.Insured{}); err != nil {
 		log.Fatalf("Failed to migrate table: %v", err)
 	}
 }

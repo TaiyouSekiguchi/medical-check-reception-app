@@ -13,6 +13,10 @@ export const Header: VFC = memo(() => {
   const onClickHome = useCallback(() => {
     navigate('/home');
   }, [navigate]);
+
+  const onClickInsureds = useCallback(() => {
+    navigate('/home/insured_list');
+  }, [navigate]);
   const onClickUserManagement = useCallback(() => {
     navigate('/home/user_management');
   }, [navigate]);
@@ -41,7 +45,7 @@ export const Header: VFC = memo(() => {
           onClick={onClickHome}
         >
           <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }}>
-            ユーザー管理アプリ
+            人間ドック受付アプリ
           </Heading>
         </Flex>
         <Flex
@@ -51,12 +55,17 @@ export const Header: VFC = memo(() => {
           display={{ base: 'none', md: 'flex' }}
         >
           <Box pr={4}>
+            <Link onClick={onClickInsureds}>被保険者一覧</Link>
+          </Box>
+          <Box pr={4}>
             <Link onClick={onClickUserManagement}>ユーザー一覧</Link>
           </Box>
           <Box pr={4}>
             <Link onClick={onClickSetting}>設定</Link>
           </Box>
-          <Link onClick={onClickLogout}>ログアウト</Link>
+          <Box pr={4}>
+            <Link onClick={onClickLogout}>ログアウト</Link>
+          </Box>
         </Flex>
 
         <MenuIconButton onOpen={onOpen} />

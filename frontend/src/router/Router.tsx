@@ -7,6 +7,7 @@ import { UserManagement } from 'components/pages/UserManagement';
 import { HeaderLayout } from 'components/templates/HeaderLayout';
 import { LoginUserProvider } from 'providers/LoginUserProvider';
 import { Home } from '../components/pages/Home';
+import { InsuredList } from '../components/pages/Insureds';
 import { Login } from '../components/pages/Login';
 import { Setting } from '../components/pages/Setting';
 
@@ -22,6 +23,7 @@ export const Router: VFC = memo(() => {
                 <Routes>
                   <Route path="" element={<Home />} />
                   <Route path="setting" element={<Setting />} />
+                  <Route path="insured_list" element={<InsuredList />} />
                   <Route path="user_management" element={<UserManagement />} />
                   <Route path="*" element={<Page404 />} />
                 </Routes>

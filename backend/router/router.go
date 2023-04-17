@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"os"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter(uc controller.IUserController) *echo.Echo {
+func NewRouter(uc controller.IUserController, ic controller.IInsuredController) *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -25,13 +26,23 @@ func NewRouter(uc controller.IUserController) *echo.Echo {
 		CookieDomain:   os.Getenv("API_DOMAIN"),
 		CookieHTTPOnly: true,
 		CookieSameSite: http.SameSiteNoneMode,
-		// CookieSameSite: http.SameSiteDefaultMode,
+		// CookieSameSite: http.SameSiteDefaultMode, // for postman
 		// CookieMaxAge:   60,
 	}))
 
+	// User
 	e.POST("/login", uc.LogIn)
 	e.POST("/logout", uc.LogOut)
 	e.GET("/csrf", uc.CsrfToken)
+
+	// Insured
+	i := e.Group("/insureds")
+	i.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+
+	i.GET("", ic.GetAllInsureds)
 
 	return e
 }
