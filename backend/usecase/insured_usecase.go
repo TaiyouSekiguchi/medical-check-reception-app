@@ -6,7 +6,7 @@ import (
 )
 
 type IInsuredUsecase interface {
-	GetAllInsureds() ([]model.InsuredResponse, error)
+	GetInsureds(birthday string) ([]model.InsuredResponse, error)
 }
 
 type insuredUsecase struct {
@@ -18,9 +18,9 @@ func NewInsuredUsecase(ir repository.IInsuredRepository) IInsuredUsecase {
 	return &insuredUsecase{ir}
 }
 
-func (iu *insuredUsecase) GetAllInsureds() ([]model.InsuredResponse, error) {
+func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse, error) {
 	insureds := []model.Insured{}
-	if err := iu.ir.GetAllInsureds(&insureds); err != nil {
+	if err := iu.ir.GetInsureds(&insureds, birthday); err != nil {
 		return nil, err
 	}
 

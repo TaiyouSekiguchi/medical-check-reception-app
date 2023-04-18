@@ -7,7 +7,7 @@ import (
 )
 
 type IInsuredRepository interface {
-	GetAllInsureds(insureds *[]model.Insured) error
+	GetInsureds(insureds *[]model.Insured, birthday string) error
 }
 
 type insuredRepository struct {
@@ -18,9 +18,17 @@ func NewInsuredRepository(db *gorm.DB) IInsuredRepository {
 	return &insuredRepository{db}
 }
 
-func (ir *insuredRepository) GetAllInsureds(insureds *[]model.Insured) error {
-	if err := ir.db.Find(insureds).Error; err != nil {
+func (ir *insuredRepository) GetInsureds(insureds *[]model.Insured, birthday string) error {
+
+	query := ir.db
+
+	if birthday != "" {
+		query = query.Where("birthday = ?", birthday)
+	}
+
+	if err := query.Find(insureds).Error; err != nil {
 		return err
 	}
+
 	return nil
 }
