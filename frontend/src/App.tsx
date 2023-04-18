@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { axios } from 'lib/axios';
+import { AppRoutes } from 'routes';
 import { type CsrfToken } from 'types';
 import { AppProvider } from 'providers/AppProvider';
-import { Router } from 'router/Router';
 
 const App = (): JSX.Element => {
   useEffect(() => {
@@ -21,7 +21,7 @@ const App = (): JSX.Element => {
 
   return (
     <AppProvider>
-      <Router />
+      <AppRoutes />
     </AppProvider>
   );
 };
