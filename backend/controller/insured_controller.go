@@ -8,7 +8,7 @@ import (
 )
 
 type IInsuredController interface {
-	GetAllInsureds(c echo.Context) error
+	GetInsureds(c echo.Context) error
 }
 
 type insuredController struct {
@@ -19,9 +19,11 @@ func NewInsuredController(iu usecase.IInsuredUsecase) IInsuredController {
 	return &insuredController{iu}
 }
 
-func (ic *insuredController) GetAllInsureds(c echo.Context) error {
+func (ic *insuredController) GetInsureds(c echo.Context) error {
 
-	insuredsRes, err := ic.iu.GetAllInsureds()
+	birthday := c.QueryParam("birthday")
+
+	insuredsRes, err := ic.iu.GetInsureds(birthday)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

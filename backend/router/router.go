@@ -41,7 +41,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",
 	}))
-	i.GET("", ic.GetAllInsureds)
+	i.GET("", ic.GetInsureds)
 
 	// ReservationSlot
 	rs := e.Group("/reservation-slots")
