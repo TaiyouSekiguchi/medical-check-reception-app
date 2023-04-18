@@ -60,14 +60,14 @@ export const Login: VFC = memo(() => {
             />
             <InputRightElement width="3rem">
               <IconButton
-                aria-label="eye"
-                icon={isRevealPassword ? <ViewIcon /> : <ViewOffIcon />}
-                onClick={handleClick}
-                bg="rgba(0,0,0,0,0)"
+                aria-label="Password visibility toggle"
                 size="lg"
                 color="gray.500"
+                bg="rgba(0,0,0,0,0)"
                 _hover={{ bg: 'rgba(0,0,0,0,0)' }}
                 _active={{ bg: 'rgba(0,0,0,0,0)' }}
+                icon={isRevealPassword ? <ViewIcon /> : <ViewOffIcon />}
+                onClick={handleClick}
               />
             </InputRightElement>
           </InputGroup>
