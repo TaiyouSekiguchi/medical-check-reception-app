@@ -1,5 +1,16 @@
 import { type VFC, memo, useState, type ChangeEvent } from 'react';
-import { Stack, Box, Divider, Flex, Heading, Input } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import {
+  Flex,
+  Box,
+  Heading,
+  Divider,
+  Stack,
+  Input,
+  InputRightElement,
+  InputGroup,
+  IconButton,
+} from '@chakra-ui/react';
 import { useAuth } from 'hooks/useAuth';
 import { PrimaryButton } from 'components/atoms/button/PrimaryButton';
 
@@ -20,6 +31,12 @@ export const Login: VFC = memo(() => {
     login(username, password);
   };
 
+  const [isRevealPassword, setIsRevealPassword] = useState(false);
+
+  const handleClick = () => {
+    setIsRevealPassword(!isRevealPassword);
+  };
+
   return (
     <Flex align="center" justify="center" height="100vh">
       <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
@@ -33,11 +50,27 @@ export const Login: VFC = memo(() => {
             value={username}
             onChange={onChangeUserName}
           />
-          <Input
-            placeholder="Password"
-            value={password}
-            onChange={onChangePassword}
-          />
+          <InputGroup size="md">
+            <Input
+              placeholder="Password"
+              value={password}
+              onChange={onChangePassword}
+              type={isRevealPassword ? 'text' : 'password'}
+              name="password"
+            />
+            <InputRightElement width="3rem">
+              <IconButton
+                aria-label="eye"
+                icon={isRevealPassword ? <ViewIcon /> : <ViewOffIcon />}
+                onClick={handleClick}
+                bg="rgba(0,0,0,0,0)"
+                size="lg"
+                color="gray.500"
+                _hover={{ bg: 'rgba(0,0,0,0,0)' }}
+                _active={{ bg: 'rgba(0,0,0,0,0)' }}
+              />
+            </InputRightElement>
+          </InputGroup>
           <PrimaryButton
             disabled={username === '' || password === '' || loading}
             loading={loading}
