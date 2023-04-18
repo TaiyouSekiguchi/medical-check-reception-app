@@ -24,7 +24,14 @@ func main() {
 	insuredUsecase := usecase.NewInsuredUsecase(insuredRepository)
 	insuredController := controller.NewInsuredController(insuredUsecase)
 
-	e := router.NewRouter(userController, insuredController)
+	// ReservationSlot
+	// reservationSlotValidator := validator.NewReservationSlotValidator() ok
+	reservationSlotRepository := repository.NewReservationSlotRepository(db)
+	reservationSlotUsecase := usecase.NewReservationSlotUsecase(reservationSlotRepository)
+	reservationSlotController := controller.NewReservationSlotController(reservationSlotUsecase)
+
+	// e := router.NewRouter(userController, insuredController)
+	e := router.NewRouter(userController, insuredController, reservationSlotController)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

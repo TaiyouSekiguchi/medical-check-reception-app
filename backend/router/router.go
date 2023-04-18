@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter(uc controller.IUserController, ic controller.IInsuredController) *echo.Echo {
+func NewRouter(uc controller.IUserController, ic controller.IInsuredController, rsc controller.IReservationSlotController) *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -41,8 +41,15 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController) 
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",
 	}))
-
 	i.GET("", ic.GetAllInsureds)
+
+	// ReservationSlot
+	rs := e.Group("/reservation-slots")
+	rs.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	rs.GET("", rsc.GetAllReservationSlots)
 
 	return e
 }

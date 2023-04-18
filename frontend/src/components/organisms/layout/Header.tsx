@@ -14,8 +14,11 @@ export const Header: VFC = memo(() => {
     navigate('/home');
   }, [navigate]);
 
-  const onClickInsureds = useCallback(() => {
+  const onClickInsuredList = useCallback(() => {
     navigate('/home/insured_list');
+  }, [navigate]);
+  const onClickReservationSlotList = useCallback(() => {
+    navigate('/home/reservation_slot_list');
   }, [navigate]);
   const onClickUserManagement = useCallback(() => {
     navigate('/home/user_management');
@@ -55,7 +58,10 @@ export const Header: VFC = memo(() => {
           display={{ base: 'none', md: 'flex' }}
         >
           <Box pr={4}>
-            <Link onClick={onClickInsureds}>被保険者一覧</Link>
+            <Link onClick={onClickInsuredList}>被保険者一覧</Link>
+          </Box>
+          <Box pr={4}>
+            <Link onClick={onClickReservationSlotList}>予約枠一覧</Link>
           </Box>
           <Box pr={4}>
             <Link onClick={onClickUserManagement}>ユーザー一覧</Link>
