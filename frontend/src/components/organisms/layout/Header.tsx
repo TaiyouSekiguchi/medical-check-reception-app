@@ -1,15 +1,27 @@
 import { memo, useCallback, type VFC } from 'react';
 import { Box, Flex, Link, Heading, useDisclosure } from '@chakra-ui/react';
+import { useAuth } from 'hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { MenuIconButton } from 'components/atoms/button/MenuIconButton';
 import { MenuDrawer } from 'components/molecules/MenuDrawer';
 
 export const Header: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const onClickHome = useCallback(() => {
     navigate('/home');
+  }, [navigate]);
+
+  const onClickInsuredList = useCallback(() => {
+    navigate('/home/insured_list');
+  }, [navigate]);
+  const onClickReservationSlotList = useCallback(() => {
+    navigate('/home/reservation_slot_list');
+  }, [navigate]);
+  const onClickReservationManagement = useCallback(() => {
+    navigate('/home/reservation_management');
   }, [navigate]);
   const onClickUserManagement = useCallback(() => {
     navigate('/home/user_management');
@@ -17,6 +29,9 @@ export const Header: VFC = memo(() => {
   const onClickSetting = useCallback(() => {
     navigate('/home/setting');
   }, [navigate]);
+  const onClickLogout = useCallback(() => {
+    logout();
+  }, [logout]);
 
   return (
     <>
@@ -36,7 +51,7 @@ export const Header: VFC = memo(() => {
           onClick={onClickHome}
         >
           <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }}>
-            ユーザー管理アプリ
+            人間ドック受付アプリ
           </Heading>
         </Flex>
         <Flex
@@ -46,10 +61,25 @@ export const Header: VFC = memo(() => {
           display={{ base: 'none', md: 'flex' }}
         >
           <Box pr={4}>
+            <Link onClick={onClickInsuredList}>被保険者一覧</Link>
+          </Box>
+          <Box pr={4}>
+            <Link onClick={onClickReservationSlotList}>予約枠一覧</Link>
+          </Box>
+          <Box pr={4}>
+            <Link onClick={onClickReservationManagement}>予約管理</Link>
+          </Box>
+          <Box pr={4}>
             <Link onClick={onClickUserManagement}>ユーザー一覧</Link>
           </Box>
-          <Link onClick={onClickSetting}>設定</Link>
+          <Box pr={4}>
+            <Link onClick={onClickSetting}>設定</Link>
+          </Box>
+          <Box pr={4}>
+            <Link onClick={onClickLogout}>ログアウト</Link>
+          </Box>
         </Flex>
+
         <MenuIconButton onOpen={onOpen} />
       </Flex>
       <MenuDrawer
