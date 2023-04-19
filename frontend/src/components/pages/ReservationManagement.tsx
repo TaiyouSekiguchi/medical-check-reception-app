@@ -10,11 +10,23 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
+  VStack,
 } from '@chakra-ui/react';
 import { useInsureds } from 'hooks/useInsureds';
+import { type Insured } from 'types/api/insured';
 import { PrimaryButton } from 'components/atoms/button/PrimaryButton';
 
 export const ReservationManagement: VFC = memo(() => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { getInsureds, loading, insureds } = useInsureds();
   const [birthday, setBirthday] = useState('');
   const onChangeBirthday = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,8 +36,12 @@ export const ReservationManagement: VFC = memo(() => {
   const onClickSearch = () => {
     getInsureds(birthday);
   };
-  const onClickDetail = () => {
-    alert('予約管理');
+
+  const [selectedInsured, setSelectedInsured] = useState<Insured | null>(null);
+
+  const handleRowClick = (insured: Insured) => {
+    setSelectedInsured(insured);
+    onOpen();
   };
 
   return (
@@ -67,7 +83,9 @@ export const ReservationManagement: VFC = memo(() => {
                 <Tr
                   key={insured.id}
                   _hover={{ bg: 'gray.300' }}
-                  onClick={onClickDetail}
+                  onClick={() => {
+                    handleRowClick(insured);
+                  }}
                 >
                   <Td>{insured.id}</Td>
                   <Td>{insured.number}</Td>
@@ -82,6 +100,51 @@ export const ReservationManagement: VFC = memo(() => {
               ))}
             </Tbody>
           </Table>
+
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>予約状況</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                {selectedInsured === null ? (
+                  <></>
+                ) : (
+                  <VStack>
+                    <Box>
+                      <strong>ID: </strong>
+                      {selectedInsured?.id}
+                    </Box>
+                    <Box>
+                      <strong>被保険者番号: </strong>
+                      {selectedInsured?.number}
+                    </Box>
+                    <Box>
+                      <strong>氏名: </strong>
+                      {selectedInsured?.last_name} {selectedInsured?.first_name}
+                    </Box>
+                    <Box>
+                      <strong>生年月日: </strong>
+                      {new Date(selectedInsured?.birthday).toLocaleDateString(
+                        'ja-JP'
+                      )}
+                    </Box>
+                    <Box>
+                      <strong>性別: </strong>
+                      {selectedInsured?.sex_code}
+                    </Box>
+                    <Box>
+                      <strong>住所: </strong>
+                      {selectedInsured?.address}
+                    </Box>
+                  </VStack>
+                )}
+              </ModalBody>
+              <ModalFooter>
+                <Button>予約</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </Box>
       )}
     </>
