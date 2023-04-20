@@ -36,7 +36,7 @@ func (ir *insuredRepository) GetInsureds(insureds *[]model.Insured, birthday str
 
 func (ir *insuredRepository) GetInsuredsWithReservation(insureds *[]model.Insured, birthday string) error {
 
-	if err := ir.db.Preload("Reservation.ExaminationItem").Where("birthday = ?", birthday).Find(insureds).Error; err != nil {
+	if err := ir.db.Preload("Reservation.ExaminationItem").Preload("Reservation.ReservationSlot").Where("birthday = ?", birthday).Find(insureds).Error; err != nil {
 		return err
 	}
 
