@@ -29,7 +29,7 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 		return "", err
 	}
 	storedUser := model.User{}
-	if err := uu.ur.GetUserByUsername(&storedUser, user.Name); err != nil {
+	if err := uu.ur.GetUserByUsername(&storedUser, user.Username); err != nil {
 		return "", err
 	}
 

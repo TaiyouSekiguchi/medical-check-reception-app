@@ -19,7 +19,7 @@ func NewUserValidator() IUserValidator {
 func (uv *userValidator) UserValidate(user model.User) error {
 	return validation.ValidateStruct(&user,
 		validation.Field(
-			&user.Name,
+			&user.Username,
 			validation.Required.Error("username is required"),
 			validation.RuneLength(1, 30).Error("limited max 30 char"),
 		),
