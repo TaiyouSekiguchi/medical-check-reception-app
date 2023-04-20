@@ -59,11 +59,45 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
                 <strong>住所: </strong>
                 {selectedInsured?.address}
               </Box>
+              {selectedInsured?.reservation.length === 0 ? (
+                <>
+                  <strong>予約状況: </strong>
+                  予約なし
+                </>
+              ) : (
+                <>
+                  <strong>予約状況: </strong>
+                  予約あり
+                  <Box>
+                    <strong>検査日: </strong>
+                    {new Date(
+                      selectedInsured?.reservation[0].reservation_slot.date
+                    ).toLocaleDateString('ja-JP')}
+                  </Box>
+                  <Box>
+                    <strong>検査項目: </strong>
+                    {selectedInsured?.reservation.map((reservation, index) => (
+                      <Box key={index}>
+                        {reservation.examination_item.name}
+                        {index !== selectedInsured?.reservation.length - 1 &&
+                          ', '}
+                      </Box>
+                    ))}
+                  </Box>
+                </>
+              )}
             </VStack>
           )}
         </ModalBody>
         <ModalFooter>
-          <Button>予約</Button>
+          {selectedInsured?.reservation.length === 0 ? (
+            <Button>予約</Button>
+          ) : (
+            <>
+              <Button>変更</Button>
+              <Button>削除</Button>
+            </>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

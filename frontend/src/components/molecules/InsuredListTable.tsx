@@ -21,6 +21,7 @@ export const InsuredListTable: VFC<Props> = memo((props) => {
           <Th>生年月日</Th>
           <Th>性別</Th>
           <Th>住所</Th>
+          <Th>予約状況</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -39,6 +40,9 @@ export const InsuredListTable: VFC<Props> = memo((props) => {
             <Td>{new Date(insured.birthday).toLocaleDateString('ja-JP')}</Td>
             <Td>{insured.sex_code}</Td>
             <Td>{insured.address}</Td>
+            <Td>
+              {insured.reservation.length === 0 ? '予約なし' : '予約あり'}
+            </Td>
           </Tr>
         ))}
       </Tbody>
