@@ -1,4 +1,4 @@
-import { memo, type VFC } from 'react';
+import { memo, useCallback, type VFC } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -11,6 +11,7 @@ import {
   VStack,
   Box,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { type Insured } from 'types/api/insured';
 
 type Props = {
@@ -21,6 +22,11 @@ type Props = {
 
 export const InsuredListModal: VFC<Props> = memo((props) => {
   const { isOpen, onClose, selectedInsured } = props;
+  const navigate = useNavigate();
+
+  const onClickReservation = useCallback(() => {
+    navigate('/home/select_reservation_slot');
+  }, [navigate]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -91,7 +97,7 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
         </ModalBody>
         <ModalFooter>
           {selectedInsured?.reservation.length === 0 ? (
-            <Button>予約</Button>
+            <Button onClick={onClickReservation}>予約</Button>
           ) : (
             <>
               <Button>変更</Button>
