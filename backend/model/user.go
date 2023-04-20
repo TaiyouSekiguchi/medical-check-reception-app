@@ -4,13 +4,13 @@ import "time"
 
 type User struct {
 	ID        uint      `json:"id" gorm:"primaryKey"`
-	Username  string    `json:"username" gorm:"unique"`
-	Password  string    `json:"password"`
+	Name      string    `json:"name" gorm:"unique;not null"`
+	Password  string    `json:"password" gorm:"not null"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type UserResponse struct {
-	ID       uint   `json:"id" gorm:"primaryKey"`
-	Username string `json:"username" gorm:"unique"`
+	ID   uint   `json:"id" gorm:"primaryKey"`
+	Name string `json:"name" gorm:"unique;not null"`
 }
