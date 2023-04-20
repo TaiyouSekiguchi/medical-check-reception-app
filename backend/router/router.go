@@ -54,6 +54,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 		TokenLookup: "cookie:token",
 	}))
 	rs.GET("", rsc.GetAllReservationSlots)
+	rs.GET("/examination-items", rsc.GetReservationSlotsWithExaminationItem)
 
 	return e
 }
