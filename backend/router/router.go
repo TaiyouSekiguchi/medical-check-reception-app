@@ -42,6 +42,10 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 		TokenLookup: "cookie:token",
 	}))
 	i.GET("", ic.GetInsureds)
+	i.GET("/reservation", ic.GetInsuredsWithReservation)
+	// i.GET("/reservation", func(c echo.Context) error {
+	// 	return c.String(http.StatusOK, "Insureds with reservation")
+	// })
 
 	// ReservationSlot
 	rs := e.Group("/reservation-slots")
