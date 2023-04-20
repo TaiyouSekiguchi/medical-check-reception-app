@@ -13,3 +13,10 @@ type Reservation struct {
 	CreatedAt         time.Time       `json:"created_at"`
 	UpdatedAt         time.Time       `json:"updated_at"`
 }
+
+type ReservationResponse struct {
+	ID              uint                    `json:"id" gorm:"primaryKey"`
+	Insured         InsuredResponse         `json:"insured" gorm:"references:ID"`
+	ReservationSlot ReservationSlotResponse `json:"reservation_slot" gorm:"references:ID"`
+	ExaminationItem ExaminationItemResponse `json:"examination_item"`
+}
