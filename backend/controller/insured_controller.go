@@ -9,6 +9,7 @@ import (
 
 type IInsuredController interface {
 	GetInsureds(c echo.Context) error
+	GetInsuredsWithReservation(c echo.Context) error
 }
 
 type insuredController struct {
@@ -24,6 +25,18 @@ func (ic *insuredController) GetInsureds(c echo.Context) error {
 	birthday := c.QueryParam("birthday")
 
 	insuredsRes, err := ic.iu.GetInsureds(birthday)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, insuredsRes)
+}
+
+func (ic *insuredController) GetInsuredsWithReservation(c echo.Context) error {
+
+	birthday := c.QueryParam("birthday")
+
+	insuredsRes, err := ic.iu.GetInsuredsWithReservation(birthday)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

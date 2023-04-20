@@ -8,6 +8,7 @@ import (
 
 type IInsuredRepository interface {
 	GetInsureds(insureds *[]model.Insured, birthday string) error
+	GetInsuredsWithReservation(insureds *[]model.Insured, birthday string) error
 }
 
 type insuredRepository struct {
@@ -27,6 +28,15 @@ func (ir *insuredRepository) GetInsureds(insureds *[]model.Insured, birthday str
 	}
 
 	if err := query.Find(insureds).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ir *insuredRepository) GetInsuredsWithReservation(insureds *[]model.Insured, birthday string) error {
+
+	if err := ir.db.Preload("Reservation.ExaminationItem").Preload("Reservation.ReservationSlot").Where("birthday = ?", birthday).Find(insureds).Error; err != nil {
 		return err
 	}
 

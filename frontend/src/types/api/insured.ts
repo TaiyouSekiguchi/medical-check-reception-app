@@ -1,3 +1,5 @@
+import { type Reservation } from './reservation';
+
 export type Insured = {
   id: number;
   number: number;
@@ -6,4 +8,5 @@ export type Insured = {
   birthday: string;
   sex_code: number;
   address: string;
+  reservation: Reservation[];
 };

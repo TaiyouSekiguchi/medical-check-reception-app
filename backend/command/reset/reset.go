@@ -12,7 +12,7 @@ func main() {
 	defer fmt.Println("Successfully Reset")
 	defer db.CloseDB(dbConn)
 
-	models := []interface{}{&model.User{}, &model.Sex{}, &model.Insured{}, &model.ReservationSlot{}}
+	models := []interface{}{&model.User{}, &model.Sex{}, &model.Insured{}, &model.ReservationSlot{}, &model.ExaminationItem{}, &model.Reservation{}}
 
 	for _, m := range models {
 		if err := dbConn.Migrator().DropTable(m); err != nil {
@@ -20,7 +20,7 @@ func main() {
 		}
 	}
 
-	if err := dbConn.AutoMigrate(&model.User{}, &model.Sex{}, &model.Insured{}, &model.ReservationSlot{}); err != nil {
+	if err := dbConn.AutoMigrate(&model.User{}, &model.Sex{}, &model.Insured{}, &model.ReservationSlot{}, &model.ExaminationItem{}, &model.Reservation{}); err != nil {
 		log.Fatalf("Failed to migrate table: %v", err)
 	}
 }

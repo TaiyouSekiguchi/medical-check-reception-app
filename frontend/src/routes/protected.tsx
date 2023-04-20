@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Page404 } from 'components/pages/Page404';
+import { SelectReservationSlot } from 'components/pages/SelectReservationSlot';
 import { Home } from '../components/pages/Home';
 import { InsuredList } from '../components/pages/InsuredList';
 import { Login } from '../components/pages/Login';
@@ -28,6 +29,7 @@ export const protectedRoutes = [
       { path: 'reservation_slot_list', element: <ReservationSlotList /> },
       { path: 'reservation_management', element: <ReservationManagement /> },
       { path: 'user_management', element: <UserManagement /> },
+      { path: 'select_reservation_slot', element: <SelectReservationSlot /> }, // TODO ここは要検討
       { path: '*', element: <Page404 /> },
     ],
   },
