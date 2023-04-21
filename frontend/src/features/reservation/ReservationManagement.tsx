@@ -1,10 +1,10 @@
 import { memo, type VFC, type ChangeEvent, useState } from 'react';
 import { Input, Box, Center, Spinner, useDisclosure } from '@chakra-ui/react';
-import { useInsuredsWithReservation } from 'hooks/useInsuredsWithReservation';
+import { useInsuredsWithReservation } from 'features/reservation/api/useInsuredsWithReservation';
 import { type Insured } from 'types/api/insured';
-import { PrimaryButton } from 'components/atoms/button/PrimaryButton';
-import { InsuredListModal } from 'components/molecules/InsuredListModal';
-import { InsuredListTable } from 'components/molecules/InsuredListTable';
+import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import { InsuredListModal } from 'features/reservation/InsuredListModal';
+import { InsuredListTable } from 'features/reservation/InsuredListTable';
 
 export const ReservationManagement: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();

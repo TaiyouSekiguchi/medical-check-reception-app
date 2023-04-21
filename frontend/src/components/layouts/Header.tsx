@@ -1,6 +1,6 @@
 import { memo, useCallback, type VFC } from 'react';
 import { Box, Flex, Link, Heading } from '@chakra-ui/react';
-import { useAuth } from 'features/Auth/useAuth';
+import { useAuth } from 'features/auth/api/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 export const Header: VFC = memo(() => {

@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { axios } from '../lib/axios';
-import { type User } from '../types/api/user';
-import { useLoginUser } from './useLoginUser';
-import { useMessage } from './useMessage';
+import { axios } from '../../../lib/axios';
+import { type User } from '../../../types/api/user';
+import { useMessage } from '../../message/hooks/useMessage';
+import { useLoginUser } from '../hooks/useLoginUser';
 
 export const useAuth = (): {
   login: (username: string, password: string) => void;

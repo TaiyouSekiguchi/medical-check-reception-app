@@ -2,7 +2,7 @@
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
 import { type ReservationSlot } from 'types/api/reservationSlot';
-import { useMessage } from './useMessage';
+import { useMessage } from '../../message/hooks/useMessage';
 
 export const useAllReservationSlots = (): {
   getReservationSlots: () => void;

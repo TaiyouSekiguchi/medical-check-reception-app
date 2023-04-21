@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router';
-import { Login } from '../components/pages/Login';
+import { Login } from '../features/auth/Login';
 
 export const publicRoutes = [
   { path: '/', element: <Login /> },

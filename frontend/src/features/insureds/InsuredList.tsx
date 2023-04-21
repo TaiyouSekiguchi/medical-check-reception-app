@@ -10,7 +10,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useAllInsureds } from '../../hooks/useAllInsureds';
+import { useAllInsureds } from './api/useAllInsureds';
 
 export const InsuredList: VFC = memo(() => {
   const { getInsureds, loading, insureds } = useAllInsureds();

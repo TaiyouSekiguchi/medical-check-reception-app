@@ -10,7 +10,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useReservationSlotsWithReservation } from 'hooks/useReservationSlotsWithReservation';
+import { useReservationSlotsWithReservation } from 'features/reservation/api/useReservationSlotsWithReservation';
 import { type ReservationSlot } from 'types/api/reservationSlot';
 
 export const SelectReservationSlot: VFC = memo(() => {

@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
-import { type Insured } from '../types/api/insured';
-import { useMessage } from './useMessage';
+import { type Insured } from '../../../types/api/insured';
+import { useMessage } from '../../message/hooks/useMessage';
 
 export const useInsuredsWithReservation = (): {
   getInsuredsWithReservation: (birthday: string) => void;

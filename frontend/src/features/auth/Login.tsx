@@ -11,8 +11,8 @@ import {
   InputGroup,
   IconButton,
 } from '@chakra-ui/react';
-import { useAuth } from 'hooks/useAuth';
-import { PrimaryButton } from 'components/atoms/button/PrimaryButton';
+import { useAuth } from 'features/auth/api/useAuth';
+import { PrimaryButton } from 'components/buttons/PrimaryButton';
 
 export const Login: VFC = memo(() => {
   const { login, loading } = useAuth();
