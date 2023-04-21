@@ -67,7 +67,7 @@ export const Header: VFC = memo(() => {
             <Link onClick={onClickReservationManagement}>予約管理</Link>
           </Box>
           <Box pr={4}>
-            <Link onClick={onClickUserManagement}>ユーザー一覧</Link>
+            <Link onClick={onClickUserManagement}>ユーザー管理</Link>
           </Box>
           <Box pr={4}>
             <Link onClick={onClickLogout}>ログアウト</Link>
