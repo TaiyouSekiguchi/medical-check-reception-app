@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { Page404 } from 'components/pages/Page404';
-import { SelectReservationSlot } from 'components/pages/SelectReservationSlot';
-import { Home } from '../components/pages/Home';
-import { InsuredList } from '../components/pages/InsuredList';
-import { Login } from '../components/pages/Login';
-import { ReservationManagement } from '../components/pages/ReservationManagement';
-import { ReservationSlotList } from '../components/pages/ReservationSlotList';
-import { Setting } from '../components/pages/Setting';
-import { UserManagement } from '../components/pages/UserManagement';
-import { HeaderLayout } from '../components/templates/HeaderLayout';
+import { SelectReservationSlot } from 'features/reservation/SelectReservationSlot';
+
+import { HeaderLayout } from '../components/layouts/HeaderLayout';
+import { Login } from '../features/auth/Login';
+import { Home } from '../features/home/Home';
+import { InsuredList } from '../features/insureds/InsuredList';
+import { ReservationManagement } from '../features/reservation/ReservationManagement';
+import { ReservationSlotList } from '../features/reservationSlots/ReservationSlotList';
+import { UserManagement } from '../features/users/UserManagement';
 
 const App = () => {
   return (
@@ -24,7 +24,6 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Home /> },
-      { path: 'setting', element: <Setting /> },
       { path: 'insured_list', element: <InsuredList /> },
       { path: 'reservation_slot_list', element: <ReservationSlotList /> },
       { path: 'reservation_management', element: <ReservationManagement /> },

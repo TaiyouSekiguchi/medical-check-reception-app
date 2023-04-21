@@ -15,6 +15,7 @@ export type LoginUserContextType = {
 };
 
 export const LoginUserContext = createContext<LoginUserContextType>(
+  // TODO eslint
   // eslint-disable-next-line
   {} as LoginUserContextType
 );

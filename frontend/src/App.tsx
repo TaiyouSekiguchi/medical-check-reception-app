@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { axios } from 'lib/axios';
 import { AppRoutes } from 'routes';
-import { type CsrfToken } from 'types';
+import { type CsrfToken } from 'types/api/csrfToken';
 import { AppProvider } from 'providers/AppProvider';
 
 const App = (): JSX.Element => {

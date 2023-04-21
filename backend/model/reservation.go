@@ -16,7 +16,7 @@ type Reservation struct {
 
 type ReservationResponse struct {
 	ID              uint                    `json:"id" gorm:"primaryKey"`
-	Insured         InsuredResponse         `json:"insured" gorm:"references:ID"`
-	ReservationSlot ReservationSlotResponse `json:"reservation_slot" gorm:"references:ID"`
+	Insured         InsuredResponse         `json:"insured"`
+	ReservationSlot ReservationSlotResponse `json:"reservation_slot"`
 	ExaminationItem ExaminationItemResponse `json:"examination_item"`
 }
