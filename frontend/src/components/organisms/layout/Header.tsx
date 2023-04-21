@@ -1,12 +1,9 @@
 import { memo, useCallback, type VFC } from 'react';
-import { Box, Flex, Link, Heading, useDisclosure } from '@chakra-ui/react';
-import { useAuth } from 'hooks/useAuth';
+import { Box, Flex, Link, Heading } from '@chakra-ui/react';
+import { useAuth } from 'features/Auth/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { MenuIconButton } from 'components/atoms/button/MenuIconButton';
-import { MenuDrawer } from 'components/molecules/MenuDrawer';
 
 export const Header: VFC = memo(() => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -73,15 +70,7 @@ export const Header: VFC = memo(() => {
             <Link onClick={onClickLogout}>ログアウト</Link>
           </Box>
         </Flex>
-
-        <MenuIconButton onOpen={onOpen} />
       </Flex>
-      <MenuDrawer
-        onClose={onClose}
-        isOpen={isOpen}
-        onClickHome={onClickHome}
-        onClickUserManagement={onClickUserManagement}
-      />
     </>
   );
 });
