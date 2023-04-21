@@ -6,7 +6,7 @@ import { InsuredList } from '../components/pages/InsuredList';
 import { Login } from '../components/pages/Login';
 import { ReservationManagement } from '../components/pages/ReservationManagement';
 import { ReservationSlotList } from '../components/pages/ReservationSlotList';
-import { Setting } from '../components/pages/Setting';
+
 import { UserManagement } from '../components/pages/UserManagement';
 import { HeaderLayout } from '../components/templates/HeaderLayout';
 
@@ -24,7 +24,6 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Home /> },
-      { path: 'setting', element: <Setting /> },
       { path: 'insured_list', element: <InsuredList /> },
       { path: 'reservation_slot_list', element: <ReservationSlotList /> },
       { path: 'reservation_management', element: <ReservationManagement /> },

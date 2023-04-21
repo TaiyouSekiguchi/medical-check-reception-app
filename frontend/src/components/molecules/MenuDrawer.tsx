@@ -12,17 +12,10 @@ type Props = {
   isOpen: boolean;
   onClickHome: () => void;
   onClickUserManagement: () => void;
-  onClickSetting: () => void;
 };
 
 export const MenuDrawer: VFC<Props> = memo((props) => {
-  const {
-    onClose,
-    isOpen,
-    onClickHome,
-    onClickUserManagement,
-    onClickSetting,
-  } = props;
+  const { onClose, isOpen, onClickHome, onClickUserManagement } = props;
 
   return (
     <Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
@@ -34,9 +27,6 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
             </Button>
             <Button w="100%" onClick={onClickUserManagement}>
               ユーザー一覧
-            </Button>
-            <Button w="100%" onClick={onClickSetting}>
-              設定
             </Button>
           </DrawerBody>
         </DrawerContent>
