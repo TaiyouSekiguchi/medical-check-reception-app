@@ -78,15 +78,16 @@ export const SearchInputForm: VFC<Props> = memo((props) => {
               />
             </HStack>
           </Stack>
-          <Spacer />
-          <Box>
-            <PrimaryButton
-              disabled={birthday === ''}
-              loading={false}
-              onClick={onClick}
-            >
-              検索
-            </PrimaryButton>
+          <Box bg="yellow" position="relative">
+            <Box position="absolute" left={4} bottom={0}>
+              <PrimaryButton
+                disabled={birthday === ''}
+                loading={false}
+                onClick={onClick}
+              >
+                検索
+              </PrimaryButton>
+            </Box>
           </Box>
         </Flex>
       </Box>
