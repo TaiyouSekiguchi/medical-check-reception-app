@@ -34,9 +34,11 @@ func (ic *insuredController) GetInsureds(c echo.Context) error {
 
 func (ic *insuredController) GetInsuredsWithReservation(c echo.Context) error {
 
+	firstName := c.QueryParam("firstName")
+	lastName := c.QueryParam("lastName")
 	birthday := c.QueryParam("birthday")
 
-	insuredsRes, err := ic.iu.GetInsuredsWithReservation(birthday)
+	insuredsRes, err := ic.iu.GetInsuredsWithReservation(firstName, lastName, birthday)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
