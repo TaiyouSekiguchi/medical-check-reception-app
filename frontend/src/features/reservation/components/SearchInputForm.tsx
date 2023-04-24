@@ -1,35 +1,69 @@
-import { memo, type VFC, type ChangeEvent, useState } from 'react';
+import { memo } from 'react';
 import {
   Input,
   Box,
-  HStack,
-  Flex,
-  Spacer,
   FormLabel,
   Stack,
+  Button,
+  FormErrorMessage,
+  FormControl,
 } from '@chakra-ui/react';
-import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { toHalfWidthKatakana } from 'lib/converter';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { object, string } from 'yup';
 
-type Props = {
-  onClick: () => void;
+type formInputs = {
+  firstName: string;
+  lastName: string;
+  birthday: string | null;
 };
 
-export const SearchInputForm: VFC<Props> = memo((props) => {
-  const { onClick } = props;
+const schema = object({
+  firstName: string()
+    .matches(/^[ぁ-ゔア-ヴｦ-ﾟー]*$/, '半角カナのみで入力してください')
+    .max(20, '20文字以内で入力してください'),
+  lastName: string()
+    .matches(/^[ぁ-ゔア-ヴｦ-ﾟー]*$/, '半角カナのみで入力してください')
+    .max(20, '20文字以内で入力してください'),
+  birthday: yup
+    .date()
+    .typeError('有効な日付を入力してください')
+    .nullable()
+    .min(new Date('1900-01-01'), '1900年以降の日付を入力してください')
+    .max(new Date(), '未来の日付は入力できません'),
+});
 
-  const [firstName, setFirstName] = useState('');
-  const onChangeFirstName = (e: ChangeEvent<HTMLInputElement>) => {
-    setFirstName(e.target.value);
-  };
+export const SearchInputForm = memo(() => {
+  console.log('search input form render');
 
-  const [lastName, setLastName] = useState('');
-  const onChangeLastName = (e: ChangeEvent<HTMLInputElement>) => {
-    setLastName(e.target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, isDirty, errors },
+    setValue,
+    getValues,
+  } = useForm<formInputs>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      birthday: null,
+    },
+    mode: 'onChange',
+    resolver: yupResolver(schema),
+  });
 
-  const [birthday, setBirthday] = useState('');
-  const onChangeBirthday = (e: ChangeEvent<HTMLInputElement>) => {
-    setBirthday(e.target.value);
+  const onSubmit = (data: formInputs) => {
+    const inputFirstName = getValues('firstName');
+    const inputLastName = getValues('lastName');
+    const convertedFirstName = toHalfWidthKatakana(inputFirstName);
+    const convertedLastName = toHalfWidthKatakana(inputLastName);
+    setValue('firstName', convertedFirstName);
+    setValue('lastName', convertedLastName);
+    data.firstName = convertedFirstName;
+    data.lastName = convertedLastName;
+    console.log(data);
   };
 
   return (
@@ -43,53 +77,41 @@ export const SearchInputForm: VFC<Props> = memo((props) => {
         borderColor="gray.300"
         borderRadius="md"
       >
-        <Flex>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Stack w={450}>
-            <HStack>
-              <FormLabel w={100} textAlign="center">
-                姓
-              </FormLabel>
+            <FormControl isInvalid={errors.firstName != null}>
+              <FormLabel htmlFor="firstName">{'姓（ｾｲ）'}</FormLabel>
               <Input
+                id="firstName"
                 placeholder="first name"
-                value={firstName}
-                onChange={onChangeFirstName}
+                {...register('firstName')}
               />
-            </HStack>
-            <Spacer />
-            <HStack>
-              <FormLabel w={100} textAlign="center">
-                名
-              </FormLabel>
+              <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.lastName != null}>
+              <FormLabel htmlFor="lastName">{'名（ﾒｲ）'}</FormLabel>
               <Input
+                id="lastName"
                 placeholder="last name"
-                value={lastName}
-                onChange={onChangeLastName}
+                {...register('lastName')}
               />
-            </HStack>
-            <Spacer />
-            <HStack>
-              <FormLabel w={100} textAlign="center">
-                生年月日
-              </FormLabel>
+              <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.birthday != null}>
+              <FormLabel htmlFor="birthday">{'誕生日'}</FormLabel>
               <Input
-                placeholder="birthday"
-                value={birthday}
-                onChange={onChangeBirthday}
+                type="date"
+                id="birthday"
+                placeholder="誕生日を入力してください"
+                {...register('birthday')}
               />
-            </HStack>
+              <FormErrorMessage>{errors.birthday?.message}</FormErrorMessage>
+            </FormControl>
           </Stack>
-          <Box bg="yellow" position="relative">
-            <Box position="absolute" left={4} bottom={0}>
-              <PrimaryButton
-                disabled={birthday === ''}
-                loading={false}
-                onClick={onClick}
-              >
-                検索
-              </PrimaryButton>
-            </Box>
-          </Box>
-        </Flex>
+          <Button type="submit" isDisabled={!isDirty || !isValid}>
+            検索
+          </Button>
+        </form>
       </Box>
     </>
   );
