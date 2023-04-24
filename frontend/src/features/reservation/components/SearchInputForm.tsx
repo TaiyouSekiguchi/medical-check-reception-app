@@ -1,95 +1,104 @@
-import { memo, type VFC, type ChangeEvent, useState } from 'react';
-import {
-  Input,
-  Box,
-  HStack,
-  Flex,
-  Spacer,
-  FormLabel,
-  Stack,
-} from '@chakra-ui/react';
-import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import { memo } from 'react';
+import { Box, Stack, Button, Spacer, Flex } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { toHalfWidthKatakana } from 'lib/converter';
+import { useForm } from 'react-hook-form';
+import { type FormInputs } from '../types/formInputs';
+import { searchInputFormScheme } from '../validator/searchInputFormValidateScheme';
+import { MyFormSet } from './MyFormSet';
 
-type Props = {
-  onClick: () => void;
-};
+export const SearchInputForm = memo(() => {
+  console.log('search input form render');
 
-export const SearchInputForm: VFC<Props> = memo((props) => {
-  const { onClick } = props;
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, isDirty, errors },
+    setValue,
+    getValues,
+  } = useForm<FormInputs>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      birthday: '',
+    },
+    mode: 'onChange',
+    resolver: yupResolver(searchInputFormScheme),
+  });
 
-  const [firstName, setFirstName] = useState('');
-  const onChangeFirstName = (e: ChangeEvent<HTMLInputElement>) => {
-    setFirstName(e.target.value);
-  };
-
-  const [lastName, setLastName] = useState('');
-  const onChangeLastName = (e: ChangeEvent<HTMLInputElement>) => {
-    setLastName(e.target.value);
-  };
-
-  const [birthday, setBirthday] = useState('');
-  const onChangeBirthday = (e: ChangeEvent<HTMLInputElement>) => {
-    setBirthday(e.target.value);
+  const onSubmit = (data: FormInputs) => {
+    const inputFirstName = getValues('firstName');
+    const inputLastName = getValues('lastName');
+    const convertedFirstName = toHalfWidthKatakana(inputFirstName);
+    const convertedLastName = toHalfWidthKatakana(inputLastName);
+    setValue('firstName', convertedFirstName);
+    setValue('lastName', convertedLastName);
+    data.firstName = convertedFirstName;
+    data.lastName = convertedLastName;
+    console.log(data);
   };
 
   return (
     <>
       <Box
         w="600px"
-        h="220px"
-        p={8}
+        h="280px"
+        p={6}
         bg="white"
         border="1px"
         borderColor="gray.300"
         borderRadius="md"
       >
-        <Flex>
-          <Stack w={450}>
-            <HStack>
-              <FormLabel w={100} textAlign="center">
-                姓
-              </FormLabel>
-              <Input
-                placeholder="first name"
-                value={firstName}
-                onChange={onChangeFirstName}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Flex>
+            <Stack w={450}>
+              <MyFormSet
+                isInvalid={errors.firstName != null}
+                label={'姓（ｾｲ）'}
+                id={'firstName'}
+                placeholder={'first name'}
+                message={errors.firstName?.message}
+                register={register}
               />
-            </HStack>
-            <Spacer />
-            <HStack>
-              <FormLabel w={100} textAlign="center">
-                名
-              </FormLabel>
-              <Input
-                placeholder="last name"
-                value={lastName}
-                onChange={onChangeLastName}
+              <Spacer />
+              <MyFormSet
+                isInvalid={errors.lastName != null}
+                label={'名（ﾒｲ）'}
+                id={'lastName'}
+                placeholder={'last name'}
+                message={errors.lastName?.message}
+                register={register}
               />
-            </HStack>
-            <Spacer />
-            <HStack>
-              <FormLabel w={100} textAlign="center">
-                生年月日
-              </FormLabel>
-              <Input
-                placeholder="birthday"
-                value={birthday}
-                onChange={onChangeBirthday}
+              <Spacer />
+              <MyFormSet
+                isInvalid={errors.birthday != null}
+                label={'生年月日'}
+                id={'birthday'}
+                message={errors.birthday?.message}
+                register={register}
+                type={'date'}
               />
-            </HStack>
-          </Stack>
-          <Box bg="yellow" position="relative">
-            <Box position="absolute" left={4} bottom={0}>
-              <PrimaryButton
-                disabled={birthday === ''}
-                loading={false}
-                onClick={onClick}
+            </Stack>
+            <Box bg="yellow" mx={6} position="relative">
+              <Button
+                bg="teal.400"
+                color="white"
+                type="submit"
+                isDisabled={
+                  !isDirty ||
+                  !isValid ||
+                  (getValues('birthday') === '' &&
+                    getValues('firstName') === '' &&
+                    getValues('lastName') === '')
+                }
+                position="absolute"
+                bottom={4}
               >
                 検索
-              </PrimaryButton>
+              </Button>
             </Box>
-          </Box>
-        </Flex>
+          </Flex>
+        </form>
       </Box>
     </>
   );

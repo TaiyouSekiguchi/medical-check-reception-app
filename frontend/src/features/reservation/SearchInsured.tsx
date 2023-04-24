@@ -10,10 +10,9 @@ export const SearchInsured: VFC = memo(() => {
 
   // const [birthday, setBirthday] = useState('');
 
-  const onClickSearch = () => {
-    alert('検索');
-    // getInsuredsWithReservation(birthday);
-  };
+  // const onClickSearch = () => {
+  //   // getInsuredsWithReservation(birthday);
+  // };
 
   // const [selectedInsured, setSelectedInsured] = useState<Insured | null>(null);
 
@@ -25,7 +24,7 @@ export const SearchInsured: VFC = memo(() => {
   return (
     <>
       <Box ml={24} mt={8}>
-        <SearchInputForm onClick={onClickSearch} />
+        <SearchInputForm />
       </Box>
 
       {/* {insuredsWithReservation.length === 0 ? (
