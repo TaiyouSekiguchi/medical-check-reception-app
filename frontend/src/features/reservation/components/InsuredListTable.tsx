@@ -40,7 +40,7 @@ export const InsuredListTable: VFC<Props> = memo((props) => {
             <Td>{insured.birthday}</Td>
             <Td>{insured.sex_alias}</Td>
             <Td>{insured.address}</Td>
-            <Td>{insured.is_reserved ? '予約なし' : '予約あり'}</Td>
+            <Td>{insured.is_reserved ? '予約あり' : '予約なし'}</Td>
           </Tr>
         ))}
       </Tbody>

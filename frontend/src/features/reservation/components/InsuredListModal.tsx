@@ -11,6 +11,7 @@ import {
   VStack,
   Box,
 } from '@chakra-ui/react';
+import { formatStringDate } from 'lib/formatDate';
 import { useNavigate } from 'react-router-dom';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
@@ -68,17 +69,10 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
               {selectedInsured?.is_reserved ? (
                 <>
                   <strong>予約状況: </strong>
-                  予約なし
-                </>
-              ) : (
-                <>
-                  <strong>予約状況: </strong>
                   予約あり
                   <Box>
                     <strong>検査日: </strong>
-                    {selectedInsured?.reservation_date.toLocaleDateString(
-                      'ja-JP'
-                    )}
+                    {formatStringDate(selectedInsured?.reservation_date)}
                   </Box>
                   <Box>
                     <strong>検査項目: </strong>
@@ -93,6 +87,11 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
                       )
                     )}
                   </Box>
+                </>
+              ) : (
+                <>
+                  <strong>予約状況: </strong>
+                  予約なし
                 </>
               )}
             </VStack>
