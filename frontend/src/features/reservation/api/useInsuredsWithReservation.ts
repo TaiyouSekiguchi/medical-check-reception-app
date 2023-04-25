@@ -1,26 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
-import { type Insured } from '../../../types/api/insured';
+import { formatDate } from 'lib/formatDate';
 import { useMessage } from '../../message/hooks/useMessage';
 import { type FormInputs } from '../types/formInputs';
+import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
 export const useInsuredsWithReservation = (): {
   getInsuredsWithReservation: (data: FormInputs) => void;
   loading: boolean;
-  insuredsWithReservation: Insured[];
+  insuredsWithReservation: InsuredWithReservation[];
 } => {
   const { showMessage } = useMessage();
   const [loading, setLoading] = useState(false);
   const [insuredsWithReservation, setInsuredsWithReservation] = useState<
-    Insured[]
+    InsuredWithReservation[]
   >([]);
 
   const getInsuredsWithReservation = useCallback((data: FormInputs) => {
     setLoading(true);
     axios
-      .get<Insured[]>(
-        `/insureds/reservation?first_name_kana=${data.firstNameKana}&last_name_kana=${data.lastNameKana}&birthday=${data.birthday}`
+      .get<InsuredWithReservation[]>(
+        `/insureds/reservation?first_name_kana=${
+          data.firstName
+        }&last_name_kana=${data.lastName}&birthday=${formatDate(data.birthday)}`
       )
       .then((res) => {
         setInsuredsWithReservation(res.data);

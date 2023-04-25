@@ -1,34 +1,35 @@
-import { memo, type VFC } from 'react';
-import { Box } from '@chakra-ui/react';
+import { memo, type VFC, useState } from 'react';
+import { Box, Center, Spinner, useDisclosure } from '@chakra-ui/react';
+import { useInsuredsWithReservation } from 'features/reservation/api/useInsuredsWithReservation';
 import { ContentLayout } from 'components/layouts/ContentLayout';
+import { InsuredListModal } from 'features/reservation/components/InsuredListModal';
+import { InsuredListTable } from 'features/reservation/components/InsuredListTable';
 import { SearchInputForm } from 'features/reservation/components/SearchInputForm';
+import { type InsuredWithReservation } from './types/insuredWithReservation';
 
 export const SearchInsured: VFC = memo(() => {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const { getInsuredsWithReservation, insuredsWithReservation, loading } =
-  //   useInsuredsWithReservation();
+  const { getInsuredsWithReservation, insuredsWithReservation, loading } =
+    useInsuredsWithReservation();
 
-  // const [birthday, setBirthday] = useState('');
+  const [selectedInsured, setSelectedInsured] =
+    useState<InsuredWithReservation | null>(null);
 
-  // const onClickSearch = () => {
-  //   // getInsuredsWithReservation(birthday);
-  // };
-
-  // const [selectedInsured, setSelectedInsured] = useState<Insured | null>(null);
-
-  // const handleRowClick = (insured: Insured) => {
-  //   setSelectedInsured(insured);
-  //   onOpen();
-  // };
+  const handleRowClick = (insured: InsuredWithReservation) => {
+    setSelectedInsured(insured);
+    onOpen();
+  };
 
   return (
     <ContentLayout title={'予約管理'}>
       <Box ml={24} mt={8}>
-        <SearchInputForm />
+        <SearchInputForm
+          getInsuredsWithReservation={getInsuredsWithReservation}
+        />
       </Box>
 
-      {/* {insuredsWithReservation.length === 0 ? (
+      {insuredsWithReservation.length === 0 ? (
         <></>
       ) : loading ? (
         <Center h="100vh">
@@ -46,7 +47,7 @@ export const SearchInsured: VFC = memo(() => {
             selectedInsured={selectedInsured}
           />
         </Box>
-      )} */}
+      )}
     </ContentLayout>
   );
 });

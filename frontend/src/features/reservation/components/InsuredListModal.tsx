@@ -12,12 +12,12 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { type Insured } from 'types/api/insured';
+import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  selectedInsured: Insured | null;
+  selectedInsured: InsuredWithReservation | null;
 };
 
 export const InsuredListModal: VFC<Props> = memo((props) => {
@@ -59,13 +59,13 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
               </Box>
               <Box>
                 <strong>性別: </strong>
-                {selectedInsured?.sex_code}
+                {selectedInsured?.sex_alias}
               </Box>
               <Box>
                 <strong>住所: </strong>
                 {selectedInsured?.address}
               </Box>
-              {selectedInsured?.reservation.length === 0 ? (
+              {selectedInsured?.is_reserved ? (
                 <>
                   <strong>予約状況: </strong>
                   予約なし
@@ -76,19 +76,22 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
                   予約あり
                   <Box>
                     <strong>検査日: </strong>
-                    {new Date(
-                      selectedInsured?.reservation[0].reservation_slot.date
-                    ).toLocaleDateString('ja-JP')}
+                    {selectedInsured?.reservation_date.toLocaleDateString(
+                      'ja-JP'
+                    )}
                   </Box>
                   <Box>
                     <strong>検査項目: </strong>
-                    {selectedInsured?.reservation.map((reservation, index) => (
-                      <Box key={index}>
-                        {reservation.examination_item.name}
-                        {index !== selectedInsured?.reservation.length - 1 &&
-                          ', '}
-                      </Box>
-                    ))}
+                    {selectedInsured?.examination_items.map(
+                      (examinationItem, index) => (
+                        <Box key={index}>
+                          {examinationItem}
+                          {index !==
+                            selectedInsured?.examination_items.length - 1 &&
+                            ', '}
+                        </Box>
+                      )
+                    )}
                   </Box>
                 </>
               )}
@@ -96,7 +99,7 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
           )}
         </ModalBody>
         <ModalFooter>
-          {selectedInsured?.reservation.length === 0 ? (
+          {selectedInsured?.is_reserved === true ? (
             <Button onClick={onClickReservation}>予約</Button>
           ) : (
             <>
