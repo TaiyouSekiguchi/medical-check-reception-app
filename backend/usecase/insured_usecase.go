@@ -3,20 +3,21 @@ package usecase
 import (
 	"backend/model"
 	"backend/repository"
+	"backend/validator"
 )
 
 type IInsuredUsecase interface {
 	GetInsureds(birthday string) ([]model.InsuredResponse, error)
-	GetInsuredsWithReservation(birthday string) ([]model.InsuredResponse, error)
+	GetInsuredsWithReservation(queryParams model.InsuredQueryParams) ([]model.InsuredWithReservationResponse, error)
 }
 
 type insuredUsecase struct {
 	ir repository.IInsuredRepository
-	// iv validator.IInsuredValidator
+	iv validator.IInsuredValidator
 }
 
-func NewInsuredUsecase(ir repository.IInsuredRepository) IInsuredUsecase {
-	return &insuredUsecase{ir}
+func NewInsuredUsecase(ir repository.IInsuredRepository, iv validator.IInsuredValidator) IInsuredUsecase {
+	return &insuredUsecase{ir, iv}
 }
 
 func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse, error) {
@@ -28,13 +29,15 @@ func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse,
 	resInsureds := []model.InsuredResponse{}
 	for _, v := range insureds {
 		i := model.InsuredResponse{
-			ID:        v.ID,
-			Number:    v.Number,
-			FirstName: v.FirstName,
-			LastName:  v.LastName,
-			Birthday:  v.Birthday,
-			SexCode:   v.SexCode,
-			Address:   v.Address,
+			ID:            v.ID,
+			Number:        v.Number,
+			FirstName:     v.FirstName,
+			LastName:      v.LastName,
+			FirstNameKana: v.FirstNameKana,
+			LastNameKana:  v.LastNameKana,
+			Birthday:      v.Birthday,
+			SexAlias:      v.Sex.Alias,
+			Address:       v.Address,
 		}
 		resInsureds = append(resInsureds, i)
 	}
@@ -42,55 +45,39 @@ func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse,
 	return resInsureds, nil
 }
 
-func (iu *insuredUsecase) GetInsuredsWithReservation(birthday string) ([]model.InsuredResponse, error) {
-	insureds := []model.Insured{}
-	if err := iu.ir.GetInsuredsWithReservation(&insureds, birthday); err != nil {
+func (iu *insuredUsecase) GetInsuredsWithReservation(queryParams model.InsuredQueryParams) ([]model.InsuredWithReservationResponse, error) {
+
+	if err := iu.iv.InsuredQueryParamsValidate(queryParams); err != nil {
 		return nil, err
 	}
 
-	resInsureds := []model.InsuredResponse{}
-	for _, v := range insureds {
-		i := model.InsuredResponse{
-			ID:          v.ID,
-			Number:      v.Number,
-			FirstName:   v.FirstName,
-			LastName:    v.LastName,
-			Birthday:    v.Birthday,
-			SexCode:     v.SexCode,
-			Address:     v.Address,
-			Reservation: []model.ReservationResponse{},
-		}
-		for _, r := range v.Reservation {
-			reservation := model.ReservationResponse{
-				ID: r.ID,
-				Insured: model.InsuredResponse{
-					ID:        r.Insured.ID,
-					Number:    r.Insured.Number,
-					FirstName: r.Insured.FirstName,
-					LastName:  r.Insured.LastName,
-					Birthday:  r.Insured.Birthday,
-					SexCode:   r.Insured.SexCode,
-					Address:   r.Insured.Address,
-				},
-				ReservationSlot: model.ReservationSlotResponse{
-					ID:                        r.ReservationSlot.ID,
-					Date:                      r.ReservationSlot.Date,
-					Basic:                     r.ReservationSlot.Basic,
-					GastrointestinalEndoscopy: r.ReservationSlot.GastrointestinalEndoscopy,
-					Barium:                    r.ReservationSlot.Barium,
-					BreastCancerScreening:     r.ReservationSlot.BreastCancerScreening,
-				},
-				ExaminationItem: model.ExaminationItemResponse{
-					ID:   r.ExaminationItem.ID,
-					Name: r.ExaminationItem.Name,
-				},
-			}
-
-			i.Reservation = append(i.Reservation, reservation)
-		}
-
-		resInsureds = append(resInsureds, i)
+	insureds := []model.Insured{}
+	if err := iu.ir.GetInsuredsWithReservation(&insureds, &queryParams); err != nil {
+		return nil, err
 	}
 
-	return resInsureds, nil
+	resInsuredsWithReservation := []model.InsuredWithReservationResponse{}
+
+	for _, v := range insureds {
+		i := model.InsuredWithReservationResponse{
+			ID:               v.ID,
+			Number:           v.Number,
+			FirstName:        v.FirstName,
+			LastName:         v.LastName,
+			FirstNameKana:    v.FirstNameKana,
+			LastNameKana:     v.LastNameKana,
+			Birthday:         v.Birthday,
+			SexAlias:         v.Sex.Alias,
+			Address:          v.Address,
+			IsReserved:       len(v.Reservation) > 0,
+			ExaminationItems: []string{},
+		}
+		for _, r := range v.Reservation {
+			i.ExaminationItems = append(i.ExaminationItems, r.ExaminationItem.Alias)
+			i.ReservationDate = r.ReservationSlot.Date
+		}
+		resInsuredsWithReservation = append(resInsuredsWithReservation, i)
+	}
+
+	return resInsuredsWithReservation, nil
 }

@@ -64,16 +64,8 @@ func (ru *reservationSlotUsecase) GetReservationSlotsWithExaminationItem() ([]mo
 
 		for _, res := range v.Reservation {
 			reservation := model.ReservationResponse{
-				ID: res.ID,
-				Insured: model.InsuredResponse{
-					ID:        res.Insured.ID,
-					Number:    res.Insured.Number,
-					FirstName: res.Insured.FirstName,
-					LastName:  res.Insured.LastName,
-					Birthday:  res.Insured.Birthday,
-					SexCode:   res.Insured.SexCode,
-					Address:   res.Insured.Address,
-				},
+				ID:      res.ID,
+				Insured: model.InsuredResponse{},
 				ReservationSlot: model.ReservationSlotResponse{
 					ID:                        res.ReservationSlot.ID,
 					Date:                      res.ReservationSlot.Date,

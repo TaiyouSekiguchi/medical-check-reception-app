@@ -8,7 +8,7 @@ import (
 
 type IInsuredRepository interface {
 	GetInsureds(insureds *[]model.Insured, birthday string) error
-	GetInsuredsWithReservation(insureds *[]model.Insured, birthday string) error
+	GetInsuredsWithReservation(insureds *[]model.Insured, queryParams *model.InsuredQueryParams) error
 }
 
 type insuredRepository struct {
@@ -27,16 +27,30 @@ func (ir *insuredRepository) GetInsureds(insureds *[]model.Insured, birthday str
 		query = query.Where("birthday = ?", birthday)
 	}
 
-	if err := query.Find(insureds).Error; err != nil {
+	if err := query.Preload("Sex").Find(insureds).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (ir *insuredRepository) GetInsuredsWithReservation(insureds *[]model.Insured, birthday string) error {
+func (ir *insuredRepository) GetInsuredsWithReservation(insureds *[]model.Insured, queryParams *model.InsuredQueryParams) error {
 
-	if err := ir.db.Preload("Reservation.ExaminationItem").Preload("Reservation.ReservationSlot").Where("birthday = ?", birthday).Find(insureds).Error; err != nil {
+	db := ir.db
+
+	if queryParams.FirstNameKana != "" {
+		db = db.Where("first_name_kana = ?", queryParams.FirstNameKana)
+	}
+
+	if queryParams.LastNameKana != "" {
+		db = db.Where("last_name_kana = ?", queryParams.LastNameKana)
+	}
+
+	if queryParams.Birthday != "" {
+		db = db.Where("birthday = ?", queryParams.Birthday)
+	}
+
+	if err := db.Preload("Sex").Preload("Reservation.ExaminationItem").Preload("Reservation.ReservationSlot").Find(insureds).Error; err != nil {
 		return err
 	}
 
