@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"backend/model"
 	"backend/usecase"
 	"net/http"
 
@@ -34,11 +35,14 @@ func (ic *insuredController) GetInsureds(c echo.Context) error {
 
 func (ic *insuredController) GetInsuredsWithReservation(c echo.Context) error {
 
-	firstName := c.QueryParam("firstName")
-	lastName := c.QueryParam("lastName")
-	birthday := c.QueryParam("birthday")
+	queryParams := model.InsuredQueryParams{}
 
-	insuredsRes, err := ic.iu.GetInsuredsWithReservation(firstName, lastName, birthday)
+	if err := c.Bind(&queryParams); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	insuredsRes, err := ic.iu.GetInsuredsWithReservation(queryParams)
+
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

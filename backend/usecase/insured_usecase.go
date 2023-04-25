@@ -3,20 +3,21 @@ package usecase
 import (
 	"backend/model"
 	"backend/repository"
+	"backend/validator"
 )
 
 type IInsuredUsecase interface {
 	GetInsureds(birthday string) ([]model.InsuredResponse, error)
-	GetInsuredsWithReservation(firstName, lastName, birthday string) ([]model.InsuredWithReservationResponse, error)
+	GetInsuredsWithReservation(queryParams model.InsuredQueryParams) ([]model.InsuredWithReservationResponse, error)
 }
 
 type insuredUsecase struct {
 	ir repository.IInsuredRepository
-	// iv validator.IInsuredValidator
+	iv validator.IInsuredValidator
 }
 
-func NewInsuredUsecase(ir repository.IInsuredRepository) IInsuredUsecase {
-	return &insuredUsecase{ir}
+func NewInsuredUsecase(ir repository.IInsuredRepository, iv validator.IInsuredValidator) IInsuredUsecase {
+	return &insuredUsecase{ir, iv}
 }
 
 func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse, error) {
@@ -44,9 +45,14 @@ func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse,
 	return resInsureds, nil
 }
 
-func (iu *insuredUsecase) GetInsuredsWithReservation(firstName, lastName, birthday string) ([]model.InsuredWithReservationResponse, error) {
+func (iu *insuredUsecase) GetInsuredsWithReservation(queryParams model.InsuredQueryParams) ([]model.InsuredWithReservationResponse, error) {
+
+	if err := iu.iv.InsuredQueryParamsValidate(queryParams); err != nil {
+		return nil, err
+	}
+
 	insureds := []model.Insured{}
-	if err := iu.ir.GetInsuredsWithReservation(&insureds, firstName, lastName, birthday); err != nil {
+	if err := iu.ir.GetInsuredsWithReservation(&insureds, &queryParams); err != nil {
 		return nil, err
 	}
 

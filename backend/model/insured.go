@@ -30,6 +30,12 @@ type InsuredResponse struct {
 	Address       string    `json:"address" gorm:"not null"`
 }
 
+type InsuredQueryParams struct {
+	FirstNameKana string `query:"first_name_kana"`
+	LastNameKana  string `query:"last_name_kana"`
+	Birthday      string `query:"birthday"`
+}
+
 type InsuredWithReservationResponse struct {
 	ID               uint      `json:"id" gorm:"primaryKey"`
 	Number           uint      `json:"number" gorm:"not null"`
