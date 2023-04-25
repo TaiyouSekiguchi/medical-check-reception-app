@@ -35,7 +35,7 @@ func (iv *insuredValidator) InsuredQueryParamsValidate(queryParams model.Insured
 			validation.Date("2006-01-02").Error("日付形式が不正です"),
 			validation.Date("2006-01-02").Min(time.Date(1900, 1, 1, 0, 0, 0, 0, time.UTC)).RangeError("birthdayは1900-01-01以降の日付である必要があります"),
 			validation.Date("2006-01-02").Max(time.Now().UTC()).RangeError("birthdayは今日以前の日付である必要があります"),
-			validation.When(queryParams.LastNameKana == "" && queryParams.Birthday == "", validation.Required.Error("first_name_kana, last_name_kana or birthday is required")),
+			validation.When(queryParams.FirstNameKana == "" && queryParams.LastNameKana == "", validation.Required.Error("first_name_kana, last_name_kana or birthday is required")),
 		),
 	)
 }
