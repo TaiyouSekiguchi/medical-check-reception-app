@@ -3,9 +3,10 @@ import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
 import { type Insured } from '../../../types/api/insured';
 import { useMessage } from '../../message/hooks/useMessage';
+import { type FormInputs } from '../types/formInputs';
 
 export const useInsuredsWithReservation = (): {
-  getInsuredsWithReservation: (birthday: string) => void;
+  getInsuredsWithReservation: (data: FormInputs) => void;
   loading: boolean;
   insuredsWithReservation: Insured[];
 } => {
@@ -15,10 +16,12 @@ export const useInsuredsWithReservation = (): {
     Insured[]
   >([]);
 
-  const getInsuredsWithReservation = useCallback((birthday = '') => {
+  const getInsuredsWithReservation = useCallback((data: FormInputs) => {
     setLoading(true);
     axios
-      .get<Insured[]>(`/insureds/reservation?birthday=${birthday}`)
+      .get<Insured[]>(
+        `/insureds/reservation?first_name_kana=${data.firstNameKana}&last_name_kana=${data.lastNameKana}&birthday=${data.birthday}`
+      )
       .then((res) => {
         setInsuredsWithReservation(res.data);
       })
