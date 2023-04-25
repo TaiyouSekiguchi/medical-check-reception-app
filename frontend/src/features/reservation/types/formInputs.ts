@@ -1,5 +1,5 @@
 export type FormInputs = {
-  firstName: string;
-  lastName: string;
+  firstNameKana: string;
+  lastNameKana: string;
   birthday: string;
 };

@@ -18,8 +18,8 @@ export const SearchInputForm = memo(() => {
     getValues,
   } = useForm<FormInputs>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      firstNameKana: '',
+      lastNameKana: '',
       birthday: '',
     },
     mode: 'onChange',
@@ -27,14 +27,14 @@ export const SearchInputForm = memo(() => {
   });
 
   const onSubmit = (data: FormInputs) => {
-    const inputFirstName = getValues('firstName');
-    const inputLastName = getValues('lastName');
+    const inputFirstName = getValues('firstNameKana');
+    const inputLastName = getValues('lastNameKana');
     const convertedFirstName = toHalfWidthKatakana(inputFirstName);
     const convertedLastName = toHalfWidthKatakana(inputLastName);
-    setValue('firstName', convertedFirstName);
-    setValue('lastName', convertedLastName);
-    data.firstName = convertedFirstName;
-    data.lastName = convertedLastName;
+    setValue('firstNameKana', convertedFirstName);
+    setValue('lastNameKana', convertedLastName);
+    data.firstNameKana = convertedFirstName;
+    data.lastNameKana = convertedLastName;
     console.log(data);
   };
 
@@ -53,20 +53,20 @@ export const SearchInputForm = memo(() => {
           <Flex>
             <Stack w={450}>
               <MyFormSet
-                isInvalid={errors.firstName != null}
+                isInvalid={errors.firstNameKana != null}
                 label={'姓（ｾｲ）'}
                 id={'firstName'}
                 placeholder={'first name'}
-                message={errors.firstName?.message}
+                message={errors.firstNameKana?.message}
                 register={register}
               />
               <Spacer />
               <MyFormSet
-                isInvalid={errors.lastName != null}
+                isInvalid={errors.lastNameKana != null}
                 label={'名（ﾒｲ）'}
                 id={'lastName'}
                 placeholder={'last name'}
-                message={errors.lastName?.message}
+                message={errors.lastNameKana?.message}
                 register={register}
               />
               <Spacer />
@@ -88,8 +88,8 @@ export const SearchInputForm = memo(() => {
                   !isDirty ||
                   !isValid ||
                   (getValues('birthday') === '' &&
-                    getValues('firstName') === '' &&
-                    getValues('lastName') === '')
+                    getValues('firstNameKana') === '' &&
+                    getValues('lastNameKana') === '')
                 }
                 position="absolute"
                 bottom={4}
