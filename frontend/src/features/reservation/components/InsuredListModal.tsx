@@ -95,12 +95,12 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
         </ModalBody>
         <ModalFooter>
           {selectedInsured?.is_reserved === true ? (
-            <Button onClick={onClickReservation}>予約</Button>
-          ) : (
             <>
               <Button>変更</Button>
               <Button>削除</Button>
             </>
+          ) : (
+            <Button onClick={onClickReservation}>予約</Button>
           )}
         </ModalFooter>
       </ModalContent>
