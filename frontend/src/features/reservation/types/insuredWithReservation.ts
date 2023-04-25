@@ -9,6 +9,6 @@ export type InsuredWithReservation = {
   sex_alias: string;
   address: string;
   is_reserved: boolean;
-  reservation_date: Date;
+  reservation_date: string;
   examination_items: string[];
 };
