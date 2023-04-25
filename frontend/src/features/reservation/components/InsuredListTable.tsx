@@ -1,5 +1,6 @@
 import { memo, type VFC } from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { formatStringDate } from 'lib/formatDate';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
 type Props = {
@@ -37,7 +38,7 @@ export const InsuredListTable: VFC<Props> = memo((props) => {
             <Td>{insured.number}</Td>
             <Td>{insured.last_name}</Td>
             <Td>{insured.first_name}</Td>
-            <Td>{insured.birthday}</Td>
+            <Td>{formatStringDate(insured.birthday)}</Td>
             <Td>{insured.sex_alias}</Td>
             <Td>{insured.address}</Td>
             <Td>{insured.is_reserved ? '予約あり' : '予約なし'}</Td>
