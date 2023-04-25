@@ -41,10 +41,6 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
           ) : (
             <VStack>
               <Box>
-                <strong>ID: </strong>
-                {selectedInsured?.id}
-              </Box>
-              <Box>
                 <strong>被保険者番号: </strong>
                 {selectedInsured?.number}
               </Box>
