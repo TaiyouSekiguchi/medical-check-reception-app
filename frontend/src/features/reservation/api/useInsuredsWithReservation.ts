@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
-import { formatDate } from 'lib/formatDate';
+import { formatStringDate } from 'lib/formatDate';
 import { useMessage } from '../../message/hooks/useMessage';
 import { type FormInputs } from '../types/formInputs';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
@@ -23,7 +23,9 @@ export const useInsuredsWithReservation = (): {
       .get<InsuredWithReservation[]>(
         `/insureds/reservation?first_name_kana=${
           data.firstName
-        }&last_name_kana=${data.lastName}&birthday=${formatDate(data.birthday)}`
+        }&last_name_kana=${data.lastName}&birthday=${formatStringDate(
+          data.birthday
+        )}`
       )
       .then((res) => {
         setInsuredsWithReservation(res.data);

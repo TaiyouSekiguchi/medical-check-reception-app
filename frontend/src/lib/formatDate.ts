@@ -1,5 +1,5 @@
 // 日付をYYYY-MM-DDの書式で返すメソッド
-export const formatDate = (stringDate: string): string => {
+export const formatStringDate = (stringDate: string): string => {
   if (stringDate === '' || stringDate === null) {
     return '';
   }
