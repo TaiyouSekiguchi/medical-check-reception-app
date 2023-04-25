@@ -1,5 +1,6 @@
 import { memo, type VFC } from 'react';
 import { Box } from '@chakra-ui/react';
+import { ContentLayout } from 'components/layouts/ContentLayout';
 import { SearchInputForm } from 'features/reservation/components/SearchInputForm';
 
 export const SearchInsured: VFC = memo(() => {
@@ -22,7 +23,7 @@ export const SearchInsured: VFC = memo(() => {
   // };
 
   return (
-    <>
+    <ContentLayout title={'予約管理'}>
       <Box ml={24} mt={8}>
         <SearchInputForm />
       </Box>
@@ -46,6 +47,6 @@ export const SearchInsured: VFC = memo(() => {
           />
         </Box>
       )} */}
-    </>
+    </ContentLayout>
   );
 });
