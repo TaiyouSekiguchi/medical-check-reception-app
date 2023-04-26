@@ -26,9 +26,9 @@ func (rsr *reservationSlotRepository) GetAllReservationSlots(reservation_slot *[
 	return nil
 }
 
-func (rsr *reservationSlotRepository) GetReservationSlotsWithExaminationItem(reservation_slot *[]model.ReservationSlot) error {
+func (rsr *reservationSlotRepository) GetReservationSlotsWithExaminationItem(reservation_slots *[]model.ReservationSlot) error {
 
-	if err := rsr.db.Preload("Reservation.ExaminationItem").Find(reservation_slot).Error; err != nil {
+	if err := rsr.db.Preload("Reservation").Find(reservation_slots).Error; err != nil {
 		return err
 	}
 

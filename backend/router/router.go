@@ -55,6 +55,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	}))
 	rs.GET("", rsc.GetAllReservationSlots)
 	rs.GET("/examination-items", rsc.GetReservationSlotsWithExaminationItem)
+	rs.GET("/reservable", rsc.GetReservableSlots)
 
 	return e
 }
