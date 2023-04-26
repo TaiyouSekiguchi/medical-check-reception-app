@@ -26,7 +26,7 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
   const navigate = useNavigate();
 
   const onClickReservation = useCallback(() => {
-    navigate('/home/select_reservation_slot');
+    navigate('/home/reservation_management/reservable_slot');
   }, [navigate]);
 
   return (
