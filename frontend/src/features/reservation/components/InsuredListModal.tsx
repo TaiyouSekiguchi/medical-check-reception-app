@@ -26,8 +26,10 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
   const navigate = useNavigate();
 
   const onClickReservation = useCallback(() => {
-    navigate('/home/reservation_management/reservable_slot');
-  }, [navigate]);
+    navigate('/home/reservation_management/reservable_slot', {
+      state: selectedInsured,
+    });
+  }, [navigate, selectedInsured]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
