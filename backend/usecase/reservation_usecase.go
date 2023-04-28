@@ -7,7 +7,7 @@ import (
 )
 
 type IReservationUsecase interface {
-	CreateReservation(reservation model.Reservation) (model.CreateReservationResponse, error)
+	CreateReservation(reservations []model.Reservation) ([]model.CreateReservationResponse, error)
 	// Login(user model.User) (string, error)
 }
 
@@ -20,23 +20,31 @@ func NewReservationUsecase(rr repository.IReservationRepository, rv validator.IR
 	return &reservationUsecase{rr, rv}
 }
 
-func (ru *reservationUsecase) CreateReservation(reservation model.Reservation) (model.CreateReservationResponse, error) {
-	if err := ru.rv.ReservationValidate(reservation); err != nil {
-		return model.CreateReservationResponse{}, err
+func (ru *reservationUsecase) CreateReservation(reservations []model.Reservation) ([]model.CreateReservationResponse, error) {
+
+	for _, reservation := range reservations {
+		if err := ru.rv.ReservationValidate(reservation); err != nil {
+			return []model.CreateReservationResponse{}, err
+		}
 	}
 
-	if err := ru.rr.CreateReservation(&reservation); err != nil {
-		return model.CreateReservationResponse{}, err
+	if err := ru.rr.CreateReservation(&reservations); err != nil {
+		return []model.CreateReservationResponse{}, err
 	}
 
-	reservationResponse := model.CreateReservationResponse{
-		ID:                reservation.ID,
-		InsuredID:         reservation.InsuredID,
-		ReservationSlotID: reservation.ReservationSlotID,
-		ExaminationItemID: reservation.ExaminationItemID,
-		CreatedAt:         reservation.CreatedAt,
-		UpdatedAt:         reservation.UpdatedAt,
+	reservationResponses := []model.CreateReservationResponse{}
+
+	for i := 0; i < len(reservations); i++ {
+		reservationResponse := model.CreateReservationResponse{
+			ID:                reservations[i].ID,
+			InsuredID:         reservations[i].InsuredID,
+			ReservationSlotID: reservations[i].ReservationSlotID,
+			ExaminationItemID: reservations[i].ExaminationItemID,
+			CreatedAt:         reservations[i].CreatedAt,
+			UpdatedAt:         reservations[i].UpdatedAt,
+		}
+		reservationResponses = append(reservationResponses, reservationResponse)
 	}
 
-	return reservationResponse, nil
+	return reservationResponses, nil
 }

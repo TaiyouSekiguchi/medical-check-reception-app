@@ -29,3 +29,11 @@ type CreateReservationResponse struct {
 	CreatedAt         time.Time `json:"created_at"`
 	UpdatedAt         time.Time `json:"updated_at"`
 }
+
+type ReservationLimitError struct {
+	Message string
+}
+
+func (e *ReservationLimitError) Error() string {
+	return e.Message
+}
