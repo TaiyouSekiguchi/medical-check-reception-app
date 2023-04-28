@@ -14,6 +14,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formatStringDate } from 'lib/formatDate';
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
 import { examinationItemCheckboxScheme } from '../validator/examinationItemCheckboxScheme';
@@ -59,7 +60,7 @@ export const SelectExaminationItemModal: VFC<Props> = memo((props) => {
         isReservable:
           selectedReservableSlot?.is_gastrointestinal_endoscopy_reservable !=
             null &&
-          selectedReservableSlot?.is_gastrointestinal_endoscopy_reservable,
+          selectedReservableSlot.is_gastrointestinal_endoscopy_reservable,
       },
       {
         id: 'IsBariumChecked',
@@ -101,21 +102,36 @@ export const SelectExaminationItemModal: VFC<Props> = memo((props) => {
     getValues,
     formState: { isValid, isSubmitting },
   } = useForm<SubmitData>({
+    defaultValues: {
+      IsGastrointestinalEndoscopyChecked: false,
+      IsBariumChecked: false,
+      IsBreastCancerScreeningChecked: false,
+      IsProstateCancerScreeningChecked: false,
+    },
     mode: 'onChange',
     resolver: yupResolver(examinationItemCheckboxScheme),
   });
 
-  // const navigate = useNavigate();
-
-  // const onClickCheckReservation = useCallback(() => {
-  //   navigate('/home/reservation_management/check');
-  // }, [navigate]);
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SubmitData> = useCallback(
     (data: SubmitData) => {
-      console.log(data);
+      const submitData: SubmitData = {
+        ...data,
+      };
+      // console.log('selectedInsure', selectedInsured);
+      // console.log('selectedReservableSlot', selectedReservableSlot);
+      // console.log('submitData', submitData);
+
+      navigate('/home/reservation_management/check', {
+        state: {
+          selectedInsured,
+          selectedReservableSlot,
+          submitData,
+        },
+      });
     },
-    []
+    [navigate, selectedInsured, selectedReservableSlot]
   );
 
   const handleReset = useCallback(() => {
