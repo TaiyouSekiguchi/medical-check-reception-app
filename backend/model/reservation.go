@@ -20,3 +20,12 @@ type ReservationResponse struct {
 	ReservationSlot ReservationSlotResponse `json:"reservation_slot"`
 	ExaminationItem ExaminationItemResponse `json:"examination_item"`
 }
+
+type CreateReservationResponse struct {
+	ID                uint      `json:"id" gorm:"primaryKey"`
+	InsuredID         uint      `json:"insured_id" validate:"required"`
+	ReservationSlotID uint      `json:"reservation_slot_id" validate:"required"`
+	ExaminationItemID uint      `json:"examination_item_id" validate:"required"`
+	CreatedAt         time.Time `json:"created_at"`
+	UpdatedAt         time.Time `json:"updated_at"`
+}

@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter(uc controller.IUserController, ic controller.IInsuredController, rsc controller.IReservationSlotController) *echo.Echo {
+func NewRouter(uc controller.IUserController, ic controller.IInsuredController, rsc controller.IReservationSlotController, rc controller.IReservationController) *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -25,8 +25,8 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 		CookiePath:     "/",
 		CookieDomain:   os.Getenv("API_DOMAIN"),
 		CookieHTTPOnly: true,
-		CookieSameSite: http.SameSiteNoneMode,
-		// CookieSameSite: http.SameSiteDefaultMode, // for postman
+		// CookieSameSite: http.SameSiteNoneMode,
+		CookieSameSite: http.SameSiteDefaultMode, // for postman
 		// CookieMaxAge:   60,
 	}))
 
@@ -56,6 +56,14 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	rs.GET("", rsc.GetAllReservationSlots)
 	rs.GET("/examination-items", rsc.GetReservationSlotsWithExaminationItem)
 	rs.GET("/reservable", rsc.GetReservableSlots)
+
+	// Reservation
+	r := e.Group("/reservations")
+	rs.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	r.POST("", rc.CreateReservation)
 
 	return e
 }
