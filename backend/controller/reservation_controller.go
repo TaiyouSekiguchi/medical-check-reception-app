@@ -4,12 +4,14 @@ import (
 	"backend/model"
 	"backend/usecase"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 type IReservationController interface {
 	CreateReservation(c echo.Context) error
+	DeleteReservation(c echo.Context) error
 }
 
 type reservationController struct {
@@ -41,4 +43,25 @@ func (rc *reservationController) CreateReservation(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusCreated, reservationResponse)
+}
+
+func (rc *reservationController) DeleteReservation(c echo.Context) error {
+
+	insuredIDParam := c.Param("insured-id")
+
+	// TODO ここらへんはusecaseに移動するべきかも
+	insuredID, err := strconv.Atoi(insuredIDParam)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	if insuredID < 1 {
+		return c.JSON(http.StatusBadRequest, "insured-id is too short")
+	}
+
+	err = rc.ru.DeleteReservation(uint(insuredID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.NoContent(http.StatusNoContent)
 }
