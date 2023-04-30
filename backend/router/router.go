@@ -64,6 +64,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 		TokenLookup: "cookie:token",
 	}))
 	r.POST("", rc.CreateReservation)
+	r.DELETE("/:insured-id", rc.DeleteReservation)
 
 	return e
 }

@@ -8,7 +8,7 @@ import (
 
 type IReservationUsecase interface {
 	CreateReservation(reservations []model.Reservation) ([]model.CreateReservationResponse, error)
-	// Login(user model.User) (string, error)
+	DeleteReservation(insuredId uint) error
 }
 
 type reservationUsecase struct {
@@ -47,4 +47,8 @@ func (ru *reservationUsecase) CreateReservation(reservations []model.Reservation
 	}
 
 	return reservationResponses, nil
+}
+
+func (ru *reservationUsecase) DeleteReservation(insuredId uint) error {
+	return ru.rr.DeleteReservation(insuredId)
 }
