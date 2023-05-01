@@ -1,12 +1,10 @@
 import { Outlet } from 'react-router-dom';
+import { HeaderLayout } from 'components/layouts/HeaderLayout';
 import { Page404 } from 'components/pages/Page404';
-import { SelectReservationSlot } from 'features/reservation/SelectReservationSlot';
-
-import { HeaderLayout } from '../components/layouts/HeaderLayout';
 import { Login } from '../features/auth/Login';
 import { Home } from '../features/home/Home';
 import { InsuredList } from '../features/insureds/InsuredList';
-import { ReservationManagement } from '../features/reservation/ReservationManagement';
+import { ReservationManagement } from '../features/reservation/routes/ReservationManagement';
 import { ReservationSlotList } from '../features/reservationSlots/ReservationSlotList';
 import { UserManagement } from '../features/users/UserManagement';
 
@@ -26,9 +24,8 @@ export const protectedRoutes = [
       { path: '', element: <Home /> },
       { path: 'insured_list', element: <InsuredList /> },
       { path: 'reservation_slot_list', element: <ReservationSlotList /> },
-      { path: 'reservation_management', element: <ReservationManagement /> },
       { path: 'user_management', element: <UserManagement /> },
-      { path: 'select_reservation_slot', element: <SelectReservationSlot /> }, // TODO ここは要検討
+      { path: 'reservation_management/*', element: <ReservationManagement /> },
       { path: '*', element: <Page404 /> },
     ],
   },

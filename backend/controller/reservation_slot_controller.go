@@ -10,6 +10,7 @@ import (
 type IReservationSlotController interface {
 	GetAllReservationSlots(c echo.Context) error
 	GetReservationSlotsWithExaminationItem(c echo.Context) error
+	GetReservableSlots(c echo.Context) error
 }
 
 type reservationSlotController struct {
@@ -38,4 +39,14 @@ func (rsc *reservationSlotController) GetReservationSlotsWithExaminationItem(c e
 	}
 
 	return c.JSON(http.StatusOK, reservationSlotRes)
+}
+
+func (rsc *reservationSlotController) GetReservableSlots(c echo.Context) error {
+
+	reservableSlots, err := rsc.rsu.GetReservableSlots()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, reservableSlots)
 }
