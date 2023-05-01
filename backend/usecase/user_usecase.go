@@ -40,9 +40,10 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": storedUser.ID,
-		"exp":     time.Now().Add(time.Hour * 12).Unix(),
-		"admin":   storedUser.Admin.ID > 0,
+		"userID":   storedUser.ID,
+		"username": storedUser.Username,
+		"exp":      time.Now().Add(time.Hour * 12).Unix(),
+		"admin":    storedUser.Admin.ID > 0,
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
