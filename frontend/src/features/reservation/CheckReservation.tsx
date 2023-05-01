@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { usePostReservations } from './api/usePostReservation';
+import { useUpdateReservations } from './api/useUpdateReservation';
 import { type InsuredWithReservation } from './types/insuredWithReservation';
 import { type ReservableSlot } from './types/reservableSlot';
 import { type ReservationRequest } from './types/reservation';
@@ -27,6 +28,7 @@ export const CheckReservation: VFC = memo(() => {
     };
 
   const { postReservations, loading } = usePostReservations();
+  const { updateReservations } = useUpdateReservations();
 
   const onClickConfirm = () => {
     const requests: ReservationRequest[] = [];
@@ -62,6 +64,40 @@ export const CheckReservation: VFC = memo(() => {
     postReservations(requests);
   };
 
+  const onClickUpdate = () => {
+    const requests: ReservationRequest[] = [];
+
+    const requestBasic: ReservationRequest = {
+      insured_id: selectedInsured?.id ?? 0,
+      reservation_slot_id: selectedReservableSlot?.id ?? 0,
+      examination_item_id: 1,
+    };
+
+    requests.push(requestBasic);
+
+    // TODO ここのハードコーディング修正すること
+    for (const [key, value] of Object.entries(submitData)) {
+      if (value) {
+        const request: ReservationRequest = {
+          insured_id: selectedInsured?.id ?? 0,
+          reservation_slot_id: selectedReservableSlot?.id ?? 0,
+          examination_item_id:
+            key === 'IsGastrointestinalEndoscopyChecked'
+              ? 2
+              : key === 'IsBariumChecked'
+              ? 3
+              : key === 'IsBreastCancerScreeningChecked'
+              ? 4
+              : key === 'IsProstateCancerScreeningChecked'
+              ? 5
+              : 0,
+        };
+        requests.push(request);
+      }
+    }
+    updateReservations(requests);
+  };
+
   return (
     <ContentLayout title={'予約管理'}>
       {loading ? (
@@ -84,9 +120,24 @@ export const CheckReservation: VFC = memo(() => {
           <div>
             {submitData.IsProstateCancerScreeningChecked && '前立腺がん検診'}
           </div>
-          <div>この内容で予約を確定しますか？</div>
-          <div>良ければ「予約を確定する」ボタンを押してください。</div>
-          <PrimaryButton onClick={onClickConfirm}>予約を確定する</PrimaryButton>
+          {selectedInsured?.is_reserved != null &&
+          selectedInsured.is_reserved ? (
+            <>
+              <div>この内容で予約を変更しますか？</div>
+              <div>良ければ「予約を変更する」ボタンを押してください。</div>
+              <PrimaryButton onClick={onClickUpdate}>
+                予約を変更する
+              </PrimaryButton>
+            </>
+          ) : (
+            <>
+              <div>この内容で予約を確定しますか？</div>
+              <div>良ければ「予約を確定する」ボタンを押してください。</div>
+              <PrimaryButton onClick={onClickConfirm}>
+                予約を確定する
+              </PrimaryButton>
+            </>
+          )}
         </Box>
       )}
     </ContentLayout>
