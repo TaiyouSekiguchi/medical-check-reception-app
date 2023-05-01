@@ -65,6 +65,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	}))
 	r.POST("", rc.CreateReservation)
 	r.DELETE("/:insured-id", rc.DeleteReservation)
+	r.POST("/update", rc.UpdateReservation)
 
 	return e
 }
