@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '../../../lib/axios';
 import { type User } from '../../../types/api/user';
@@ -15,6 +16,27 @@ export const useAuth = (): {
   const { setLoginUser } = useLoginUser();
   const [loading, setLoading] = useState(false);
 
+  const getJWTPayload = useCallback(
+    (
+      jwt: string
+    ): {
+      userID: number;
+      username: string;
+      admin: boolean;
+      exp: string;
+    } => {
+      const payload = jwtDecode<{
+        userID: number;
+        username: string;
+        admin: boolean;
+        exp: string;
+      }>(jwt);
+
+      return payload;
+    },
+    []
+  );
+
   const login = useCallback(
     (username: string, password: string) => {
       setLoading(true);
@@ -25,12 +47,20 @@ export const useAuth = (): {
       };
 
       axios
-        .post<User>('/login', data)
+        .post<{ jwt: string }>('/login', data)
         .then((res) => {
           if (res.data != null) {
-            // TODO 今後管理者機能を実装するために、暫定的にisAdminをtrueにしている
-            const isAdmin = true;
-            setLoginUser({ ...res.data, isAdmin });
+            const { jwt } = res.data;
+
+            const { admin, userID, username } = getJWTPayload(jwt);
+
+            const user: User = {
+              id: userID,
+              username,
+              isAdmin: admin,
+            };
+
+            setLoginUser(user);
             showMessage({ title: 'ログインしました', status: 'success' });
             navigate('/home');
           } else {
@@ -43,7 +73,7 @@ export const useAuth = (): {
           setLoading(false);
         });
     },
-    [navigate, setLoading, showMessage, setLoginUser]
+    [navigate, setLoading, showMessage, setLoginUser, getJWTPayload]
   );
 
   const logout = useCallback(() => {

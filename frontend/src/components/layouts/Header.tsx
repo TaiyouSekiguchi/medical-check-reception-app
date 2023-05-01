@@ -1,11 +1,14 @@
 import { memo, useCallback, type VFC } from 'react';
 import { Box, Flex, Link, Heading } from '@chakra-ui/react';
 import { useAuth } from 'features/auth/api/useAuth';
+import { useLoginUser } from 'features/auth/hooks/useLoginUser';
 import { useNavigate } from 'react-router-dom';
 
 export const Header: VFC = memo(() => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+
+  const { loginUser } = useLoginUser();
 
   const onClickHome = useCallback(() => {
     navigate('/home');
@@ -63,9 +66,11 @@ export const Header: VFC = memo(() => {
           <Box pr={4}>
             <Link onClick={onClickReservationManagement}>予約管理</Link>
           </Box>
-          <Box pr={4}>
-            <Link onClick={onClickUserManagement}>ユーザー管理</Link>
-          </Box>
+          {loginUser?.isAdmin != null && loginUser.isAdmin && (
+            <Box pr={4}>
+              <Link onClick={onClickUserManagement}>ユーザー管理</Link>
+            </Box>
+          )}
           <Box pr={4}>
             <Link onClick={onClickLogout}>ログアウト</Link>
           </Box>

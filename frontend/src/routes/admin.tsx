@@ -6,7 +6,7 @@ import { Home } from '../features/home/Home';
 import { InsuredList } from '../features/insureds/InsuredList';
 import { ReservationManagement } from '../features/reservation/routes/ReservationManagement';
 import { ReservationSlotList } from '../features/reservationSlots/ReservationSlotList';
-// import { UserManagement } from '../features/users/UserManagement';
+import { UserManagement } from '../features/users/UserManagement';
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
   );
 };
 
-export const protectedRoutes = [
+export const adminRoutes = [
   {
     path: 'home/*',
     element: <App />,
@@ -24,7 +24,7 @@ export const protectedRoutes = [
       { path: '', element: <Home /> },
       { path: 'insured_list', element: <InsuredList /> },
       { path: 'reservation_slot_list', element: <ReservationSlotList /> },
-      // { path: 'user_management', element: <UserManagement /> },
+      { path: 'user_management', element: <UserManagement /> },
       { path: 'reservation_management/*', element: <ReservationManagement /> },
       { path: '*', element: <Page404 /> },
     ],

@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { type User } from 'types/api/user';
 
-type LoginUser = User & { isAdmin: boolean };
+type LoginUser = User;
 
 export type LoginUserContextType = {
   loginUser: LoginUser | null;
