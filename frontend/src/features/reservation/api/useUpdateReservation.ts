@@ -22,7 +22,7 @@ export const useUpdateReservations = (): {
     setLoading(true);
 
     axios
-      .post<ReservationResponse[]>(`/reservations`, data)
+      .post<ReservationResponse[]>(`/reservations/update`, data)
       .then((res) => {
         setReservations(res.data);
         navigate('/home/reservation_management/result', {
