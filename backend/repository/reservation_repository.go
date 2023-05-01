@@ -8,6 +8,7 @@ import (
 
 type IReservationRepository interface {
 	CreateReservation(reservations *[]model.Reservation) error
+	DeleteReservation(insuredId uint) error
 }
 
 type reservationRepository struct {
@@ -99,4 +100,13 @@ func (rr *reservationRepository) CreateReservation(reservations *[]model.Reserva
 	}
 
 	return tx.Commit().Error
+}
+
+func (rr *reservationRepository) DeleteReservation(insuredID uint) error {
+	// insuredIDをもとに予約を削除する
+	if err := rr.db.Where("insured_id = ?", insuredID).Delete(&model.Reservation{}).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

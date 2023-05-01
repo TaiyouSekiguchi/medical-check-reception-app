@@ -31,6 +31,12 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
     });
   }, [navigate, selectedInsured]);
 
+  const onClickDelete = useCallback(() => {
+    navigate('/home/reservation_management/delete_check', {
+      state: selectedInsured,
+    });
+  }, [navigate, selectedInsured]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -99,7 +105,7 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
           {selectedInsured?.is_reserved === true ? (
             <>
               <Button>変更</Button>
-              <Button>削除</Button>
+              <Button onClick={onClickDelete}>削除</Button>
             </>
           ) : (
             <Button onClick={onClickReservation}>予約</Button>
