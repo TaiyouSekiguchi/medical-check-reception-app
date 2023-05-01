@@ -28,6 +28,7 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 	if err := uu.uv.UserValidate(user); err != nil {
 		return "", err
 	}
+
 	storedUser := model.User{}
 	if err := uu.ur.GetUserByUsername(&storedUser, user.Username); err != nil {
 		return "", err
@@ -41,10 +42,13 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": storedUser.ID,
 		"exp":     time.Now().Add(time.Hour * 12).Unix(),
+		"admin":   storedUser.Admin.ID > 0,
 	})
+
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {
 		return "", err
 	}
+
 	return tokenString, nil
 }

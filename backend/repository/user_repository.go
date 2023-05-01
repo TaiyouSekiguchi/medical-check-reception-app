@@ -20,9 +20,10 @@ func NewUserRepository(db *gorm.DB) IUserRepository {
 }
 
 func (ur *userRepository) GetUserByUsername(user *model.User, username string) error {
-	if err := ur.db.Where("username=?", username).First(user).Error; err != nil {
+	if err := ur.db.Preload("Admin").Where("username=?", username).First(user).Error; err != nil {
 		return err
 	}
+
 	return nil
 }
 
