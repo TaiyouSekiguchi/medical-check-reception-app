@@ -12,6 +12,7 @@ import (
 type IReservationController interface {
 	CreateReservation(c echo.Context) error
 	DeleteReservation(c echo.Context) error
+	UpdateReservation(c echo.Context) error
 }
 
 type reservationController struct {
@@ -64,4 +65,27 @@ func (rc *reservationController) DeleteReservation(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.NoContent(http.StatusNoContent)
+}
+
+func (rc *reservationController) UpdateReservation(c echo.Context) error {
+	// TODO: 後でReservationのモデルに作成者のIDを追加できたらよりよい
+	// user := c.Get("user").(*jwt.Token)
+	// claims := user.Claims.(jwt.MapClaims)
+	// userId := claims["user_id"]
+
+	reservations := []model.Reservation{}
+	if err := c.Bind(&reservations); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	reservationResponse, err := rc.ru.UpdateReservation(reservations)
+	if err != nil {
+
+		if _, ok := err.(*model.ReservationLimitError); ok {
+			return c.JSON(http.StatusConflict, err.Error())
+		}
+
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusCreated, reservationResponse)
 }
