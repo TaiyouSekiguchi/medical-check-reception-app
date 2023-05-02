@@ -12,10 +12,13 @@ import (
 func main() {
 	db := db.NewDB()
 
+	// Admin
+	adminRepository := repository.NewAdminRepository(db)
+
 	// User
 	userValidator := validator.NewUserValidator()
 	userRepository := repository.NewUserRepository(db)
-	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
+	userUsecase := usecase.NewUserUsecase(userRepository, userValidator, adminRepository)
 	userController := controller.NewUserController(userUsecase)
 
 	// Insured
