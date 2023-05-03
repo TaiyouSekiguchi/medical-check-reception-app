@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '../../../lib/axios';
-import { type User } from '../../../types/api/user';
 import { useMessage } from '../../message/hooks/useMessage';
+import { type User } from '../../users/types/user';
 import { useLoginUser } from '../hooks/useLoginUser';
 
 export const useAuth = (): {
@@ -57,7 +57,7 @@ export const useAuth = (): {
             const user: User = {
               id: userID,
               username,
-              isAdmin: admin,
+              is_admin: admin,
             };
 
             setLoginUser(user);

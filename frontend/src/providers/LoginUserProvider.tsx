@@ -5,7 +5,7 @@ import {
   type SetStateAction,
   useState,
 } from 'react';
-import { type User } from 'types/api/user';
+import { type User } from 'features/users/types/user';
 
 type LoginUser = User;
 

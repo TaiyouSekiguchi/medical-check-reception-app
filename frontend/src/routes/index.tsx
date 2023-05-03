@@ -9,7 +9,7 @@ export const AppRoutes = (): JSX.Element => {
   const routes =
     loginUser == null
       ? publicRoutes
-      : !loginUser.isAdmin
+      : !loginUser.is_admin
       ? protectedRoutes
       : adminRoutes;
 

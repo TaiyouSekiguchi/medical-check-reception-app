@@ -53,7 +53,7 @@ func (ur *userRepository) UpdateUser(user *model.User) error {
 }
 
 func (ur *userRepository) DeleteUser(userId uint) error {
-	result := ur.db.Where("id=?", userId).Delete(&model.User{ID: userId})
+	result := ur.db.Select("Admin").Where("id=?", userId).Delete(&model.User{ID: userId})
 	if result.Error != nil {
 		return result.Error
 	}
