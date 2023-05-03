@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
-import { type Insured } from '../../../types/api/insured';
+import { type Insured } from '../../insureds/types/insured';
 import { useMessage } from '../../message/hooks/useMessage';
 
 export const useInsureds = (): {
