@@ -63,7 +63,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 
 	// Reservation
 	r := e.Group("/reservations")
-	rs.Use(echojwt.WithConfig(echojwt.Config{
+	r.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",
 	}))
