@@ -15,15 +15,16 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useCreateUser } from '../api/useCreateUser';
+import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import { useDeleteUser } from '../api/useDeleteUser';
+import { useUpdateUser } from '../api/useUpdateUser';
 import { type User, type UserRequest } from '../types/user';
 import { createUserFormValidateScheme } from '../validator/createUserFromValidateScheme';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  users: User[];
-  rendering: () => void;
+  user: User | null;
 };
 
 type FormInputs = {
@@ -32,10 +33,11 @@ type FormInputs = {
   is_admin: boolean;
 };
 
-export const CreateUserModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, rendering } = props;
+export const EditUserInfoModal: VFC<Props> = memo((props) => {
+  const { isOpen, onClose, user } = props;
 
-  const { createUser, loading } = useCreateUser();
+  const { updateUser, loading } = useUpdateUser();
+  const { deleteUser } = useDeleteUser();
 
   const {
     register,
@@ -45,9 +47,9 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
     getValues,
   } = useForm<FormInputs>({
     defaultValues: {
-      username: '',
+      username: user?.username != null ? user.username : '',
       password: '',
-      is_admin: false,
+      is_admin: user?.is_admin != null ? user.is_admin : false,
     },
     mode: 'onChange',
     resolver: yupResolver(createUserFormValidateScheme),
@@ -61,8 +63,7 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
       password: data.password,
       is_admin: data.is_admin,
     };
-    await createUser(newUser);
-    rendering();
+    await updateUser(user?.id != null ? user.id : 0, newUser);
 
     setValue('username', '');
     setValue('password', '');
@@ -70,11 +71,16 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
     onClose();
   };
 
+  const onClickDelete = () => {
+    deleteUser(user?.id != null ? user.id : 0);
+    onClose();
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>ユーザー新規作成</ModalHeader>
+        <ModalHeader>ユーザー情報編集</ModalHeader>
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
@@ -83,7 +89,7 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
               <Input
                 type="text"
                 id="username"
-                placeholder="ユーザー名を入力してください"
+                placeholder="新しいユーザー名を入力してください"
                 {...register('username')}
               />
               <FormErrorMessage fontSize="xs">
@@ -96,7 +102,7 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
               <Input
                 type="text"
                 id="password"
-                placeholder="パスワードを入力してください"
+                placeholder="新しいパスワードを入力してください"
                 {...register('password')}
               />
               <FormErrorMessage fontSize="xs">
@@ -129,11 +135,10 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
                 !isValid ||
                 (getValues('username') === '' && getValues('password') === '')
               }
-              position="absolute"
-              bottom={4}
             >
-              新規作成
+              更新
             </Button>
+            <PrimaryButton onClick={onClickDelete}>削除</PrimaryButton>
           </ModalFooter>
         </form>
       </ModalContent>
