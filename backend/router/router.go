@@ -31,9 +31,13 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	}))
 
 	// User
+	e.GET("/csrf", uc.CsrfToken)
 	e.POST("/login", uc.LogIn)
 	e.POST("/logout", uc.LogOut)
-	e.GET("/csrf", uc.CsrfToken) // TODO 言うほどUserか？
+	e.GET("/users", uc.GetUsers)
+	e.POST("/users", uc.CreateUser)
+	e.PUT("/users/:user-id", uc.UpdateUser)
+	e.DELETE("/users/:user-id", uc.DeleteUser)
 
 	// Insured
 	i := e.Group("/insureds")
