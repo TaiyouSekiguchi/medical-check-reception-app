@@ -57,7 +57,7 @@ export const InsuredList: VFC = memo(() => {
                   <Td>
                     {new Date(insured.birthday).toLocaleDateString('ja-JP')}
                   </Td>
-                  <Td>{insured.sex_code}</Td>
+                  <Td>{insured.sex_alias}</Td>
                   <Td>{insured.address}</Td>
                 </Tr>
               ))}

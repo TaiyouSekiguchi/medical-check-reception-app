@@ -1,4 +1,4 @@
-import { type Reservation } from './reservation';
+import { type Reservation } from '../../../types/api/reservation';
 
 export type Insured = {
   id: number;
@@ -6,7 +6,7 @@ export type Insured = {
   first_name: string;
   last_name: string;
   birthday: string;
-  sex_code: number;
+  sex_alias: string;
   address: string;
   reservation: Reservation[];
 };
