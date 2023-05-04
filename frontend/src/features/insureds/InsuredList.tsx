@@ -10,10 +10,14 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { useAllInsureds } from './api/useAllInsureds';
 
 export const InsuredList: VFC = memo(() => {
   const { getInsureds, loading, insureds } = useAllInsureds();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getInsureds();
@@ -23,8 +27,13 @@ export const InsuredList: VFC = memo(() => {
     alert('詳細を表示します');
   };
 
+  const onClickImport = () => {
+    navigate('/home/insured_import');
+  };
+
   return (
     <>
+      <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
       {loading ? (
         <Center h="100vh">
           <Spinner />

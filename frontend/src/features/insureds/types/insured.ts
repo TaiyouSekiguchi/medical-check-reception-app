@@ -10,3 +10,12 @@ export type Insured = {
   address: string;
   reservation: Reservation[];
 };
+
+export type InsuredRequest = {
+  number: number;
+  first_name: string;
+  last_name: string;
+  birthday: string;
+  sex_code: number;
+  address: string;
+};

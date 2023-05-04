@@ -3,6 +3,7 @@ import { HeaderLayout } from 'components/layouts/HeaderLayout';
 import { Page404 } from 'components/pages/Page404';
 import { Login } from '../features/auth/Login';
 import { Home } from '../features/home/Home';
+import { InsuredImport } from '../features/insureds/InsuredImport';
 import { InsuredList } from '../features/insureds/InsuredList';
 import { ReservationManagement } from '../features/reservation/routes/ReservationManagement';
 import { ReservationSlotList } from '../features/reservationSlots/ReservationSlotList';
@@ -23,6 +24,7 @@ export const adminRoutes = [
     children: [
       { path: '', element: <Home /> },
       { path: 'insured_list', element: <InsuredList /> },
+      { path: 'insured_import', element: <InsuredImport /> },
       { path: 'reservation_slot_list', element: <ReservationSlotList /> },
       { path: 'user_management', element: <UserManagement /> },
       { path: 'reservation_management/*', element: <ReservationManagement /> },
