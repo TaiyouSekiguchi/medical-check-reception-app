@@ -24,6 +24,7 @@ type IInsuredUsecase interface {
 	GetInsureds(birthday string) ([]model.InsuredResponse, error)
 	GetInsuredsWithReservation(queryParams model.InsuredQueryParams) ([]model.InsuredWithReservationResponse, error)
 	CreateInsureds(insuredsReq []model.InsuredRequest) ([]model.CreateInsuredResponse, error)
+	GetExportInsureds() ([]model.InsuredForExportResponse, error)
 }
 
 type insuredUsecase struct {
@@ -51,7 +52,7 @@ func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse,
 			FirstNameKana: v.FirstNameKana,
 			LastNameKana:  v.LastNameKana,
 			Birthday:      time2str(v.Birthday),
-			SexCode:       v.SexCode,
+			SexAlias:      v.Sex.Alias,
 			Address:       v.Address,
 		}
 		resInsureds = append(resInsureds, i)
@@ -143,4 +144,54 @@ func (iu *insuredUsecase) CreateInsureds(insuredsReq []model.InsuredRequest) ([]
 	}
 
 	return resIusureds, nil
+}
+
+func (iu *insuredUsecase) GetExportInsureds() ([]model.InsuredForExportResponse, error) {
+
+	insureds := []model.Insured{}
+	if err := iu.ir.GetExportInsureds(&insureds); err != nil {
+		return nil, err
+	}
+
+	resInsuredsForExport := []model.InsuredForExportResponse{}
+
+	for _, v := range insureds {
+		i := model.InsuredForExportResponse{
+			ID:                                  v.ID,
+			Number:                              v.Number,
+			FirstName:                           v.FirstName,
+			LastName:                            v.LastName,
+			FirstNameKana:                       v.FirstNameKana,
+			LastNameKana:                        v.LastNameKana,
+			Birthday:                            v.Birthday,
+			SexAlias:                            v.Sex.Alias,
+			Address:                             v.Address,
+			IsBasicReserved:                     false,
+			IsGastrointestinalEndoscopyReserved: false,
+			IsBariumReserved:                    false,
+			IsBreastCancerScreeningReserved:     false,
+			IsProstateCancerScreeningReserved:   false,
+		}
+
+		if len(v.Reservation) != 0 {
+			i.ReservationDate = v.Reservation[0].ReservationSlot.Date
+			for _, r := range v.Reservation {
+				switch r.ExaminationItemID {
+				case 1:
+					i.IsBasicReserved = true
+				case 2:
+					i.IsGastrointestinalEndoscopyReserved = true
+				case 3:
+					i.IsBariumReserved = true
+				case 4:
+					i.IsBreastCancerScreeningReserved = true
+				case 5:
+					i.IsProstateCancerScreeningReserved = true
+				}
+			}
+			resInsuredsForExport = append(resInsuredsForExport, i)
+		}
+	}
+
+	return resInsuredsForExport, nil
 }

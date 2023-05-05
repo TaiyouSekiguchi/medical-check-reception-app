@@ -12,6 +12,7 @@ type IInsuredController interface {
 	GetInsureds(c echo.Context) error
 	GetInsuredsWithReservation(c echo.Context) error
 	CreateInsureds(c echo.Context) error
+	GetExportInsureds(c echo.Context) error
 }
 
 type insuredController struct {
@@ -60,6 +61,17 @@ func (ic *insuredController) CreateInsureds(c echo.Context) error {
 	}
 
 	insuredsRes, err := ic.iu.CreateInsureds(insuredsReq)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, insuredsRes)
+}
+
+func (ic *insuredController) GetExportInsureds(c echo.Context) error {
+
+	insuredsRes, err := ic.iu.GetExportInsureds()
+
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
