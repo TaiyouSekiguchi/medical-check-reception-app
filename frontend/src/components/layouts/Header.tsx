@@ -26,6 +26,9 @@ export const Header: VFC = memo(() => {
   const onClickUserManagement = useCallback(() => {
     navigate('/home/user_management');
   }, [navigate]);
+  const onClickDataExport = useCallback(() => {
+    navigate('/home/data_export');
+  }, [navigate]);
   const onClickLogout = useCallback(() => {
     logout();
   }, [logout]);
@@ -67,9 +70,14 @@ export const Header: VFC = memo(() => {
             <Link onClick={onClickReservationManagement}>予約管理</Link>
           </Box>
           {loginUser?.is_admin != null && loginUser.is_admin && (
-            <Box pr={4}>
-              <Link onClick={onClickUserManagement}>ユーザー管理</Link>
-            </Box>
+            <>
+              <Box pr={4}>
+                <Link onClick={onClickUserManagement}>ユーザー管理</Link>
+              </Box>
+              <Box pr={4}>
+                <Link onClick={onClickDataExport}>エクスポート</Link>
+              </Box>
+            </>
           )}
           <Box pr={4}>
             <Link onClick={onClickLogout}>ログアウト</Link>
