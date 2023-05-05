@@ -11,6 +11,7 @@ import (
 type IInsuredController interface {
 	GetInsureds(c echo.Context) error
 	GetInsuredsWithReservation(c echo.Context) error
+	CreateInsureds(c echo.Context) error
 }
 
 type insuredController struct {
@@ -43,6 +44,22 @@ func (ic *insuredController) GetInsuredsWithReservation(c echo.Context) error {
 
 	insuredsRes, err := ic.iu.GetInsuredsWithReservation(queryParams)
 
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, insuredsRes)
+}
+
+func (ic *insuredController) CreateInsureds(c echo.Context) error {
+
+	insuredsReq := []model.InsuredRequest{}
+
+	if err := c.Bind(&insuredsReq); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	insuredsRes, err := ic.iu.CreateInsureds(insuredsReq)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

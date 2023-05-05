@@ -3,6 +3,7 @@ import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { useDropzone } from 'react-dropzone';
 import { usePapaParse } from 'react-papaparse';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import { useCreateInsureds } from './api/useCreateInsureds';
 import { type InsuredRequest } from './types/insured';
 
 const baseStyle: React.CSSProperties = {
@@ -11,9 +12,11 @@ const baseStyle: React.CSSProperties = {
   width: 200,
   height: 150,
 };
+
 const borderNormalStyle = {
   border: '1px dotted #888',
 };
+
 const borderDragStyle = {
   border: '1px solid #00f',
   transition: 'border .5s ease-in-out',
@@ -22,6 +25,7 @@ const borderDragStyle = {
 export const InsuredImport: VFC = memo(() => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [insureds, setInsured] = useState<InsuredRequest[]>([]);
+  const { createInsureds } = useCreateInsureds();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
@@ -36,17 +40,16 @@ export const InsuredImport: VFC = memo(() => {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const csvString = reader.result as string;
-        console.log(csvString);
-
-        readString(csvString, {
+        readString<InsuredRequest>(csvString, {
           header: true,
           worker: true,
+          dynamicTyping: true,
           skipEmptyLines: true,
           complete: (results) => {
             console.log('---------------------------');
             console.log(results.data);
             console.log('---------------------------');
-            setInsured(results.data as InsuredRequest[]);
+            setInsured(results.data);
             setIsLoaded(true);
           },
         });
@@ -71,9 +74,9 @@ export const InsuredImport: VFC = memo(() => {
     [isDragActive]
   );
 
-  const onClickImport = () => {
-    console.log(insureds);
+  const onClickImport = async () => {
     // TODO: ここでAPIを叩く
+    await createInsureds(insureds);
   };
 
   return (

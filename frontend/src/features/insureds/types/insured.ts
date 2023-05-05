@@ -15,7 +15,23 @@ export type InsuredRequest = {
   number: number;
   first_name: string;
   last_name: string;
+  first_name_kana: string;
+  last_name_kana: string;
   birthday: string;
   sex_code: number;
   address: string;
+};
+
+export type InsuredResponse = {
+  id: number;
+  number: number;
+  first_name: string;
+  last_name: string;
+  first_name_kana: string;
+  last_name_kana: string;
+  birthday: string;
+  sex_code: string;
+  address: string;
+  created_at: string;
+  updated_at: string;
 };
