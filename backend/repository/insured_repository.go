@@ -9,6 +9,7 @@ import (
 type IInsuredRepository interface {
 	GetInsureds(insureds *[]model.Insured, birthday string) error
 	GetInsuredsWithReservation(insureds *[]model.Insured, queryParams *model.InsuredQueryParams) error
+	CreateInsureds(insureds *[]model.Insured) error
 }
 
 type insuredRepository struct {
@@ -51,6 +52,15 @@ func (ir *insuredRepository) GetInsuredsWithReservation(insureds *[]model.Insure
 	}
 
 	if err := db.Preload("Sex").Preload("Reservation.ExaminationItem").Preload("Reservation.ReservationSlot").Find(insureds).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ir *insuredRepository) CreateInsureds(insureds *[]model.Insured) error {
+
+	if err := ir.db.Create(insureds).Error; err != nil {
 		return err
 	}
 
