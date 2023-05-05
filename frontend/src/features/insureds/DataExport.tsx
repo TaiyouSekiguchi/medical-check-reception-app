@@ -1,5 +1,6 @@
 import { memo, type VFC } from 'react';
 import { Text, Box, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { usePapaParse } from 'react-papaparse';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useGetInsuredsForExport } from './api/useGetInsuredsForExport';
@@ -7,12 +8,23 @@ import { useGetInsuredsForExport } from './api/useGetInsuredsForExport';
 export const DataExport: VFC = memo(() => {
   const { getInsuredsForExport, insuredsForExport } = useGetInsuredsForExport();
 
+  const { jsonToCSV } = usePapaParse();
+
   const onClickDataFetch = () => {
     getInsuredsForExport();
   };
 
   const onClickDownload = () => {
-    alert('ダウンロードします');
+    const results = jsonToCSV(insuredsForExport);
+    const blob = new Blob([results], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.href = url;
+    a.setAttribute('download', 'submit.csv');
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   };
 
   return (
