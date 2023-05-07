@@ -10,6 +10,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useAllReservationSlots } from './api/useAllReservationSlots';
 
 export const ReservationSlotList: VFC = memo(() => {
@@ -25,7 +26,7 @@ export const ReservationSlotList: VFC = memo(() => {
   };
 
   return (
-    <>
+    <ContentLayout title="予約枠一覧">
       {loading ? (
         <Center h="100vh">
           <Spinner />
@@ -62,6 +63,6 @@ export const ReservationSlotList: VFC = memo(() => {
           </Table>
         </Box>
       )}
-    </>
+    </ContentLayout>
   );
 });
