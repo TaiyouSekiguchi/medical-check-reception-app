@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useAllInsureds } from './api/useAllInsureds';
 
 export const InsuredList: VFC = memo(() => {
@@ -32,7 +33,7 @@ export const InsuredList: VFC = memo(() => {
   };
 
   return (
-    <>
+    <ContentLayout title="被保険者一覧">
       <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
       {loading ? (
         <Center h="100vh">
@@ -74,6 +75,6 @@ export const InsuredList: VFC = memo(() => {
           </Table>
         </Box>
       )}
-    </>
+    </ContentLayout>
   );
 });
