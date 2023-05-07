@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Reservation struct {
 	ID                uint            `json:"id" gorm:"primaryKey"`
@@ -12,6 +16,7 @@ type Reservation struct {
 	ExaminationItem   ExaminationItem `json:"examination_item" gorm:"references:ID"`
 	CreatedAt         time.Time       `json:"created_at"`
 	UpdatedAt         time.Time       `json:"updated_at"`
+	DeletedAt         gorm.DeletedAt  `json:"-"`
 }
 
 type ReservationResponse struct {
