@@ -10,12 +10,16 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useAllReservationSlots } from './api/useAllReservationSlots';
 
 export const ReservationSlotList: VFC = memo(() => {
   const { getReservationSlots, loading, reservationSlots } =
     useAllReservationSlots();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getReservationSlots();
@@ -25,8 +29,13 @@ export const ReservationSlotList: VFC = memo(() => {
     alert('詳細を表示します');
   };
 
+  const onClickImport = () => {
+    navigate('/home/reservation_slot_list_import');
+  };
+
   return (
     <ContentLayout title="予約枠一覧">
+      <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
       {loading ? (
         <Center h="100vh">
           <Spinner />

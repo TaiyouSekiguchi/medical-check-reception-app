@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
-import { type ReservationSlot } from 'types/api/reservationSlot';
+import { type ReservationSlot } from 'features/reservationSlots/types/reservationSlot';
 import { useMessage } from '../../message/hooks/useMessage';
 
 export const useAllReservationSlots = (): {
