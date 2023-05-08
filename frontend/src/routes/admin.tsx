@@ -7,6 +7,7 @@ import { DataExport } from '../features/insureds/DataExport';
 import { InsuredImport } from '../features/insureds/InsuredImport';
 import { InsuredList } from '../features/insureds/InsuredList';
 import { ReservationManagement } from '../features/reservation/routes/ReservationManagement';
+import { ReservationSlotImport } from '../features/reservationSlots/ReservationSlotImport';
 import { ReservationSlotList } from '../features/reservationSlots/ReservationSlotList';
 import { UserManagement } from '../features/users/UserManagement';
 
@@ -27,6 +28,10 @@ export const adminRoutes = [
       { path: 'insured_list', element: <InsuredList /> },
       { path: 'insured_import', element: <InsuredImport /> },
       { path: 'reservation_slot_list', element: <ReservationSlotList /> },
+      {
+        path: 'reservation_slot_list_import',
+        element: <ReservationSlotImport />,
+      },
       { path: 'user_management', element: <UserManagement /> },
       { path: 'data_export', element: <DataExport /> },
       { path: 'reservation_management/*', element: <ReservationManagement /> },

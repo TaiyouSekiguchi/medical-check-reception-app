@@ -16,21 +16,22 @@ type IReservationSlotUsecase interface {
 	GetAllReservationSlots() ([]model.ReservationSlotResponse, error)
 	GetReservationSlotsWithExaminationItem() ([]model.ReservationSlotResponse, error)
 	GetReservableSlots() ([]model.ReservableSlot, error)
+	CreateReservationSlots(reservationSlotsReq []model.ReservationSlotRequest) ([]model.CreateReservationSlotResponse, error)
 }
 
 type reservationSlotUsecase struct {
-	rr repository.IReservationSlotRepository
+	rsr repository.IReservationSlotRepository
 	// iv validator.IInsuredValidator
 }
 
-func NewReservationSlotUsecase(rr repository.IReservationSlotRepository) IReservationSlotUsecase {
-	return &reservationSlotUsecase{rr}
+func NewReservationSlotUsecase(rsr repository.IReservationSlotRepository) IReservationSlotUsecase {
+	return &reservationSlotUsecase{rsr}
 }
 
-func (ru *reservationSlotUsecase) GetAllReservationSlots() ([]model.ReservationSlotResponse, error) {
+func (rsu *reservationSlotUsecase) GetAllReservationSlots() ([]model.ReservationSlotResponse, error) {
 
 	reservationSlots := []model.ReservationSlot{}
-	if err := ru.rr.GetAllReservationSlots(&reservationSlots); err != nil {
+	if err := rsu.rsr.GetAllReservationSlots(&reservationSlots); err != nil {
 		return nil, err
 	}
 
@@ -50,10 +51,10 @@ func (ru *reservationSlotUsecase) GetAllReservationSlots() ([]model.ReservationS
 	return resReservationSlots, nil
 }
 
-func (ru *reservationSlotUsecase) GetReservationSlotsWithExaminationItem() ([]model.ReservationSlotResponse, error) {
+func (rsu *reservationSlotUsecase) GetReservationSlotsWithExaminationItem() ([]model.ReservationSlotResponse, error) {
 
 	reservationSlots := []model.ReservationSlot{}
-	if err := ru.rr.GetReservationSlotsWithExaminationItem(&reservationSlots); err != nil {
+	if err := rsu.rsr.GetReservationSlotsWithExaminationItem(&reservationSlots); err != nil {
 		return nil, err
 	}
 
@@ -96,10 +97,10 @@ func (ru *reservationSlotUsecase) GetReservationSlotsWithExaminationItem() ([]mo
 	return resReservationSlots, nil
 }
 
-func (ru *reservationSlotUsecase) GetReservableSlots() ([]model.ReservableSlot, error) {
+func (rsu *reservationSlotUsecase) GetReservableSlots() ([]model.ReservableSlot, error) {
 
 	reservationSlots := []model.ReservationSlot{}
-	if err := ru.rr.GetReservationSlotsWithExaminationItem(&reservationSlots); err != nil {
+	if err := rsu.rsr.GetReservationSlotsWithExaminationItem(&reservationSlots); err != nil {
 		return nil, err
 	}
 
@@ -148,4 +149,44 @@ func (ru *reservationSlotUsecase) GetReservableSlots() ([]model.ReservableSlot, 
 	}
 
 	return reservableSlots, nil
+}
+
+func (rsu *reservationSlotUsecase) CreateReservationSlots(reservationSlotsReq []model.ReservationSlotRequest) ([]model.CreateReservationSlotResponse, error) {
+
+	// if err := iu.iv.InsuredsValidate(insureds); err != nil {
+	// 	return err
+	// }
+
+	reservationSlots := []model.ReservationSlot{}
+	for _, v := range reservationSlotsReq {
+		rs := model.ReservationSlot{
+			Date:                      str2time(v.Date),
+			Basic:                     v.Basic,
+			GastrointestinalEndoscopy: v.GastrointestinalEndoscopy,
+			Barium:                    v.Barium,
+			BreastCancerScreening:     v.BreastCancerScreening,
+		}
+		reservationSlots = append(reservationSlots, rs)
+	}
+
+	if err := rsu.rsr.CreateReservationSlots(&reservationSlots); err != nil {
+		return []model.CreateReservationSlotResponse{}, err
+	}
+
+	resReservationSlots := []model.CreateReservationSlotResponse{}
+	for _, v := range reservationSlots {
+		rs := model.CreateReservationSlotResponse{
+			ID:                        v.ID,
+			Date:                      time2str(v.Date),
+			Basic:                     v.Basic,
+			GastrointestinalEndoscopy: v.GastrointestinalEndoscopy,
+			Barium:                    v.Barium,
+			BreastCancerScreening:     v.BreastCancerScreening,
+			CreatedAt:                 v.CreatedAt,
+			UpdatedAt:                 v.UpdatedAt,
+		}
+		resReservationSlots = append(resReservationSlots, rs)
+	}
+
+	return resReservationSlots, nil
 }

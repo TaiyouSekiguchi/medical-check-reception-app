@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"backend/model"
 	"backend/usecase"
 	"net/http"
 
@@ -11,6 +12,7 @@ type IReservationSlotController interface {
 	GetAllReservationSlots(c echo.Context) error
 	GetReservationSlotsWithExaminationItem(c echo.Context) error
 	GetReservableSlots(c echo.Context) error
+	CreateReservationSlots(c echo.Context) error
 }
 
 type reservationSlotController struct {
@@ -49,4 +51,20 @@ func (rsc *reservationSlotController) GetReservableSlots(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, reservableSlots)
+}
+
+func (rsc *reservationSlotController) CreateReservationSlots(c echo.Context) error {
+
+	reservationSlotsReq := []model.ReservationSlotRequest{}
+
+	if err := c.Bind(&reservationSlotsReq); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	reservationSlotsRes, err := rsc.rsu.CreateReservationSlots(reservationSlotsReq)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, reservationSlotsRes)
 }
