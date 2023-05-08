@@ -31,6 +31,7 @@ func NewUserController(uu usecase.IUserUsecase) IUserController {
 
 func (uc *userController) CsrfToken(c echo.Context) error {
 	token := c.Get("csrf").(string)
+
 	return c.JSON(http.StatusOK, echo.Map{
 		"csrf_token": token,
 	})
@@ -41,10 +42,12 @@ func (uc *userController) LogIn(c echo.Context) error {
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+
 	tokenString, err := uc.uu.Login(user)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+
 	cookie := new(http.Cookie)
 	cookie.Name = "token"
 	cookie.Value = tokenString
@@ -56,8 +59,8 @@ func (uc *userController) LogIn(c echo.Context) error {
 	cookie.HttpOnly = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
-	// return c.NoContent(http.StatusOK)
-	return c.JSON(http.StatusOK, map[string]string{
+
+	return c.JSON(http.StatusOK, echo.Map{
 		"jwt": tokenString,
 	})
 }
@@ -74,6 +77,7 @@ func (uc *userController) LogOut(c echo.Context) error {
 	cookie.HttpOnly = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
+
 	return c.NoContent(http.StatusOK)
 }
 
