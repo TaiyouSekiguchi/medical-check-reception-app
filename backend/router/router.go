@@ -34,10 +34,15 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	e.GET("/csrf", uc.CsrfToken)
 	e.POST("/login", uc.LogIn)
 	e.POST("/logout", uc.LogOut)
-	e.GET("/users", uc.GetUsers)
-	e.POST("/users", uc.CreateUser)
-	e.PUT("/users/:user-id", uc.UpdateUser)
-	e.DELETE("/users/:user-id", uc.DeleteUser)
+	u := e.Group("/users")
+	u.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	u.GET("", uc.GetUsers)
+	u.POST("", uc.CreateUser)
+	u.PUT("/:user-id", uc.UpdateUser)
+	u.DELETE("/:user-id", uc.DeleteUser)
 
 	// Insured
 	i := e.Group("/insureds")
