@@ -1,9 +1,9 @@
 import { memo, useState, type VFC } from 'react';
 import { Box } from '@chakra-ui/react';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import StyledFileDrop from 'components/fileDlop/StyledFileDlop';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useCreateInsureds } from './api/useCreateInsureds';
-import { InsuredFileDrop } from './components/InsureFileDrop';
 import { InsuredImportTable } from './components/InsuredImportTable';
 import { type InsuredRequest } from './types/insured';
 
@@ -16,10 +16,17 @@ export const InsuredImport: VFC = memo(() => {
     await createInsureds(insureds);
   };
 
+  const handleFunction = (arg: InsuredRequest[]) => {
+    setInsured(arg);
+  };
+
   return (
     <ContentLayout title="被保険者インポート">
       {!isLoaded ? (
-        <InsuredFileDrop setIsLoaded={setIsLoaded} setInsured={setInsured} />
+        <StyledFileDrop<InsuredRequest[]>
+          setIsLoaded={setIsLoaded}
+          setFunction={handleFunction}
+        />
       ) : (
         <Box>
           <InsuredImportTable insureds={insureds} />

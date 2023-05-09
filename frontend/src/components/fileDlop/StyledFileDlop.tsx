@@ -1,32 +1,43 @@
-import { useCallback, memo, useMemo, type VFC } from 'react';
+import { useCallback, memo, useMemo } from 'react';
 import { useMessage } from 'features/message/hooks/useMessage';
 import { useDropzone } from 'react-dropzone';
 import { usePapaParse } from 'react-papaparse';
-import { type InsuredRequest } from '../types/insured';
 
 const baseStyle: React.CSSProperties = {
+  flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  width: 200,
-  height: 150,
+  alignItems: 'center',
+  padding: '20px',
+  borderWidth: 2,
+  borderRadius: 2,
+  borderColor: '#eeeeee',
+  borderStyle: 'dashed',
+  backgroundColor: '#fafafa',
+  color: '#bdbdbd',
+  outline: 'none',
+  transition: 'border .24s ease-in-out',
 };
 
-const borderNormalStyle = {
-  border: '1px dotted #888',
+const focusedStyle = {
+  borderColor: '#2196f3',
 };
 
-const borderDragStyle = {
-  border: '1px solid #00f',
-  transition: 'border .5s ease-in-out',
+const acceptStyle = {
+  borderColor: '#00e676',
 };
 
-type Props = {
+const rejectStyle = {
+  borderColor: '#ff1744',
+};
+
+interface Props<T> {
   setIsLoaded: (isLoaded: boolean) => void;
-  setInsured: (insureds: InsuredRequest[]) => void;
-};
+  setFunction: (arg: T) => void;
+}
 
-export const InsuredFileDrop: VFC<Props> = memo((props) => {
-  const { setIsLoaded, setInsured } = props;
+const StyledFileDrop = <T,>(props: Props<T>): JSX.Element => {
+  const { setIsLoaded, setFunction } = props;
   const { readString } = usePapaParse();
   const { showMessage } = useMessage();
 
@@ -48,7 +59,7 @@ export const InsuredFileDrop: VFC<Props> = memo((props) => {
       };
       reader.onload = () => {
         const csvString = reader.result as string;
-        readString<InsuredRequest>(csvString, {
+        readString(csvString, {
           header: true,
           worker: true,
           dynamicTyping: true,
@@ -58,7 +69,7 @@ export const InsuredFileDrop: VFC<Props> = memo((props) => {
               title: 'ファイルの読み込みに成功しました',
               status: 'success',
             });
-            setInsured(results.data);
+            setFunction(results.data as T);
             setIsLoaded(true);
           },
         });
@@ -68,36 +79,27 @@ export const InsuredFileDrop: VFC<Props> = memo((props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
-    onDrop,
-    noClick: true,
-  });
+  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
+    useDropzone({ onDrop });
 
   const style = useMemo(
     () => ({
       ...baseStyle,
-      ...(isDragActive ? borderDragStyle : borderNormalStyle),
+      ...(isFocused ? focusedStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
     }),
-    [isDragActive]
+    [isFocused, isDragAccept, isDragReject]
   );
 
   return (
-    <>
+    <div className="container">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <p>{'Drag n drop some files here'}</p>
-        )}
-        <button
-          type="button"
-          onClick={open}
-          className="btn btn-primary align-self-center"
-        >
-          Select files
-        </button>
+        <p>{`Drag 'n' drop some files here, or click to select files`}</p>
       </div>
-    </>
+    </div>
   );
-});
+};
+
+export default memo(StyledFileDrop) as typeof StyledFileDrop;
