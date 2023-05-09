@@ -30,7 +30,7 @@ export type InsuredResponse = {
   first_name_kana: string;
   last_name_kana: string;
   birthday: string;
-  sex_code: string;
+  sex_code: number;
   address: string;
   created_at: string;
   updated_at: string;

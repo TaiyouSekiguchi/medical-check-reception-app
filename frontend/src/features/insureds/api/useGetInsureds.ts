@@ -2,21 +2,21 @@
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
 import { useMessage } from '../../message/hooks/useMessage';
-import { type Insured } from '../types/insured';
+import { type InsuredResponse } from '../types/insured';
 
-export const useAllInsureds = (): {
+export const useGetInsureds = (): {
   getInsureds: () => void;
   loading: boolean;
-  insureds: Insured[];
+  insureds: InsuredResponse[];
 } => {
   const { showMessage } = useMessage();
   const [loading, setLoading] = useState(true);
-  const [insureds, setInsureds] = useState<Insured[]>([]);
+  const [insureds, setInsureds] = useState<InsuredResponse[]>([]);
 
   const getInsureds = useCallback(() => {
     setLoading(true);
     axios
-      .get<Insured[]>(`/insureds`)
+      .get<InsuredResponse[]>(`/insureds`)
       .then((res) => {
         setInsureds(res.data);
       })

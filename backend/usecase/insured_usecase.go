@@ -52,7 +52,7 @@ func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse,
 			FirstNameKana: v.FirstNameKana,
 			LastNameKana:  v.LastNameKana,
 			Birthday:      time2str(v.Birthday),
-			SexAlias:      v.Sex.Alias,
+			SexCode:       v.SexCode,
 			Address:       v.Address,
 		}
 		resInsureds = append(resInsureds, i)
