@@ -25,9 +25,12 @@ export const adminRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Home /> },
-      { path: 'insured_list', element: <InsuredList /> },
+      { path: 'insured_list', element: <InsuredList isAdmin={true} /> },
       { path: 'insured_import', element: <InsuredImport /> },
-      { path: 'reservation_slot_list', element: <ReservationSlotList /> },
+      {
+        path: 'reservation_slot_list',
+        element: <ReservationSlotList isAdmin={true} />,
+      },
       {
         path: 'reservation_slot_list_import',
         element: <ReservationSlotImport />,

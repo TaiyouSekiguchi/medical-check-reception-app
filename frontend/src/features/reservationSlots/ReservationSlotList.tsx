@@ -15,7 +15,13 @@ import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useAllReservationSlots } from './api/useAllReservationSlots';
 
-export const ReservationSlotList: VFC = memo(() => {
+type Props = {
+  isAdmin?: boolean;
+};
+
+export const ReservationSlotList: VFC<Props> = memo((props) => {
+  const { isAdmin = false } = props;
+
   const { getReservationSlots, loading, reservationSlots } =
     useAllReservationSlots();
 
@@ -35,13 +41,15 @@ export const ReservationSlotList: VFC = memo(() => {
 
   return (
     <ContentLayout title="予約枠一覧">
-      <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
       {loading ? (
         <Center h="100vh">
           <Spinner />
         </Center>
       ) : (
         <Box p={4}>
+          {isAdmin && reservationSlots.length === 0 && (
+            <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
+          )}
           <Table>
             <Thead>
               <Tr>
