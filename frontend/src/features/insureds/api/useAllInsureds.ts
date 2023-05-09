@@ -10,7 +10,7 @@ export const useAllInsureds = (): {
   insureds: Insured[];
 } => {
   const { showMessage } = useMessage();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [insureds, setInsureds] = useState<Insured[]>([]);
 
   const getInsureds = useCallback(() => {

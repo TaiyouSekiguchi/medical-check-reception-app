@@ -15,7 +15,13 @@ import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useAllInsureds } from './api/useAllInsureds';
 
-export const InsuredList: VFC = memo(() => {
+type Props = {
+  isAdmin?: boolean;
+};
+
+export const InsuredList: VFC<Props> = memo((props) => {
+  const { isAdmin = false } = props;
+
   const { getInsureds, loading, insureds } = useAllInsureds();
 
   const navigate = useNavigate();
@@ -34,13 +40,15 @@ export const InsuredList: VFC = memo(() => {
 
   return (
     <ContentLayout title="被保険者一覧">
-      <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
       {loading ? (
         <Center h="100vh">
           <Spinner />
         </Center>
       ) : (
         <Box p={4}>
+          {isAdmin && insureds.length === 0 && (
+            <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
+          )}
           <Table>
             <Thead>
               <Tr>
