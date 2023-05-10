@@ -1,10 +1,11 @@
 import { memo, type VFC } from 'react';
-import { Box, Spinner } from '@chakra-ui/react';
-import { formatStringDate } from 'lib/formatDate';
+import { Box, Flex } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
+import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { useDeleteReservations } from './api/useDeleteReservation';
+import { CheckDeleteReservationTable } from './components/CheckDeleteReservationTable';
 import { type InsuredWithReservation } from './types/insuredWithReservation';
 
 export const CheckDeleteReservation: VFC = memo(() => {
@@ -20,23 +21,17 @@ export const CheckDeleteReservation: VFC = memo(() => {
   return (
     <ContentLayout title={'予約管理'}>
       {loading ? (
-        <Spinner />
+        <CenterSpinner />
       ) : (
-        <Box bg="white">
-          <div>予約内容</div>
-          <div>{selectedInsured?.last_name}</div>
-          <div>{selectedInsured?.first_name}</div>
-          <div>
-            受診日:
-            {selectedInsured?.reservation_date != null &&
-              formatStringDate(selectedInsured.reservation_date)}
-          </div>
-          {selectedInsured?.examination_items.map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
-          <div>この予約を削除しますか？</div>
-          <div>良ければ「予約を削除する」ボタンを押してください。</div>
-          <PrimaryButton onClick={onClickConfirm}>予約を削除する</PrimaryButton>
+        <Box>
+          {selectedInsured != null && (
+            <CheckDeleteReservationTable selectedInsured={selectedInsured} />
+          )}
+          <Flex m="24px" justifyContent="flex-end">
+            <PrimaryButton onClick={onClickConfirm}>
+              予約を削除する
+            </PrimaryButton>
+          </Flex>
         </Box>
       )}
     </ContentLayout>

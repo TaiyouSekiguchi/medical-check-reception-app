@@ -1,11 +1,12 @@
 import { memo, type VFC } from 'react';
-import { Box, Spinner } from '@chakra-ui/react';
-import { formatStringDate } from 'lib/formatDate';
+import { Box, Flex } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
+import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { usePostReservations } from './api/usePostReservation';
 import { useUpdateReservations } from './api/useUpdateReservation';
+import { CheckReservationTable } from './components/CheckReservationTable';
 import { type InsuredWithReservation } from './types/insuredWithReservation';
 import { type ReservableSlot } from './types/reservableSlot';
 import { type ReservationRequest } from './types/reservation';
@@ -101,43 +102,30 @@ export const CheckReservation: VFC = memo(() => {
   return (
     <ContentLayout title={'予約管理'}>
       {loading ? (
-        <Spinner />
+        <CenterSpinner />
       ) : (
-        <Box bg="white">
-          <div>予約内容</div>
-          <div>{selectedInsured?.last_name}</div>
-          <div>{selectedInsured?.first_name}</div>
-          <div>
-            受診日:
-            {selectedReservableSlot?.date != null &&
-              formatStringDate(selectedReservableSlot?.date)}
-          </div>
-          <div>
-            {submitData.IsGastrointestinalEndoscopyChecked && '胃カメラ'}
-          </div>
-          <div>{submitData.IsBariumChecked && 'バリウム'}</div>
-          <div>{submitData.IsBreastCancerScreeningChecked && '乳がん検診'}</div>
-          <div>
-            {submitData.IsProstateCancerScreeningChecked && '前立腺がん検診'}
-          </div>
-          {selectedInsured?.is_reserved != null &&
-          selectedInsured.is_reserved ? (
-            <>
-              <div>この内容で予約を変更しますか？</div>
-              <div>良ければ「予約を変更する」ボタンを押してください。</div>
+        <Box>
+          {selectedInsured != null &&
+            selectedReservableSlot != null &&
+            submitData != null && (
+              <CheckReservationTable
+                selectedInsured={selectedInsured}
+                selectedReservableSlot={selectedReservableSlot}
+                submitData={submitData}
+              />
+            )}
+          <Flex m="24px" justifyContent="flex-end">
+            {selectedInsured?.is_reserved != null &&
+            selectedInsured.is_reserved ? (
               <PrimaryButton onClick={onClickUpdate}>
                 予約を変更する
               </PrimaryButton>
-            </>
-          ) : (
-            <>
-              <div>この内容で予約を確定しますか？</div>
-              <div>良ければ「予約を確定する」ボタンを押してください。</div>
+            ) : (
               <PrimaryButton onClick={onClickConfirm}>
                 予約を確定する
               </PrimaryButton>
-            </>
-          )}
+            )}
+          </Flex>
         </Box>
       )}
     </ContentLayout>
