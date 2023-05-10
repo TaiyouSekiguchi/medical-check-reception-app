@@ -1,7 +1,7 @@
 import { memo, useState, type VFC } from 'react';
 import { Box } from '@chakra-ui/react';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
-import StyledFileDrop from 'components/fileDlop/StyledFileDlop';
+import StyledFileDrop from 'components/fileDlop/StyledFileDrop';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useCreateInsureds } from './api/useCreateInsureds';
 import { InsuredImportTable } from './components/InsuredImportTable';

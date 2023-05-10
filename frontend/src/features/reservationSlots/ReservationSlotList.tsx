@@ -50,6 +50,7 @@ export const ReservationSlotList: VFC<Props> = memo((props) => {
           {isAdmin && reservationSlots.length === 0 && (
             <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
           )}
+          <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
           <Table>
             <Thead>
               <Tr>
