@@ -1,18 +1,10 @@
 import { memo, useState, useCallback, useEffect, type VFC } from 'react';
 import { useDisclosure } from '@chakra-ui/hooks';
-import {
-  Box,
-  Center,
-  Spinner,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
+import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { useGetUsers } from './api/useGetUsers';
 import { CreateUserModal } from './components/CreateUserModal';
 import { EditUserInfoModal } from './components/EditUserInfoModal';
@@ -59,11 +51,9 @@ export const UserManagement: VFC = memo(() => {
     <ContentLayout title="ユーザー管理">
       <PrimaryButton onClick={onClickCreate}>ユーザー新規作成</PrimaryButton>
       {loading ? (
-        <Center h="100vh">
-          <Spinner />
-        </Center>
+        <CenterSpinner />
       ) : (
-        <Box p={4}>
+        <BorderedBox p="24px">
           <Table>
             <Thead>
               <Tr>
@@ -88,7 +78,7 @@ export const UserManagement: VFC = memo(() => {
               ))}
             </Tbody>
           </Table>
-        </Box>
+        </BorderedBox>
       )}
       <CreateUserModal
         isOpen={isOpenCreate}

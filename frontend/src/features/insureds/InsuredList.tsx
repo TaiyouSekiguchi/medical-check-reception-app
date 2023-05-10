@@ -1,6 +1,7 @@
 import { memo, useEffect, type VFC } from 'react';
 import { Box } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
@@ -34,7 +35,9 @@ export const InsuredList: VFC<Props> = memo((props) => {
             <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
             )} */}
           <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
-          <InsuredTable insureds={insureds} />
+          <BorderedBox>
+            <InsuredTable insureds={insureds} />
+          </BorderedBox>
         </Box>
       )}
     </ContentLayout>

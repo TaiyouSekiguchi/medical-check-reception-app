@@ -11,6 +11,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useAllReservationSlots } from './api/useAllReservationSlots';
@@ -31,10 +32,6 @@ export const ReservationSlotList: VFC<Props> = memo((props) => {
     getReservationSlots();
   }, [getReservationSlots]);
 
-  const onClickDetail = () => {
-    alert('詳細を表示します');
-  };
-
   const onClickImport = () => {
     navigate('/home/reservation_slot_list_import');
   };
@@ -47,38 +44,36 @@ export const ReservationSlotList: VFC<Props> = memo((props) => {
         </Center>
       ) : (
         <Box p={4}>
-          {isAdmin && reservationSlots.length === 0 && (
+          {/* {isAdmin && reservationSlots.length === 0 && (
             <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
-          )}
+          )} */}
           <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>ID</Th>
-                <Th>日付</Th>
-                <Th>基本検査枠</Th>
-                <Th>胃カメラ枠</Th>
-                <Th>バリウム枠</Th>
-                <Th>乳がん検査枠</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {reservationSlots.map((rs) => (
-                <Tr
-                  key={rs.id}
-                  _hover={{ bg: 'gray.300' }}
-                  onClick={onClickDetail}
-                >
-                  <Td>{rs.id}</Td>
-                  <Td>{new Date(rs.date).toLocaleDateString('ja-JP')}</Td>
-                  <Td>{rs.basic}</Td>
-                  <Td>{rs.gastrointestinal_endoscopy}</Td>
-                  <Td>{rs.barium}</Td>
-                  <Td>{rs.breast_cancer_screening}</Td>
+          <BorderedBox>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>ID</Th>
+                  <Th>日付</Th>
+                  <Th>基本検査枠</Th>
+                  <Th>胃カメラ枠</Th>
+                  <Th>バリウム枠</Th>
+                  <Th>乳がん検査枠</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
+              </Thead>
+              <Tbody>
+                {reservationSlots.map((rs) => (
+                  <Tr key={rs.id} _hover={{ bg: 'gray.300' }}>
+                    <Td>{rs.id}</Td>
+                    <Td>{new Date(rs.date).toLocaleDateString('ja-JP')}</Td>
+                    <Td>{rs.basic}</Td>
+                    <Td>{rs.gastrointestinal_endoscopy}</Td>
+                    <Td>{rs.barium}</Td>
+                    <Td>{rs.breast_cancer_screening}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </BorderedBox>
         </Box>
       )}
     </ContentLayout>
