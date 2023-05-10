@@ -1,5 +1,6 @@
 import { memo, useState, type VFC } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import StyledFileDrop from 'components/fileDlop/StyledFileDrop';
 import { ContentLayout } from 'components/layouts/ContentLayout';
@@ -29,8 +30,12 @@ export const InsuredImport: VFC = memo(() => {
         />
       ) : (
         <Box>
-          <InsuredImportTable insureds={insureds} />
-          <PrimaryButton onClick={onClickImport}>import</PrimaryButton>
+          <BorderedBox p="24px">
+            <InsuredImportTable insureds={insureds} />
+          </BorderedBox>
+          <Flex m="16px" justifyContent="flex-end">
+            <PrimaryButton onClick={onClickImport}>import</PrimaryButton>
+          </Flex>
         </Box>
       )}
     </ContentLayout>

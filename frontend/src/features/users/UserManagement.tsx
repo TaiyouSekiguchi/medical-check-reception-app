@@ -1,6 +1,6 @@
 import { memo, useState, useCallback, useEffect, type VFC } from 'react';
 import { useDisclosure } from '@chakra-ui/hooks';
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
@@ -49,7 +49,9 @@ export const UserManagement: VFC = memo(() => {
 
   return (
     <ContentLayout title="ユーザー管理">
-      <PrimaryButton onClick={onClickCreate}>ユーザー新規作成</PrimaryButton>
+      <Flex justify="flex-end" mb="16px">
+        <PrimaryButton onClick={onClickCreate}>ユーザー新規作成</PrimaryButton>
+      </Flex>
       {loading ? (
         <CenterSpinner />
       ) : (

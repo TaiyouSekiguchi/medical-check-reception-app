@@ -44,10 +44,9 @@ export const ReservationSlotList: VFC<Props> = memo((props) => {
         </Center>
       ) : (
         <Box p={4}>
-          {/* {isAdmin && reservationSlots.length === 0 && (
+          {isAdmin && reservationSlots.length === 0 && (
             <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
-          )} */}
-          <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
+          )}
           <BorderedBox>
             <Table>
               <Thead>

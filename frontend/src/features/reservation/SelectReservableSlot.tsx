@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, type VFC } from 'react';
-import { Box, Center, Spinner, useDisclosure } from '@chakra-ui/react';
+import { Center, Spinner, useDisclosure } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useReservableSlots } from './api/useReservableSlots';
 import { ReservableSlotListTable } from './components/ReservableSlotListTable';
@@ -40,18 +41,20 @@ export const SelectReservableSlot: VFC = memo(() => {
           <Spinner />
         </Center>
       ) : (
-        <Box p={4}>
-          <ReservableSlotListTable
-            reservableSlots={reservableSlots}
-            handleRowClick={handleRowClick}
-          />
+        <>
+          <BorderedBox p="24px">
+            <ReservableSlotListTable
+              reservableSlots={reservableSlots}
+              handleRowClick={handleRowClick}
+            />
+          </BorderedBox>
           <SelectExaminationItemModal
             isOpen={isOpen}
             onClose={onClose}
             selectedInsured={selectedInsured}
             selectedReservableSlot={selectedReservableSlot}
           />
-        </Box>
+        </>
       )}
     </ContentLayout>
   );

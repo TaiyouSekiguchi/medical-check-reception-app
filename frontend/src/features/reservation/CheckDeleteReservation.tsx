@@ -1,6 +1,7 @@
 import { memo, type VFC } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
@@ -25,7 +26,9 @@ export const CheckDeleteReservation: VFC = memo(() => {
       ) : (
         <Box>
           {selectedInsured != null && (
-            <CheckDeleteReservationTable selectedInsured={selectedInsured} />
+            <BorderedBox p="24px">
+              <CheckDeleteReservationTable selectedInsured={selectedInsured} />
+            </BorderedBox>
           )}
           <Flex m="24px" justifyContent="flex-end">
             <PrimaryButton onClick={onClickConfirm}>

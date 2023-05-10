@@ -1,4 +1,6 @@
 import { memo, useState, type VFC } from 'react';
+import { Flex } from '@chakra-ui/react';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 
 import StyledFileDrop from 'components/fileDlop/StyledFileDrop';
@@ -28,8 +30,12 @@ export const ReservationSlotImport: VFC = memo(() => {
         />
       ) : (
         <>
-          <ReservationSlotTable reservationSlots={reservationSlots} />
-          <PrimaryButton onClick={onClickImport}>import</PrimaryButton>
+          <BorderedBox p="24px">
+            <ReservationSlotTable reservationSlots={reservationSlots} />
+          </BorderedBox>
+          <Flex m="24px" justifyContent="flex-end">
+            <PrimaryButton onClick={onClickImport}>import</PrimaryButton>
+          </Flex>
         </>
       )}
     </ContentLayout>
