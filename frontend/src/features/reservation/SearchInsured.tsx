@@ -23,11 +23,9 @@ export const SearchInsured: VFC = memo(() => {
 
   return (
     <ContentLayout title={'予約管理'}>
-      <Box ml={24} mt={8}>
-        <SearchInputForm
-          getInsuredsWithReservation={getInsuredsWithReservation}
-        />
-      </Box>
+      <SearchInputForm
+        getInsuredsWithReservation={getInsuredsWithReservation}
+      />
 
       {insuredsWithReservation.length === 0 ? (
         <></>
