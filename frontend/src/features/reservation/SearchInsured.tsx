@@ -1,6 +1,7 @@
 import { memo, type VFC, useState } from 'react';
-import { Box, Center, Spinner, useDisclosure } from '@chakra-ui/react';
+import { Center, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import { useInsuredsWithReservation } from 'features/reservation/api/useInsuredsWithReservation';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { InsuredListModal } from 'features/reservation/components/InsuredListModal';
 import { InsuredListTable } from 'features/reservation/components/InsuredListTable';
@@ -26,26 +27,31 @@ export const SearchInsured: VFC = memo(() => {
       <SearchInputForm
         getInsuredsWithReservation={getInsuredsWithReservation}
       />
-
-      {insuredsWithReservation.length === 0 ? (
-        <></>
-      ) : loading ? (
-        <Center h="100vh">
-          <Spinner />
-        </Center>
-      ) : (
-        <Box p={4}>
-          <InsuredListTable
-            insureds={insuredsWithReservation}
-            handleRowClick={handleRowClick}
-          />
-          <InsuredListModal
-            isOpen={isOpen}
-            onClose={onClose}
-            selectedInsured={selectedInsured}
-          />
-        </Box>
-      )}
+      <BorderedBox h="240px" mt="24px" p="8px" overflowY="auto">
+        {insuredsWithReservation.length === 0 ? (
+          <Center h="240px">
+            <Text size="lg" color="gray.500">
+              Search Result
+            </Text>
+          </Center>
+        ) : loading ? (
+          <Center h="240px">
+            <Spinner />
+          </Center>
+        ) : (
+          <>
+            <InsuredListTable
+              insureds={insuredsWithReservation}
+              handleRowClick={handleRowClick}
+            />
+            <InsuredListModal
+              isOpen={isOpen}
+              onClose={onClose}
+              selectedInsured={selectedInsured}
+            />
+          </>
+        )}
+      </BorderedBox>
     </ContentLayout>
   );
 });
