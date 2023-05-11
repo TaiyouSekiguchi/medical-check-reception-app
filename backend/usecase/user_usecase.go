@@ -67,9 +67,11 @@ func (uu *userUsecase) GetUsers() ([]model.UserResponse, error) {
 	resUsers := []model.UserResponse{}
 	for _, v := range users {
 		t := model.UserResponse{
-			ID:       v.ID,
-			Username: v.Username,
-			IsAdmin:  v.Admin.ID > 0,
+			ID:        v.ID,
+			Username:  v.Username,
+			IsAdmin:   v.Admin.ID > 0,
+			CreatedAt: time2str(v.CreatedAt),
+			UpdatedAt: time2str(v.UpdatedAt),
 		}
 		resUsers = append(resUsers, t)
 	}

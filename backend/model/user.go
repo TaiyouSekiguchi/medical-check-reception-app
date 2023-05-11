@@ -23,7 +23,9 @@ type UserRequest struct {
 }
 
 type UserResponse struct {
-	ID       uint   `json:"id" gorm:"primaryKey"`
-	Username string `json:"username" gorm:"unique;not null; type:varchar(255)"`
-	IsAdmin  bool   `json:"is_admin"`
+	ID        uint   `json:"id" gorm:"primaryKey"`
+	Username  string `json:"username" gorm:"unique;not null; type:varchar(255)"`
+	IsAdmin   bool   `json:"is_admin"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
 }
