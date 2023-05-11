@@ -72,8 +72,8 @@ export const Login: VFC = memo(() => {
             </InputRightElement>
           </InputGroup>
           <PrimaryButton
-            disabled={username === '' || password === '' || loading}
-            loading={loading}
+            isDisabled={username === '' || password === '' || loading}
+            isLoading={loading}
             onClick={onClickLogin}
           >
             ログイン
