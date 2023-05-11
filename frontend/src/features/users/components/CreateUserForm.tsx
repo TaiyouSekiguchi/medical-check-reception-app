@@ -4,6 +4,7 @@ import {
   Input,
   FormErrorMessage,
   FormControl,
+  Box,
 } from '@chakra-ui/react';
 import { type FieldErrors, type UseFormRegister } from 'react-hook-form';
 import { type UserRequest } from '../types/user';
@@ -45,22 +46,28 @@ export const CreateUserForm: VFC<Props> = memo((props) => {
   return (
     <>
       {fields.map((field) => (
-        <FormControl key={field.name} isInvalid={errors[field.name] != null}>
-          <FormLabel htmlFor={field.name}>{field.label}</FormLabel>
-          {field.type === 'checkbox' ? (
-            <input type="checkbox" id={field.name} {...register(field.name)} />
-          ) : (
-            <Input
-              type={field.type}
-              id={field.name}
-              placeholder={field.placeholder}
-              {...register(field.name)}
-            />
-          )}
-          <FormErrorMessage fontSize="xs">
-            {errors[field.name]?.message}
-          </FormErrorMessage>
-        </FormControl>
+        <Box key={field.name} mb="24px">
+          <FormControl isInvalid={errors[field.name] != null}>
+            <FormLabel htmlFor={field.name}>{field.label}</FormLabel>
+            {field.type === 'checkbox' ? (
+              <input
+                type="checkbox"
+                id={field.name}
+                {...register(field.name)}
+              />
+            ) : (
+              <Input
+                type={field.type}
+                id={field.name}
+                placeholder={field.placeholder}
+                {...register(field.name)}
+              />
+            )}
+            <FormErrorMessage fontSize="xs">
+              {errors[field.name]?.message}
+            </FormErrorMessage>
+          </FormControl>
+        </Box>
       ))}
     </>
   );
