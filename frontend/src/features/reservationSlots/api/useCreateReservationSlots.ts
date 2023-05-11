@@ -10,11 +10,11 @@ import {
 export const useCreateReservationSlots = (): {
   createReservationSlots: (data: ReservationSlotRequest[]) => Promise<void>;
   loading: boolean;
-  reservationSlots: ReservationSlotResponse[];
+  reservationSlotResponse: ReservationSlotResponse[];
 } => {
   const { showMessage } = useMessage();
   const [loading, setLoading] = useState(false);
-  const [reservationSlots, setReservationSlots] = useState<
+  const [reservationSlotResponse, setReservationSlotResponse] = useState<
     ReservationSlotResponse[]
   >([]);
 
@@ -26,7 +26,7 @@ export const useCreateReservationSlots = (): {
           `/reservation-slots/bulk`,
           data
         );
-        setReservationSlots(res.data);
+        setReservationSlotResponse(res.data);
         showMessage({
           title: '予約枠を作成しました',
           status: 'success',
@@ -43,5 +43,5 @@ export const useCreateReservationSlots = (): {
     []
   );
 
-  return { createReservationSlots, loading, reservationSlots };
+  return { createReservationSlots, loading, reservationSlotResponse };
 };

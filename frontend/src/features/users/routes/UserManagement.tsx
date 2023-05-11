@@ -1,6 +1,6 @@
 import { memo, useState, useCallback, useEffect, type VFC } from 'react';
 import { useDisclosure } from '@chakra-ui/hooks';
-import { Flex, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
@@ -8,6 +8,7 @@ import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { useGetUsers } from '../api/useGetUsers';
 import { CreateUserModal } from '../components/CreateUserModal';
 import { EditUserInfoModal } from '../components/EditUserInfoModal';
+import { UserTable } from '../components/UserTable';
 import { type User } from '../types/user';
 
 export const UserManagement: VFC = memo(() => {
@@ -56,30 +57,7 @@ export const UserManagement: VFC = memo(() => {
         <CenterSpinner />
       ) : (
         <BorderedBox p="24px">
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>No.</Th>
-                <Th>Name</Th>
-                <Th>admin</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {users.map((user) => (
-                <Tr
-                  key={user.id}
-                  _hover={{ bg: 'gray.300' }}
-                  onClick={() => {
-                    onClickDetail(user);
-                  }}
-                >
-                  <Td>{user.id}</Td>
-                  <Td>{user.username}</Td>
-                  <Td>{user.is_admin ? '○' : '―'}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+          <UserTable users={users} onClickDetail={onClickDetail} />
         </BorderedBox>
       )}
       <CreateUserModal

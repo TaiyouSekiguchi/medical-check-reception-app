@@ -6,13 +6,13 @@ import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import StyledFileDrop from 'components/fileDlop/StyledFileDrop';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useCreateReservationSlots } from '../api/useCreateReservationSlots';
-import { ReservationSlotTable } from '../components/ReservationSlotTable';
-import { type ReservationSlotResponse } from '../types/reservationSlot';
+import { ReservationSlotImportTable } from '../components/ReservationSlotImportTable';
+import { type ReservationSlotRequest } from '../types/reservationSlot';
 
 export const ReservationSlotImport: VFC = memo(() => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [reservationSlots, setReservationSlots] = useState<
-    ReservationSlotResponse[]
+    ReservationSlotRequest[]
   >([]);
 
   const { createReservationSlots } = useCreateReservationSlots();
@@ -24,14 +24,14 @@ export const ReservationSlotImport: VFC = memo(() => {
   return (
     <ContentLayout title="予約枠インポート">
       {!isLoaded ? (
-        <StyledFileDrop<ReservationSlotResponse[]>
+        <StyledFileDrop<ReservationSlotRequest[]>
           setIsLoaded={setIsLoaded}
           setFunction={setReservationSlots}
         />
       ) : (
         <>
           <BorderedBox p="24px">
-            <ReservationSlotTable reservationSlots={reservationSlots} />
+            <ReservationSlotImportTable reservationSlots={reservationSlots} />
           </BorderedBox>
           <Flex m="24px" justifyContent="flex-end">
             <PrimaryButton onClick={onClickImport}>import</PrimaryButton>
