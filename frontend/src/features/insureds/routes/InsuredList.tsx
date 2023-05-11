@@ -5,8 +5,8 @@ import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
-import { useGetInsureds } from './api/useGetInsureds';
-import { InsuredTable } from './components/InsuredTable';
+import { useGetInsureds } from '../api/useGetInsureds';
+import { InsuredTable } from '../components/InsuredTable';
 
 type Props = {
   isAdmin?: boolean;
@@ -22,7 +22,7 @@ export const InsuredList: VFC<Props> = memo((props) => {
   }, [getInsureds]);
 
   const onClickImport = () => {
-    navigate('/home/insured_import');
+    navigate('/home/insureds/import');
   };
 
   return (
@@ -34,6 +34,7 @@ export const InsuredList: VFC<Props> = memo((props) => {
           {isAdmin && insureds.length === 0 && (
             <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
           )}
+          <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
           <BorderedBox>
             <InsuredTable insureds={insureds} />
           </BorderedBox>

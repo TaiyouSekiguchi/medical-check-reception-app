@@ -6,7 +6,7 @@ import { ContentLayout } from 'components/layouts/ContentLayout';
 import { InsuredListModal } from 'features/reservation/components/InsuredListModal';
 import { InsuredListTable } from 'features/reservation/components/InsuredListTable';
 import { SearchInputForm } from 'features/reservation/components/SearchInputForm';
-import { type InsuredWithReservation } from './types/insuredWithReservation';
+import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
 export const SearchInsured: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();

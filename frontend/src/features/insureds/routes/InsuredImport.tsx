@@ -4,9 +4,9 @@ import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import StyledFileDrop from 'components/fileDlop/StyledFileDrop';
 import { ContentLayout } from 'components/layouts/ContentLayout';
-import { useCreateInsureds } from './api/useCreateInsureds';
-import { InsuredImportTable } from './components/InsuredImportTable';
-import { type InsuredRequest } from './types/insured';
+import { useCreateInsureds } from '../api/useCreateInsureds';
+import { InsuredImportTable } from '../components/InsuredImportTable';
+import { type InsuredRequest } from '../types/insured';
 
 export const InsuredImport: VFC = memo(() => {
   const [isLoaded, setIsLoaded] = useState(false);

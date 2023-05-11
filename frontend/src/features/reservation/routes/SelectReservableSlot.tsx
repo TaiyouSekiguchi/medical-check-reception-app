@@ -3,11 +3,11 @@ import { Center, Spinner, useDisclosure } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { ContentLayout } from 'components/layouts/ContentLayout';
-import { useReservableSlots } from './api/useReservableSlots';
-import { ReservableSlotListTable } from './components/ReservableSlotListTable';
-import { SelectExaminationItemModal } from './components/SelectExaminationItemModal';
-import { type InsuredWithReservation } from './types/insuredWithReservation';
-import { type ReservableSlot } from './types/reservableSlot';
+import { useReservableSlots } from '../api/useReservableSlots';
+import { ReservableSlotListTable } from '../components/ReservableSlotListTable';
+import { SelectExaminationItemModal } from '../components/SelectExaminationItemModal';
+import { type InsuredWithReservation } from '../types/insuredWithReservation';
+import { type ReservableSlot } from '../types/reservableSlot';
 
 export const SelectReservableSlot: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();

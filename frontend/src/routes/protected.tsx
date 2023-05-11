@@ -3,7 +3,7 @@ import { HeaderLayout } from 'components/layouts/HeaderLayout';
 import { Page404 } from 'components/pages/Page404';
 import { Login } from '../features/auth/Login';
 import { Home } from '../features/home/Home';
-import { InsuredList } from '../features/insureds/InsuredList';
+import { InsuredList } from '../features/insureds/routes/InsuredList';
 import { ReservationManagement } from '../features/reservation/routes/ReservationManagement';
 import { ReservationSlotList } from '../features/reservationSlots/ReservationSlotList';
 // import { UserManagement } from '../features/users/UserManagement';

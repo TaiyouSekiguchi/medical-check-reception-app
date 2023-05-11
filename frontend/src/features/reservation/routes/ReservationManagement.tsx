@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { CheckDeleteReservation } from '../CheckDeleteReservation';
-import { CheckReservation } from '../CheckReservation';
-import { DeleteReservationResult } from '../DeleteReservationResult';
-import { ReservationResult } from '../ReservationResult';
-import { SearchInsured } from '../SearchInsured';
-import { SelectReservableSlot } from '../SelectReservableSlot';
+import { CheckDeleteReservation } from './CheckDeleteReservation';
+import { CheckReservation } from './CheckReservation';
+import { DeleteReservationResult } from './DeleteReservationResult';
+import { ReservationResult } from './ReservationResult';
+import { SearchInsured } from './SearchInsured';
+import { SelectReservableSlot } from './SelectReservableSlot';
 
 export const ReservationManagement = (): JSX.Element => {
   return (
