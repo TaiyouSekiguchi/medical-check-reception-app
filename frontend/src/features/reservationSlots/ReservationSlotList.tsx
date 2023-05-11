@@ -33,7 +33,7 @@ export const ReservationSlotList: VFC<Props> = memo((props) => {
   }, [getReservationSlots]);
 
   const onClickImport = () => {
-    navigate('/home/reservation_slot_list_import');
+    navigate('/home/reservation_slots/import');
   };
 
   return (

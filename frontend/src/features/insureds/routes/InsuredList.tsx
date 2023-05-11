@@ -34,7 +34,6 @@ export const InsuredList: VFC<Props> = memo((props) => {
           {isAdmin && insureds.length === 0 && (
             <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
           )}
-          <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
           <BorderedBox>
             <InsuredTable insureds={insureds} />
           </BorderedBox>

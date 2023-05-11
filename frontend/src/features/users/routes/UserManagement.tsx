@@ -5,10 +5,10 @@ import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
-import { useGetUsers } from './api/useGetUsers';
-import { CreateUserModal } from './components/CreateUserModal';
-import { EditUserInfoModal } from './components/EditUserInfoModal';
-import { type User } from './types/user';
+import { useGetUsers } from '../api/useGetUsers';
+import { CreateUserModal } from '../components/CreateUserModal';
+import { EditUserInfoModal } from '../components/EditUserInfoModal';
+import { type User } from '../types/user';
 
 export const UserManagement: VFC = memo(() => {
   const {

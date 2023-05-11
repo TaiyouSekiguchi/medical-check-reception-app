@@ -18,7 +18,7 @@ export const Header: VFC = memo(() => {
     navigate('/home/insureds');
   }, [navigate]);
   const onClickReservationSlotList = useCallback(() => {
-    navigate('/home/reservation_slot_list');
+    navigate('/home/reservation_slots');
   }, [navigate]);
   const onClickReservationManagement = useCallback(() => {
     navigate('/home/reservation_management');
