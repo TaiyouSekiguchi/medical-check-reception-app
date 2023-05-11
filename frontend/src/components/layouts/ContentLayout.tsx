@@ -10,8 +10,8 @@ export const ContentLayout: VFC<Props> = memo((props) => {
   const { title, children } = props;
 
   return (
-    <Box mx={16} mt={8}>
-      <Box as="h1" color="gray.700" fontWeight="bold" fontSize="2xl" my={4}>
+    <Box mx="10%" mt="40px">
+      <Box as="h1" color="gray.700" fontWeight="bold" fontSize="2xl" my="32px">
         {title}
       </Box>
       <Box>{children}</Box>

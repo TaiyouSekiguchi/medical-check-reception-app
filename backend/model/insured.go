@@ -38,7 +38,7 @@ type InsuredResponse struct {
 	FirstNameKana string `json:"first_name_kana" gorm:"not null; type:varchar(255)"`
 	LastNameKana  string `json:"last_name_kana" gorm:"not null; type:varchar(255)"`
 	Birthday      string `json:"birthday" gorm:"type:date;not null"`
-	SexAlias      string `json:"sex_alias" gorm:"not null"`
+	SexCode       uint   `json:"sex_code" gorm:"not null"`
 	Address       string `json:"address" gorm:"not null"`
 }
 

@@ -1,5 +1,5 @@
 import { memo, type VFC } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 
@@ -12,11 +12,11 @@ export const DeleteReservationResult: VFC = memo(() => {
 
   return (
     <ContentLayout title={'予約管理'}>
-      <Box bg="white">
+      <Box>
         {isSuccess ? (
-          <div>予約削除が完了しました。</div>
+          <Text fontSize="xl">{`予約を削除しました`}</Text>
         ) : (
-          <div>予約削除が失敗しました。</div>
+          <Text fontSize="xl">{`予約の削除に失敗しました`}</Text>
         )}
       </Box>
     </ContentLayout>

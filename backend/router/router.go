@@ -54,9 +54,6 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	i.GET("/reservation", ic.GetInsuredsWithReservation)
 	i.POST("/bulk", ic.CreateInsureds)
 	i.GET("/export", ic.GetExportInsureds)
-	// i.GET("/reservation", func(c echo.Context) error {
-	// 	return c.String(http.StatusOK, "Insureds with reservation")
-	// })
 
 	// ReservationSlot
 	rs := e.Group("/reservation-slots")

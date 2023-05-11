@@ -10,6 +10,7 @@ export type ReservationSlot = {
   reservation: Reservation[];
 };
 
+// useCreateReservationSlots.ts
 export type ReservationSlotRequest = {
   date: string;
   basic: number;
@@ -18,6 +19,8 @@ export type ReservationSlotRequest = {
   breast_cancer_screening: number;
 };
 
+// useGetReservationSlots.ts
+// useCreateReservationSlots.ts
 export type ReservationSlotResponse = {
   id: number;
   date: string;

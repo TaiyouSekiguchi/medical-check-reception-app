@@ -2,7 +2,7 @@
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
 import { useMessage } from '../../message/hooks/useMessage';
-import { type InsuredForExport } from '../types/insured';
+import { type InsuredForExport } from '../types/insuredForExport';
 
 export const useGetInsuredsForExport = (): {
   getInsuredsForExport: () => void;

@@ -1,15 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import { HeaderLayout } from 'components/layouts/HeaderLayout';
 import { Page404 } from 'components/pages/Page404';
-import { Login } from '../features/auth/Login';
+import { InsuredManagement } from 'features/insureds/routes/InsuredManagement';
+import { ReservationSlotManagement } from 'features/reservationSlots/routes/ReservationSlotManagement';
+import { Login } from '../features/auth/routes/Login';
+import { DataExport } from '../features/export/routes/DataExport';
 import { Home } from '../features/home/Home';
-import { DataExport } from '../features/insureds/DataExport';
-import { InsuredImport } from '../features/insureds/InsuredImport';
-import { InsuredList } from '../features/insureds/InsuredList';
 import { ReservationManagement } from '../features/reservation/routes/ReservationManagement';
-import { ReservationSlotImport } from '../features/reservationSlots/ReservationSlotImport';
-import { ReservationSlotList } from '../features/reservationSlots/ReservationSlotList';
-import { UserManagement } from '../features/users/UserManagement';
+import { UserManagement } from '../features/users/routes/UserManagement';
 
 const App = () => {
   return (
@@ -25,15 +23,10 @@ export const adminRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Home /> },
-      { path: 'insured_list', element: <InsuredList isAdmin={true} /> },
-      { path: 'insured_import', element: <InsuredImport /> },
+      { path: 'insureds/*', element: <InsuredManagement isAdmin={true} /> },
       {
-        path: 'reservation_slot_list',
-        element: <ReservationSlotList isAdmin={true} />,
-      },
-      {
-        path: 'reservation_slot_list_import',
-        element: <ReservationSlotImport />,
+        path: 'reservation_slots/*',
+        element: <ReservationSlotManagement isAdmin={true} />,
       },
       { path: 'user_management', element: <UserManagement /> },
       { path: 'data_export', element: <DataExport /> },

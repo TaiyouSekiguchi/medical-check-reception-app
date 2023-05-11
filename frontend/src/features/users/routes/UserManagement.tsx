@@ -1,22 +1,15 @@
 import { memo, useState, useCallback, useEffect, type VFC } from 'react';
 import { useDisclosure } from '@chakra-ui/hooks';
-import {
-  Box,
-  Center,
-  Spinner,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
-import { useGetUsers } from './api/useGetUsers';
-import { CreateUserModal } from './components/CreateUserModal';
-import { EditUserInfoModal } from './components/EditUserInfoModal';
-import { type User } from './types/user';
+import { CenterSpinner } from 'components/spinner/CenterSpinner';
+import { useGetUsers } from '../api/useGetUsers';
+import { CreateUserModal } from '../components/CreateUserModal';
+import { EditUserInfoModal } from '../components/EditUserInfoModal';
+import { UserTable } from '../components/UserTable';
+import { type User } from '../types/user';
 
 export const UserManagement: VFC = memo(() => {
   const {
@@ -57,38 +50,15 @@ export const UserManagement: VFC = memo(() => {
 
   return (
     <ContentLayout title="ユーザー管理">
-      <PrimaryButton onClick={onClickCreate}>ユーザー新規作成</PrimaryButton>
+      <Flex justify="flex-end" mb="16px">
+        <PrimaryButton onClick={onClickCreate}>ユーザー新規作成</PrimaryButton>
+      </Flex>
       {loading ? (
-        <Center h="100vh">
-          <Spinner />
-        </Center>
+        <CenterSpinner />
       ) : (
-        <Box p={4}>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>No.</Th>
-                <Th>Name</Th>
-                <Th>admin</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {users.map((user) => (
-                <Tr
-                  key={user.id}
-                  _hover={{ bg: 'gray.300' }}
-                  onClick={() => {
-                    onClickDetail(user);
-                  }}
-                >
-                  <Td>{user.id}</Td>
-                  <Td>{user.username}</Td>
-                  <Td>{user.is_admin ? '○' : '―'}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </Box>
+        <BorderedBox p="24px">
+          <UserTable users={users} onClickDetail={onClickDetail} />
+        </BorderedBox>
       )}
       <CreateUserModal
         isOpen={isOpenCreate}

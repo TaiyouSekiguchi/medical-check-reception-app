@@ -2,21 +2,21 @@
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
 import { useMessage } from '../../message/hooks/useMessage';
-import { type User } from '../types/user';
+import { type UserResponse } from '../types/user';
 
 export const useGetUsers = (): {
   getUsers: () => void;
   loading: boolean;
-  users: User[];
+  users: UserResponse[];
 } => {
   const { showMessage } = useMessage();
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserResponse[]>([]);
 
   const getUsers = useCallback(() => {
     setLoading(true);
     axios
-      .get<User[]>(`/users`)
+      .get<UserResponse[]>(`/users`)
       .then((res) => {
         setUsers(res.data);
       })
