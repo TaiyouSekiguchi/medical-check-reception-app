@@ -44,10 +44,6 @@ export const UserManagement: VFC = memo(() => {
     [onOpenEdit]
   );
 
-  const rendering = useCallback(() => {
-    getUsers();
-  }, [getUsers]);
-
   return (
     <ContentLayout title="ユーザー管理">
       <Flex justify="flex-end" mb="16px">
@@ -63,8 +59,7 @@ export const UserManagement: VFC = memo(() => {
       <CreateUserModal
         isOpen={isOpenCreate}
         onClose={onCloseCreate}
-        users={users}
-        rendering={rendering}
+        getUsers={getUsers}
       />
       <EditUserInfoModal
         isOpen={isOpenEdit}
