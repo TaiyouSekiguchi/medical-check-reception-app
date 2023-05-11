@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
-import { useAllReservationSlots } from './api/useAllReservationSlots';
+import { useAllReservationSlots } from '../api/useAllReservationSlots';
 
 type Props = {
   isAdmin?: boolean;

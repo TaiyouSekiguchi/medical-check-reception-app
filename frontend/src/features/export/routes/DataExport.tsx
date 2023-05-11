@@ -4,7 +4,7 @@ import { usePapaParse } from 'react-papaparse';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
-import { useGetInsuredsForExport } from './api/useGetInsuredsForExport';
+import { useGetInsuredsForExport } from '../api/useGetInsuredsForExport';
 
 export const DataExport: VFC = memo(() => {
   const { getInsuredsForExport, insuredsForExport } = useGetInsuredsForExport();

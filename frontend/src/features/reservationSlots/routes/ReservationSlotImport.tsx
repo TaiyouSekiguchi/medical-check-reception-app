@@ -5,9 +5,9 @@ import { PrimaryButton } from 'components/buttons/PrimaryButton';
 
 import StyledFileDrop from 'components/fileDlop/StyledFileDrop';
 import { ContentLayout } from 'components/layouts/ContentLayout';
-import { useCreateReservationSlots } from './api/useCreateReservationSlots';
-import { ReservationSlotTable } from './components/ReservationSlotTable';
-import { type ReservationSlotResponse } from './types/reservationSlot';
+import { useCreateReservationSlots } from '../api/useCreateReservationSlots';
+import { ReservationSlotTable } from '../components/ReservationSlotTable';
+import { type ReservationSlotResponse } from '../types/reservationSlot';
 
 export const ReservationSlotImport: VFC = memo(() => {
   const [isLoaded, setIsLoaded] = useState(false);

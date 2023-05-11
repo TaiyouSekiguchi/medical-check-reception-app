@@ -1,12 +1,18 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { ReservationSlotImport } from '../ReservationSlotImport';
-import { ReservationSlotList } from '../ReservationSlotList';
+import { ReservationSlotImport } from './ReservationSlotImport';
+import { ReservationSlotList } from './ReservationSlotList';
 
-export const ReservationSlotManagement = (): JSX.Element => {
+type Props = {
+  isAdmin?: boolean;
+};
+
+export const ReservationSlotManagement = (props: Props): JSX.Element => {
+  const { isAdmin = false } = props;
+
   return (
     <Routes>
-      <Route path="" element={<ReservationSlotList isAdmin={true} />} />
-      <Route path="import" element={<ReservationSlotImport />} />
+      <Route path="" element={<ReservationSlotList isAdmin={isAdmin} />} />
+      {isAdmin && <Route path="import" element={<ReservationSlotImport />} />}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
