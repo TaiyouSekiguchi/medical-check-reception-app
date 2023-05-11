@@ -4,6 +4,7 @@ export type User = {
   is_admin: boolean;
 };
 
+// useCreateUser.ts
 export type UserRequest = {
   username: string;
   password: string;
@@ -11,6 +12,7 @@ export type UserRequest = {
 };
 
 // useGetUsers.ts
+// useCreateUser.ts
 export type UserResponse = {
   id: number;
   username: string;
