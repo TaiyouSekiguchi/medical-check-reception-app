@@ -18,6 +18,7 @@ export type ReservationSlotRequest = {
   breast_cancer_screening: number;
 };
 
+// useGetReservationSlots.ts
 export type ReservationSlotResponse = {
   id: number;
   date: string;

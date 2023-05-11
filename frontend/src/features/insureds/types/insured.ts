@@ -11,6 +11,7 @@ export type Insured = {
   reservation: Reservation[];
 };
 
+// InsuredImport.tsx
 export type InsuredRequest = {
   number: number;
   first_name: string;
@@ -22,6 +23,7 @@ export type InsuredRequest = {
   address: string;
 };
 
+// useGetInsureds.ts
 export type InsuredResponse = {
   id: number;
   number: number;

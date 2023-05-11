@@ -1,24 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
-import { type ReservationSlot } from 'features/reservationSlots/types/reservationSlot';
 import { axios } from 'lib/axios';
 import { useMessage } from '../../message/hooks/useMessage';
+import { type ReservationSlotResponse } from '../types/reservationSlot';
 
-export const useAllReservationSlots = (): {
+export const useGetReservationSlots = (): {
   getReservationSlots: () => void;
   loading: boolean;
-  reservationSlots: ReservationSlot[];
+  reservationSlots: ReservationSlotResponse[];
 } => {
   const { showMessage } = useMessage();
   const [loading, setLoading] = useState(true);
-  const [reservationSlots, setReservationSlots] = useState<ReservationSlot[]>(
-    []
-  );
+  const [reservationSlots, setReservationSlots] = useState<
+    ReservationSlotResponse[]
+  >([]);
 
   const getReservationSlots = useCallback(() => {
     setLoading(true);
     axios
-      .get<ReservationSlot[]>(`/reservation-slots`)
+      .get<ReservationSlotResponse[]>(`/reservation-slots`)
       .then((res) => {
         setReservationSlots(res.data);
       })

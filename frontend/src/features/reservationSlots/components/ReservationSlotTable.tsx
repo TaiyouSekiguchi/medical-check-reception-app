@@ -14,20 +14,20 @@ export const ReservationSlotTable: VFC<Props> = memo((props) => {
       <Thead>
         <Tr>
           <Th>日付</Th>
-          <Th>基本検査枠数</Th>
-          <Th>胃カメラ検査枠数</Th>
-          <Th>バリウム検査枠数</Th>
-          <Th>乳がん検査枠数</Th>
+          <Th>基本検査</Th>
+          <Th>胃カメラ検査</Th>
+          <Th>バリウム検査</Th>
+          <Th>乳がん検査</Th>
         </Tr>
       </Thead>
       <Tbody>
-        {reservationSlots.map((reservationSlot, index) => (
+        {reservationSlots.map((rs, index) => (
           <Tr key={index} _hover={{ bg: 'gray.300' }}>
-            <Td>{reservationSlot.date}</Td>
-            <Td>{reservationSlot.basic}</Td>
-            <Td>{reservationSlot.gastrointestinal_endoscopy}</Td>
-            <Td>{reservationSlot.barium}</Td>
-            <Td>{reservationSlot.breast_cancer_screening}</Td>
+            <Td>{new Date(rs.date).toLocaleDateString('ja-JP')}</Td>
+            <Td>{rs.basic}</Td>
+            <Td>{rs.gastrointestinal_endoscopy}</Td>
+            <Td>{rs.barium}</Td>
+            <Td>{rs.breast_cancer_screening}</Td>
           </Tr>
         ))}
       </Tbody>

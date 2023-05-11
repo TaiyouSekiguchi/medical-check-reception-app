@@ -17,7 +17,7 @@ export const InsuredImport: VFC = memo(() => {
     await createInsureds(insureds);
   };
 
-  const handleFunction = (arg: InsuredRequest[]) => {
+  const setFunction = (arg: InsuredRequest[]) => {
     setInsured(arg);
   };
 
@@ -26,7 +26,7 @@ export const InsuredImport: VFC = memo(() => {
       {!isLoaded ? (
         <StyledFileDrop<InsuredRequest[]>
           setIsLoaded={setIsLoaded}
-          setFunction={handleFunction}
+          setFunction={setFunction}
         />
       ) : (
         <Box>
