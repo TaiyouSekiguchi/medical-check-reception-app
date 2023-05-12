@@ -13,8 +13,8 @@ import { useForm } from 'react-hook-form';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { useCreateUser } from '../api/useCreateUser';
 import { type UserRequest } from '../types/user';
-import { createUserFormValidateScheme } from '../validator/createUserFromValidateScheme';
-import { CreateUserForm } from './CreateUserForm';
+import { userFormValidateScheme } from '../validator/userFromValidateScheme';
+import { UserForm } from './UserForm';
 
 type Props = {
   isOpen: boolean;
@@ -23,7 +23,6 @@ type Props = {
 };
 
 export const CreateUserModal: VFC<Props> = memo((props) => {
-  console.log('CreateUserModal rendered!!');
   const { isOpen, onClose, getUsers } = props;
 
   const { createUser, loading } = useCreateUser();
@@ -40,7 +39,7 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
       is_admin: false,
     },
     mode: 'onSubmit',
-    resolver: yupResolver(createUserFormValidateScheme),
+    resolver: yupResolver(userFormValidateScheme),
   });
 
   const onSubmit = async (data: UserRequest) => {
@@ -60,7 +59,7 @@ export const CreateUserModal: VFC<Props> = memo((props) => {
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <CreateUserForm register={register} errors={errors} />
+            <UserForm register={register} errors={errors} />
           </ModalBody>
           <ModalFooter>
             <PrimaryButton

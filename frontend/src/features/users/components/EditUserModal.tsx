@@ -14,18 +14,19 @@ import { useForm } from 'react-hook-form';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { useUpdateUser } from '../api/useUpdateUser';
 import { type UserResponse, type UserRequest } from '../types/user';
-import { createUserFormValidateScheme } from '../validator/createUserFromValidateScheme';
-import { CreateUserForm } from './CreateUserForm';
+import { userFormValidateScheme } from '../validator/userFromValidateScheme';
 import { SelectedUserCard } from './SelectedUserCard';
+import { UserForm } from './UserForm';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   user: UserResponse | null;
+  getUsers: () => void;
 };
 
 export const EditUserModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, user } = props;
+  const { isOpen, onClose, user, getUsers } = props;
   const { showMessage } = useMessage();
   const { updateUser, loading } = useUpdateUser();
 
@@ -41,12 +42,13 @@ export const EditUserModal: VFC<Props> = memo((props) => {
       is_admin: false,
     },
     mode: 'onSubmit',
-    resolver: yupResolver(createUserFormValidateScheme),
+    resolver: yupResolver(userFormValidateScheme),
   });
 
   const onSubmit = async (data: UserRequest) => {
     if (user?.id != null) {
       await updateUser(user.id, data);
+      getUsers();
       setValue('username', '');
       setValue('password', '');
       setValue('is_admin', false);
@@ -68,7 +70,7 @@ export const EditUserModal: VFC<Props> = memo((props) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
             <SelectedUserCard user={user} />
-            <CreateUserForm register={register} errors={errors} />
+            <UserForm register={register} errors={errors} />
           </ModalBody>
           <ModalFooter>
             <PrimaryButton

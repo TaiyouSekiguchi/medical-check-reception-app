@@ -65,6 +65,7 @@ export const UserManagement: VFC = memo(() => {
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         user={selectedUser}
+        getUsers={getUsers}
       />
     </ContentLayout>
   );
