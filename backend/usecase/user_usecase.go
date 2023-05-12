@@ -147,9 +147,11 @@ func (uu *userUsecase) UpdateUser(userReq model.UserRequest, userId uint) (model
 	}
 
 	resUser := model.UserResponse{
-		ID:       user.ID,
-		Username: user.Username,
-		IsAdmin:  admin.ID > 0,
+		ID:        user.ID,
+		Username:  user.Username,
+		IsAdmin:   admin.ID > 0,
+		CreatedAt: time2str(user.CreatedAt),
+		UpdatedAt: time2str(user.UpdatedAt),
 	}
 
 	return resUser, nil
