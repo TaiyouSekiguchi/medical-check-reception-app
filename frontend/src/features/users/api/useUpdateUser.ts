@@ -2,24 +2,24 @@
 import { useCallback, useState } from 'react';
 import { axios } from 'lib/axios';
 import { useMessage } from '../../message/hooks/useMessage';
-import { type UserRequest, type User } from '../types/user';
+import { type UserRequest, type UserResponse } from '../types/user';
 
 export const useUpdateUser = (): {
   updateUser: (userId: number, data: UserRequest) => Promise<void>;
   loading: boolean;
-  user: User | null;
+  user: UserResponse | null;
 } => {
   const { showMessage } = useMessage();
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserResponse | null>(null);
 
   const updateUser = useCallback(async (userId: number, data: UserRequest) => {
     setLoading(true);
     try {
-      const res = await axios.put<User>(`/users/${userId}`, data);
+      const res = await axios.put<UserResponse>(`/users/${userId}`, data);
       setUser(res.data);
       showMessage({
-        title: 'ユーザー情報を更新作成しました',
+        title: 'ユーザー情報を更新しました',
         status: 'success',
       });
     } catch {

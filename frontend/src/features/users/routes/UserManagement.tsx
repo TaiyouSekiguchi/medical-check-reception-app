@@ -7,9 +7,9 @@ import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { useGetUsers } from '../api/useGetUsers';
 import { CreateUserModal } from '../components/CreateUserModal';
-import { EditUserInfoModal } from '../components/EditUserInfoModal';
+import { EditUserModal } from '../components/EditUserModal';
 import { UserTable } from '../components/UserTable';
-import { type User } from '../types/user';
+import { type UserResponse } from '../types/user';
 
 export const UserManagement: VFC = memo(() => {
   const {
@@ -26,7 +26,7 @@ export const UserManagement: VFC = memo(() => {
 
   const { getUsers, loading, users } = useGetUsers();
 
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserResponse | null>(null);
 
   useEffect(() => {
     getUsers();
@@ -36,8 +36,8 @@ export const UserManagement: VFC = memo(() => {
     onOpenCreate();
   }, [onOpenCreate]);
 
-  const onClickDetail = useCallback(
-    (user: User) => {
+  const onClickUser = useCallback(
+    (user: UserResponse) => {
       setSelectedUser(user);
       onOpenEdit();
     },
@@ -53,7 +53,7 @@ export const UserManagement: VFC = memo(() => {
         <CenterSpinner />
       ) : (
         <BorderedBox p="24px">
-          <UserTable users={users} onClickDetail={onClickDetail} />
+          <UserTable users={users} onClick={onClickUser} />
         </BorderedBox>
       )}
       <CreateUserModal
@@ -61,10 +61,11 @@ export const UserManagement: VFC = memo(() => {
         onClose={onCloseCreate}
         getUsers={getUsers}
       />
-      <EditUserInfoModal
+      <EditUserModal
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         user={selectedUser}
+        getUsers={getUsers}
       />
     </ContentLayout>
   );

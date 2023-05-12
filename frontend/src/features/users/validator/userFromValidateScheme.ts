@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const createUserFormValidateScheme = yup.object({
+export const userFormValidateScheme = yup.object({
   username: yup
     .string()
     .required('必須項目です')

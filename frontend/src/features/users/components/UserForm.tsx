@@ -21,7 +21,7 @@ type Field = {
   type: 'text' | 'password' | 'checkbox';
 };
 
-export const CreateUserForm: VFC<Props> = memo((props) => {
+export const UserForm: VFC<Props> = memo((props) => {
   const { register, errors } = props;
   const fields: Field[] = [
     {

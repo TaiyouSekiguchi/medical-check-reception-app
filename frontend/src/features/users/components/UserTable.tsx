@@ -1,17 +1,37 @@
 import { memo, type VFC } from 'react';
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { formatStringDate } from 'lib/formatDate';
+import { DeleteIconButton } from 'components/iconButtons/DeleteIconButton';
+import { useDeleteUser } from '../api/useDeleteUser';
 import { type UserResponse } from '../types/user';
 
 type Props = {
   users: UserResponse[];
-  onClickDetail: (user: UserResponse) => void;
+  onClick: (user: UserResponse) => void;
 };
 
-export const UserTable: VFC<Props> = memo((props) => {
-  const { users, onClickDetail } = props;
+const HoverableTr = chakra(Tr, {
+  baseStyle: {
+    _hover: {
+      bg: 'gray.300',
+      '> td:last-child': {
+        opacity: 1,
+      },
+    },
+  },
+});
 
-  console.log(users);
+export const UserTable: VFC<Props> = memo((props) => {
+  const { users, onClick } = props;
+  const { deleteUser } = useDeleteUser();
+
+  const onClickDelete = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    user: UserResponse
+  ) => {
+    event.stopPropagation();
+    deleteUser(user.id);
+  };
 
   return (
     <Table>
@@ -22,15 +42,15 @@ export const UserTable: VFC<Props> = memo((props) => {
           <Th>管理者権限</Th>
           <Th>作成日</Th>
           <Th>更新日</Th>
+          <Th></Th>
         </Tr>
       </Thead>
       <Tbody>
         {users.map((user) => (
-          <Tr
+          <HoverableTr
             key={user.id}
-            _hover={{ bg: 'gray.300' }}
             onClick={() => {
-              onClickDetail(user);
+              onClick(user);
             }}
           >
             <Td>{user.id}</Td>
@@ -38,7 +58,10 @@ export const UserTable: VFC<Props> = memo((props) => {
             <Td>{user.is_admin ? '○' : '―'}</Td>
             <Td>{formatStringDate(user.created_at)}</Td>
             <Td>{formatStringDate(user.updated_at)}</Td>
-          </Tr>
+            <Td opacity={0}>
+              <DeleteIconButton onClick={onClickDelete} user={user} />
+            </Td>
+          </HoverableTr>
         ))}
       </Tbody>
     </Table>
