@@ -8,8 +8,10 @@ import (
 
 type IAdminRepository interface {
 	GetAdminByUserID(admin *model.Admin, userId uint) error
+	GetAdminByUserIDUnscoped(admin *model.Admin, userId uint) error
 	CreateAdmin(admin *model.Admin) error
 	DeleteAdmin(userId uint) error
+	RestoreAdmin(admin *model.Admin) error
 }
 
 type adminRepository struct {
@@ -27,6 +29,13 @@ func (ar *adminRepository) GetAdminByUserID(admin *model.Admin, userId uint) err
 	return nil
 }
 
+func (ar *adminRepository) GetAdminByUserIDUnscoped(admin *model.Admin, userId uint) error {
+	if err := ar.db.Unscoped().Where("user_id = ?", userId).Find(admin).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (ar *adminRepository) CreateAdmin(admin *model.Admin) error {
 	if err := ar.db.Create(admin).Error; err != nil {
 		return err
@@ -39,5 +48,13 @@ func (ar *adminRepository) DeleteAdmin(userId uint) error {
 	if result.Error != nil {
 		return result.Error
 	}
+	return nil
+}
+
+func (ar *adminRepository) RestoreAdmin(admin *model.Admin) error {
+	if err := ar.db.Unscoped().Model(admin).Update("deleted_at", gorm.Expr("NULL")).Error; err != nil {
+		return err
+	}
+
 	return nil
 }

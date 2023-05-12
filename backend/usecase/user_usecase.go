@@ -125,19 +125,28 @@ func (uu *userUsecase) UpdateUser(userReq model.UserRequest, userId uint) (model
 	}
 
 	// Adminテーブルにレコードが存在するか確認
+	// 論理削除の場合も含めて、Adminテーブルにレコードが存在するか確認する
 
 	preAdmin := model.Admin{}
-	if err := uu.ar.GetAdminByUserID(&preAdmin, userId); err != nil {
+	if err := uu.ar.GetAdminByUserIDUnscoped(&preAdmin, userId); err != nil {
 		return model.UserResponse{}, err
 	}
 
+	IsAdminResult := false
 	admin := model.Admin{UserID: user.ID}
 	if userReq.IsAdmin { // リクエストのis_adminがtrue
 		if preAdmin.ID == 0 { // Adminテーブルにレコードが存在しない
 			if err := uu.ar.CreateAdmin(&admin); err != nil {
 				return model.UserResponse{}, err
 			}
+		} else { // Adminテーブルにレコードが存在する
+			if !preAdmin.DeletedAt.Time.IsZero() { // Adminテーブルにレコードが存在するが、論理削除されている
+				if err := uu.ar.RestoreAdmin(&preAdmin); err != nil { // 論理削除を解除する
+					return model.UserResponse{}, err
+				}
+			}
 		}
+		IsAdminResult = true
 	} else { // リクエストのis_adminがfalse
 		if preAdmin.ID > 0 { // Adminテーブルにレコードが存在する
 			if err := uu.ar.DeleteAdmin(userId); err != nil {
@@ -147,9 +156,11 @@ func (uu *userUsecase) UpdateUser(userReq model.UserRequest, userId uint) (model
 	}
 
 	resUser := model.UserResponse{
-		ID:       user.ID,
-		Username: user.Username,
-		IsAdmin:  admin.ID > 0,
+		ID:        user.ID,
+		Username:  user.Username,
+		IsAdmin:   IsAdminResult,
+		CreatedAt: time2str(user.CreatedAt),
+		UpdatedAt: time2str(user.UpdatedAt),
 	}
 
 	return resUser, nil

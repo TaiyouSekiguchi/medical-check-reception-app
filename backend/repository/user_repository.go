@@ -46,7 +46,7 @@ func (ur *userRepository) CreateUser(user *model.User) error {
 }
 
 func (ur *userRepository) UpdateUser(user *model.User) error {
-	if err := ur.db.Save(user).Error; err != nil {
+	if err := ur.db.Model(&user).Updates(user).Error; err != nil {
 		return err
 	}
 	return nil
