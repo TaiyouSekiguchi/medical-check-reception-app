@@ -5,6 +5,7 @@ export type User = {
 };
 
 // useCreateUser.ts
+// useUpdateUser.ts
 export type UserRequest = {
   username: string;
   password: string;
@@ -13,6 +14,7 @@ export type UserRequest = {
 
 // useGetUsers.ts
 // useCreateUser.ts
+// useUpdateUser.ts
 export type UserResponse = {
   id: number;
   username: string;
