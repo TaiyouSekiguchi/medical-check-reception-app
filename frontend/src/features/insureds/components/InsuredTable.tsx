@@ -13,7 +13,7 @@ export const InsuredTable: VFC<Props> = memo((props) => {
     <Table>
       <Thead>
         <Tr>
-          <Th>ID</Th>
+          <Th>No.</Th>
           <Th>被保険者番号</Th>
           <Th>姓</Th>
           <Th>名</Th>
@@ -23,9 +23,9 @@ export const InsuredTable: VFC<Props> = memo((props) => {
         </Tr>
       </Thead>
       <Tbody>
-        {insureds.map((insured) => (
-          <Tr key={insured.id} _hover={{ bg: 'gray.300' }}>
-            <Td>{insured.id}</Td>
+        {insureds.map((insured, index) => (
+          <Tr key={index} _hover={{ bg: 'gray.300' }}>
+            <Td>{index + 1}</Td>
             <Td>{insured.number}</Td>
             <Td>{insured.last_name}</Td>
             <Td>{insured.first_name}</Td>

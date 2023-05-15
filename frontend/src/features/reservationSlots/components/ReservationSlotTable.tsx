@@ -13,6 +13,7 @@ export const ReservationSlotTable: VFC<Props> = memo((props) => {
     <Table>
       <Thead>
         <Tr>
+          <Th>No.</Th>
           <Th>日付</Th>
           <Th>基本検査</Th>
           <Th>胃カメラ検査</Th>
@@ -23,6 +24,7 @@ export const ReservationSlotTable: VFC<Props> = memo((props) => {
       <Tbody>
         {reservationSlots.map((rs, index) => (
           <Tr key={index} _hover={{ bg: 'gray.300' }}>
+            <Td>{index + 1}</Td>
             <Td>{new Date(rs.date).toLocaleDateString('ja-JP')}</Td>
             <Td>{rs.basic}</Td>
             <Td>{rs.gastrointestinal_endoscopy}</Td>
