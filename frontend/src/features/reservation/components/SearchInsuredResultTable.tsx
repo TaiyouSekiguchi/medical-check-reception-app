@@ -5,11 +5,11 @@ import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
 type Props = {
   insureds: InsuredWithReservation[];
-  handleRowClick: (insured: InsuredWithReservation) => void;
+  onClickInsured: (insured: InsuredWithReservation) => void;
 };
 
-export const InsuredListTable: VFC<Props> = memo((props) => {
-  const { insureds, handleRowClick } = props;
+export const SearchInsuredResultTable: VFC<Props> = memo((props) => {
+  const { insureds, onClickInsured } = props;
 
   return (
     <Table>
@@ -31,7 +31,7 @@ export const InsuredListTable: VFC<Props> = memo((props) => {
             key={insured.id}
             _hover={{ bg: 'gray.300' }}
             onClick={() => {
-              handleRowClick(insured);
+              onClickInsured(insured);
             }}
           >
             <Td>{index + 1}</Td>

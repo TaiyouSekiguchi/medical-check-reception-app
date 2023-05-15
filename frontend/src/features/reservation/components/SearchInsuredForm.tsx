@@ -12,7 +12,7 @@ type Props = {
   getInsuredsWithReservation: (data: FormInputs) => void;
 };
 
-export const SearchInputForm: VFC<Props> = memo((props) => {
+export const SearchInsuredForm: VFC<Props> = memo((props) => {
   const { getInsuredsWithReservation } = props;
 
   const {

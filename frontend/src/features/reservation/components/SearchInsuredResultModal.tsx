@@ -7,9 +7,11 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Button,
+  Text,
+  Flex,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { ReservationStatusTable } from './ReservationStatusTable';
 
@@ -19,7 +21,7 @@ type Props = {
   selectedInsured: InsuredWithReservation | null;
 };
 
-export const InsuredListModal: VFC<Props> = memo((props) => {
+export const SearchInsuredResultModal: VFC<Props> = memo((props) => {
   const { isOpen, onClose, selectedInsured } = props;
   const navigate = useNavigate();
 
@@ -51,22 +53,21 @@ export const InsuredListModal: VFC<Props> = memo((props) => {
           {selectedInsured != null ? (
             <ReservationStatusTable selectedInsured={selectedInsured} />
           ) : (
-            <></>
+            <Text>選択されたユーザー情報がありません。</Text>
           )}
         </ModalBody>
         <ModalFooter>
-          {selectedInsured != null ? (
-            selectedInsured.is_reserved ? (
-              <>
-                <Button onClick={onClickUpdate}>変更</Button>
-                <Button onClick={onClickDelete}>削除</Button>
-              </>
+          {selectedInsured != null &&
+            (selectedInsured.is_reserved ? (
+              <Flex>
+                <PrimaryButton mr="8px" onClick={onClickUpdate}>
+                  変更
+                </PrimaryButton>
+                <PrimaryButton onClick={onClickDelete}>削除</PrimaryButton>
+              </Flex>
             ) : (
-              <Button onClick={onClickReservation}>予約</Button>
-            )
-          ) : (
-            <></>
-          )}
+              <PrimaryButton onClick={onClickReservation}>予約</PrimaryButton>
+            ))}
         </ModalFooter>
       </ModalContent>
     </Modal>
