@@ -1,5 +1,5 @@
 import { memo, type VFC } from 'react';
-import { Flex, Table, Tr, Th, Td } from '@chakra-ui/react';
+import { Table, Tr, Th, Td, Tbody } from '@chakra-ui/react';
 import { formatStringDate } from 'lib/formatDate';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
@@ -10,61 +10,36 @@ type Props = {
 export const ReservationStatusTable: VFC<Props> = memo((props) => {
   const { selectedInsured } = props;
 
+  let titles = ['被保険者番号', '氏名', '生年月日', '性別', '住所'];
+  let contents = [
+    selectedInsured.number,
+    `${selectedInsured.last_name} ${selectedInsured.first_name}`,
+    formatStringDate(selectedInsured.birthday),
+    selectedInsured.sex_alias,
+    selectedInsured.address,
+  ];
+
+  if (selectedInsured.is_reserved) {
+    titles = titles.concat(['検査日', '検査項目']);
+    contents = contents.concat([
+      formatStringDate(selectedInsured.reservation_date),
+      selectedInsured.examination_items.join(', '),
+    ]);
+  } else {
+    titles = titles.concat(['予約状況']);
+    contents = contents.concat(['予約なし']);
+  }
+
   return (
     <Table size="md">
-      <Tr>
-        <Th>被保険者番号</Th>
-        <Td>{selectedInsured.number}</Td>
-      </Tr>
-      <Tr>
-        <Th>氏名</Th>
-        <Td>
-          {selectedInsured.last_name} {selectedInsured.first_name}
-        </Td>
-      </Tr>
-      <Tr>
-        <Th>生年月日</Th>
-        <Td>
-          {new Date(selectedInsured.birthday).toLocaleDateString('ja-JP')}
-        </Td>
-      </Tr>
-      <Tr>
-        <Th>性別</Th>
-        <Td>{selectedInsured.sex_alias}</Td>
-      </Tr>
-      <Tr>
-        <Th>住所</Th>
-        <Td>{selectedInsured.address}</Td>
-      </Tr>
-      {selectedInsured.is_reserved ? (
-        <>
-          <Tr>
-            <Th>検査日</Th>
-            <Td>{formatStringDate(selectedInsured.reservation_date)}</Td>
+      <Tbody>
+        {titles.map((title, index) => (
+          <Tr key={index}>
+            <Th>{title}</Th>
+            <Td>{contents[index]}</Td>
           </Tr>
-          <Tr>
-            <Th>検査項目</Th>
-            <Td>
-              <Flex>
-                {selectedInsured.examination_items.map(
-                  (examinationItem, index) => (
-                    <div key={index}>
-                      {examinationItem}
-                      {index !== selectedInsured.examination_items.length - 1 &&
-                        ', '}
-                    </div>
-                  )
-                )}
-              </Flex>
-            </Td>
-          </Tr>
-        </>
-      ) : (
-        <Tr>
-          <Th>予約状況</Th>
-          <Td>予約なし</Td>
-        </Tr>
-      )}
+        ))}
+      </Tbody>
     </Table>
   );
 });
