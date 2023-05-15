@@ -2,12 +2,15 @@ import { memo, type VFC } from 'react';
 import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { formatStringDate } from 'lib/formatDate';
 import { DeleteIconButton } from 'components/iconButtons/DeleteIconButton';
-import { useDeleteUser } from '../api/useDeleteUser';
 import { type UserResponse } from '../types/user';
 
 type Props = {
   users: UserResponse[];
-  onClick: (user: UserResponse) => void;
+  onClickUser: (user: UserResponse) => void;
+  onClickDeleteIcon: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    user: UserResponse
+  ) => void;
 };
 
 const HoverableTr = chakra(Tr, {
@@ -22,16 +25,7 @@ const HoverableTr = chakra(Tr, {
 });
 
 export const UserTable: VFC<Props> = memo((props) => {
-  const { users, onClick } = props;
-  const { deleteUser } = useDeleteUser();
-
-  const onClickDelete = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    user: UserResponse
-  ) => {
-    event.stopPropagation();
-    deleteUser(user.id);
-  };
+  const { users, onClickUser, onClickDeleteIcon } = props;
 
   return (
     <Table>
@@ -50,7 +44,7 @@ export const UserTable: VFC<Props> = memo((props) => {
           <HoverableTr
             key={user.id}
             onClick={() => {
-              onClick(user);
+              onClickUser(user);
             }}
           >
             <Td>{user.id}</Td>
@@ -59,7 +53,7 @@ export const UserTable: VFC<Props> = memo((props) => {
             <Td>{formatStringDate(user.created_at)}</Td>
             <Td>{formatStringDate(user.updated_at)}</Td>
             <Td opacity={0}>
-              <DeleteIconButton onClick={onClickDelete} user={user} />
+              <DeleteIconButton onClick={onClickDeleteIcon} user={user} />
             </Td>
           </HoverableTr>
         ))}

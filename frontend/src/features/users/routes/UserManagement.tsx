@@ -7,6 +7,7 @@ import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { useGetUsers } from '../api/useGetUsers';
 import { CreateUserModal } from '../components/CreateUserModal';
+import { DeleteUserDialog } from '../components/DeleteUserDialog';
 import { EditUserModal } from '../components/EditUserModal';
 import { UserTable } from '../components/UserTable';
 import { type UserResponse } from '../types/user';
@@ -22,6 +23,12 @@ export const UserManagement: VFC = memo(() => {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
     onClose: onCloseEdit,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
   } = useDisclosure();
 
   const { getUsers, loading, users } = useGetUsers();
@@ -44,6 +51,18 @@ export const UserManagement: VFC = memo(() => {
     [onOpenEdit]
   );
 
+  const onClickDeleteIcon = useCallback(
+    (
+      event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+      user: UserResponse
+    ) => {
+      event.stopPropagation();
+      setSelectedUser(user);
+      onOpenDelete();
+    },
+    [onOpenDelete]
+  );
+
   return (
     <ContentLayout title="ユーザー管理">
       <Flex justify="flex-end" mb="16px">
@@ -53,7 +72,11 @@ export const UserManagement: VFC = memo(() => {
         <CenterSpinner />
       ) : (
         <BorderedBox p="24px">
-          <UserTable users={users} onClick={onClickUser} />
+          <UserTable
+            users={users}
+            onClickUser={onClickUser}
+            onClickDeleteIcon={onClickDeleteIcon}
+          />
         </BorderedBox>
       )}
       <CreateUserModal
@@ -64,6 +87,12 @@ export const UserManagement: VFC = memo(() => {
       <EditUserModal
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
+        user={selectedUser}
+        getUsers={getUsers}
+      />
+      <DeleteUserDialog
+        isOpen={isOpenDelete}
+        onClose={onCloseDelete}
         user={selectedUser}
         getUsers={getUsers}
       />
