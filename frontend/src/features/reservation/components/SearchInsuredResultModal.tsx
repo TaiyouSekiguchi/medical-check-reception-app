@@ -31,12 +31,6 @@ export const SearchInsuredResultModal: VFC<Props> = memo((props) => {
     });
   }, [navigate, selectedInsured]);
 
-  const onClickUpdate = useCallback(() => {
-    navigate('/home/reservation_management/reservable_slot', {
-      state: selectedInsured,
-    });
-  }, [navigate, selectedInsured]);
-
   const onClickDelete = useCallback(() => {
     navigate('/home/reservation_management/delete_check', {
       state: selectedInsured,
@@ -60,7 +54,7 @@ export const SearchInsuredResultModal: VFC<Props> = memo((props) => {
           {selectedInsured != null &&
             (selectedInsured.is_reserved ? (
               <Flex>
-                <PrimaryButton mr="8px" onClick={onClickUpdate}>
+                <PrimaryButton mr="8px" onClick={onClickReservation}>
                   変更
                 </PrimaryButton>
                 <PrimaryButton onClick={onClickDelete}>削除</PrimaryButton>
