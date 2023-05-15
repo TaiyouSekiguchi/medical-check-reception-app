@@ -4,35 +4,29 @@ import { axios } from 'lib/axios';
 import { useMessage } from '../../message/hooks/useMessage';
 
 export const useDeleteUser = (): {
-  deleteUser: (userId: number) => void;
+  deleteUser: (userId: number) => Promise<void>;
   loading: boolean;
 } => {
   const { showMessage } = useMessage();
   const [loading, setLoading] = useState(false);
 
-  const deleteUser = useCallback((userId: number) => {
+  const deleteUser = useCallback(async (userId: number) => {
     setLoading(true);
-    axios
-      .delete(`/users/${userId}`)
-      .then(() => {
-        showMessage({
-          title: 'ユーザー削除に成功しました',
-          status: 'success',
-        });
-      })
-      .catch(() => {
-        showMessage({
-          title: 'ユーザー削除に失敗しました',
-          status: 'error',
-        });
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      await axios.delete(`/users/${userId}`);
+      showMessage({
+        title: 'ユーザー削除に成功しました',
+        status: 'success',
       });
+    } catch {
+      showMessage({
+        title: 'ユーザー削除に失敗しました',
+        status: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  return {
-    deleteUser,
-    loading,
-  };
+  return { deleteUser, loading };
 };
