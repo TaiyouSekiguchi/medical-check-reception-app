@@ -59,7 +59,9 @@ export const DeleteUserDialog: VFC<Props> = memo((props) => {
               <SelectedUserCard user={user} />
             </Box>
             <AlertDialogBody>
-              このユーザーを削除してよいですか。この操作は取り消せません。
+              このユーザーを削除しますか？
+              <br />
+              この操作は取り消せません。
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
