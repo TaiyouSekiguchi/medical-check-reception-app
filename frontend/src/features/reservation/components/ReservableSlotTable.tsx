@@ -5,11 +5,11 @@ import { type ReservableSlot } from '../types/reservableSlot';
 
 type Props = {
   reservableSlots: ReservableSlot[];
-  handleRowClick: (reservableSlot: ReservableSlot) => void;
+  onClickReservableSlot: (reservableSlot: ReservableSlot) => void;
 };
 
-export const ReservableSlotListTable: VFC<Props> = memo((props) => {
-  const { reservableSlots, handleRowClick } = props;
+export const ReservableSlotTable: VFC<Props> = memo((props) => {
+  const { reservableSlots, onClickReservableSlot } = props;
 
   return (
     <Table>
@@ -29,7 +29,7 @@ export const ReservableSlotListTable: VFC<Props> = memo((props) => {
             key={index}
             _hover={{ bg: 'gray.300' }}
             onClick={() => {
-              handleRowClick(rs);
+              onClickReservableSlot(rs);
             }}
           >
             <Td>{index + 1}</Td>

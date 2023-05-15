@@ -5,26 +5,13 @@ import {
   ModalContent,
   ModalHeader,
   ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
-  HStack,
-  Text,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { formatStringDate } from 'lib/formatDate';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
 import { examinationItemCheckboxScheme } from '../validator/examinationItemCheckboxScheme';
-
-type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-  selectedInsured: InsuredWithReservation | null;
-  selectedReservableSlot: ReservableSlot | null;
-};
+import { SelectExaminationItem } from './SelectExaminationItem';
 
 type ExamItem = {
   id:
@@ -45,7 +32,14 @@ type SubmitData = {
   IsProstateCancerScreeningChecked: boolean;
 };
 
-export const SelectExaminationItemModal: VFC<Props> = memo((props) => {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedInsured: InsuredWithReservation | null;
+  selectedReservableSlot: ReservableSlot | null;
+};
+
+export const ReservableSlotModal: VFC<Props> = memo((props) => {
   const { isOpen, onClose, selectedInsured, selectedReservableSlot } = props;
 
   const [examItems, setExamItems] = useState<ExamItem[]>([]);
@@ -112,38 +106,12 @@ export const SelectExaminationItemModal: VFC<Props> = memo((props) => {
     resolver: yupResolver(examinationItemCheckboxScheme),
   });
 
-  const navigate = useNavigate();
-
-  const onSubmit: SubmitHandler<SubmitData> = useCallback(
-    (data: SubmitData) => {
-      const submitData: SubmitData = {
-        ...data,
-      };
-      // console.log('selectedInsure', selectedInsured);
-      // console.log('selectedReservableSlot', selectedReservableSlot);
-      // console.log('submitData', submitData);
-
-      navigate('/home/reservation_management/check', {
-        state: {
-          selectedInsured,
-          selectedReservableSlot,
-          submitData,
-        },
-      });
-    },
-    [navigate, selectedInsured, selectedReservableSlot]
-  );
-
-  const handleReset = useCallback(() => {
+  const onCloseModal = useCallback(() => {
     examItems.forEach((item) => {
       setValue(item.id, false);
     });
-  }, [examItems, setValue]);
-
-  const onCloseModal = useCallback(() => {
-    handleReset();
     onClose();
-  }, [handleReset, onClose]);
+  }, [onClose, examItems, setValue]);
 
   return (
     <Modal isOpen={isOpen} onClose={onCloseModal}>
@@ -151,44 +119,16 @@ export const SelectExaminationItemModal: VFC<Props> = memo((props) => {
       <ModalContent>
         <ModalHeader>検査項目選択</ModalHeader>
         <ModalCloseButton />
-        <form onSubmit={handleSubmit(onSubmit)} name="checkbox">
-          <ModalBody>
-            <HStack>
-              <Text>
-                受診日:
-                {selectedReservableSlot?.date != null &&
-                  formatStringDate(selectedReservableSlot?.date)}
-              </Text>
-            </HStack>
-            <div>
-              {examItems.map((item) => {
-                return (
-                  item.isReservable && (
-                    <div key={item.id}>
-                      <input
-                        id={item.id}
-                        type="checkbox"
-                        defaultChecked={item.checked}
-                        disabled={item.disabled}
-                        {...register(item.id)}
-                      />
-                      <label htmlFor={item.id}>{item.name}</label>
-                    </div>
-                  )
-                );
-              })}
-            </div>
-            {getValues('IsGastrointestinalEndoscopyChecked') &&
-              getValues('IsBariumChecked') && (
-                <p>胃カメラ検査とバリウム検査はどちらかを選択して下さい。</p>
-              )}
-          </ModalBody>
-          <ModalFooter>
-            <Button type="submit" isDisabled={!isValid || isSubmitting}>
-              予約確認
-            </Button>
-          </ModalFooter>
-        </form>
+        <SelectExaminationItem
+          selectedInsured={selectedInsured}
+          selectedReservableSlot={selectedReservableSlot}
+          examItems={examItems}
+          register={register}
+          handleSubmit={handleSubmit}
+          getValues={getValues}
+          isValid={isValid}
+          isSubmitting={isSubmitting}
+        />
       </ModalContent>
     </Modal>
   );
