@@ -40,14 +40,14 @@ export const UserTable: VFC<Props> = memo((props) => {
         </Tr>
       </Thead>
       <Tbody>
-        {users.map((user) => (
+        {users.map((user, index) => (
           <HoverableTr
             key={user.id}
             onClick={() => {
               onClickUser(user);
             }}
           >
-            <Td>{user.id}</Td>
+            <Td>{index + 1}</Td>
             <Td>{user.username}</Td>
             <Td>{user.is_admin ? '○' : '―'}</Td>
             <Td>{formatStringDate(user.created_at)}</Td>
