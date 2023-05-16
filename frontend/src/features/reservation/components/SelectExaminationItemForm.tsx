@@ -1,5 +1,5 @@
 import { memo, useCallback, type VFC } from 'react';
-import { ModalBody, ModalFooter, Button, Text } from '@chakra-ui/react';
+import { ModalBody, ModalFooter, Text } from '@chakra-ui/react';
 import { formatStringDate } from 'lib/formatDate';
 import {
   type SubmitHandler,
@@ -8,6 +8,7 @@ import {
   type UseFormGetValues,
 } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { type ExamItemInfo } from '../types/examItemInfo';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
@@ -88,9 +89,9 @@ export const SelectExaminationItemForm: VFC<Props> = memo((props) => {
           )}
       </ModalBody>
       <ModalFooter>
-        <Button type="submit" isDisabled={!isValid || isSubmitting}>
+        <PrimaryButton type="submit" isDisabled={!isValid || isSubmitting}>
           予約確認
-        </Button>
+        </PrimaryButton>
       </ModalFooter>
     </form>
   );
