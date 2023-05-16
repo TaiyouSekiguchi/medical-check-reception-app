@@ -28,6 +28,7 @@ export const useUpdateReservations = (): {
         navigate('/home/reservation_management/result', {
           state: {
             isSuccess: true,
+            action: '予約変更',
           },
         });
       })
@@ -35,6 +36,7 @@ export const useUpdateReservations = (): {
         navigate('/home/reservation_management/result', {
           state: {
             isSuccess: false,
+            action: '予約変更',
           },
         });
         showMessage({

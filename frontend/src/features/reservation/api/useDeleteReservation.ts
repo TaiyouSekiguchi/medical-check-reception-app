@@ -17,9 +17,10 @@ export const useDeleteReservations = (): {
     axios
       .delete(`/reservations/${insuredId}`)
       .then(() => {
-        navigate('/home/reservation_management/delete_result', {
+        navigate('/home/reservation_management/result', {
           state: {
             isSuccess: true,
+            action: '予約削除',
           },
         });
       })
@@ -27,6 +28,7 @@ export const useDeleteReservations = (): {
         navigate('/home/reservation_management/result', {
           state: {
             isSuccess: false,
+            action: '予約削除',
           },
         });
         showMessage({
