@@ -41,14 +41,14 @@ export const SelectExaminationItemForm: VFC<Props> = memo((props) => {
 
   const onSubmit: SubmitHandler<SelectExaminationItemFormData> = useCallback(
     (data: SelectExaminationItemFormData) => {
-      const submitData: SelectExaminationItemFormData = {
+      const examinationItem: SelectExaminationItemFormData = {
         ...data,
       };
       navigate('/home/reservation_management/check', {
         state: {
           selectedInsured,
           selectedReservableSlot,
-          submitData,
+          examinationItem,
         },
       });
     },

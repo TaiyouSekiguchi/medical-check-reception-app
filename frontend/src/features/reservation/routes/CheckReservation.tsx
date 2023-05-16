@@ -11,44 +11,41 @@ import { CheckReservationTable } from '../components/checkReservation/CheckReser
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
 import { type ReservationRequest } from '../types/reservation';
-
-type SubmitData = {
-  IsGastrointestinalEndoscopyChecked: boolean;
-  IsBariumChecked: boolean;
-  IsBreastCancerScreeningChecked: boolean;
-  IsProstateCancerScreeningChecked: boolean;
-};
+import { type SelectExaminationItemFormData } from '../types/selectExaminationItemFormData';
 
 export const CheckReservation: VFC = memo(() => {
   const location = useLocation();
 
-  const { selectedInsured, selectedReservableSlot, submitData } =
+  const { selectedInsured, selectedReservableSlot, examinationItem } =
     location.state as {
       selectedInsured: InsuredWithReservation | null;
       selectedReservableSlot: ReservableSlot | null;
-      submitData: SubmitData;
+      examinationItem: SelectExaminationItemFormData;
     };
 
   const { postReservations, loading } = usePostReservations();
   const { updateReservations } = useUpdateReservations();
 
-  const onClickConfirm = () => {
+  const onClickExecute = (func: (data: ReservationRequest[]) => void) => {
+    if (selectedInsured == null || selectedReservableSlot == null) {
+      return;
+    }
+
     const requests: ReservationRequest[] = [];
 
     const requestBasic: ReservationRequest = {
-      insured_id: selectedInsured?.id ?? 0,
-      reservation_slot_id: selectedReservableSlot?.id ?? 0,
+      insured_id: selectedInsured.id,
+      reservation_slot_id: selectedReservableSlot.id,
       examination_item_id: 1,
     };
 
     requests.push(requestBasic);
 
-    // TODO ここのハードコーディング修正すること
-    for (const [key, value] of Object.entries(submitData)) {
+    for (const [key, value] of Object.entries(examinationItem)) {
       if (value) {
         const request: ReservationRequest = {
-          insured_id: selectedInsured?.id ?? 0,
-          reservation_slot_id: selectedReservableSlot?.id ?? 0,
+          insured_id: selectedInsured.id,
+          reservation_slot_id: selectedReservableSlot.id,
           examination_item_id:
             key === 'IsGastrointestinalEndoscopyChecked'
               ? 2
@@ -63,41 +60,8 @@ export const CheckReservation: VFC = memo(() => {
         requests.push(request);
       }
     }
-    postReservations(requests);
-  };
 
-  const onClickUpdate = () => {
-    const requests: ReservationRequest[] = [];
-
-    const requestBasic: ReservationRequest = {
-      insured_id: selectedInsured?.id ?? 0,
-      reservation_slot_id: selectedReservableSlot?.id ?? 0,
-      examination_item_id: 1,
-    };
-
-    requests.push(requestBasic);
-
-    // TODO ここのハードコーディング修正すること
-    for (const [key, value] of Object.entries(submitData)) {
-      if (value) {
-        const request: ReservationRequest = {
-          insured_id: selectedInsured?.id ?? 0,
-          reservation_slot_id: selectedReservableSlot?.id ?? 0,
-          examination_item_id:
-            key === 'IsGastrointestinalEndoscopyChecked'
-              ? 2
-              : key === 'IsBariumChecked'
-              ? 3
-              : key === 'IsBreastCancerScreeningChecked'
-              ? 4
-              : key === 'IsProstateCancerScreeningChecked'
-              ? 5
-              : 0,
-        };
-        requests.push(request);
-      }
-    }
-    updateReservations(requests);
+    func(requests);
   };
 
   return (
@@ -106,29 +70,38 @@ export const CheckReservation: VFC = memo(() => {
         <CenterSpinner />
       ) : (
         <Box>
-          {selectedInsured != null &&
-            selectedReservableSlot != null &&
-            submitData != null && (
+          {selectedInsured == null || selectedReservableSlot == null ? (
+            <p>被保険者情報、または予約枠情報がありません。</p>
+          ) : (
+            <Box>
               <BorderedBox p="24px">
                 <CheckReservationTable
                   selectedInsured={selectedInsured}
                   selectedReservableSlot={selectedReservableSlot}
-                  submitData={submitData}
+                  examinationItem={examinationItem}
                 />
               </BorderedBox>
-            )}
-          <Flex m="24px" justifyContent="flex-end">
-            {selectedInsured?.is_reserved != null &&
-            selectedInsured.is_reserved ? (
-              <PrimaryButton onClick={onClickUpdate}>
-                予約を変更する
-              </PrimaryButton>
-            ) : (
-              <PrimaryButton onClick={onClickConfirm}>
-                予約を確定する
-              </PrimaryButton>
-            )}
-          </Flex>
+              <Flex m="24px" justifyContent="flex-end">
+                {selectedInsured.is_reserved ? (
+                  <PrimaryButton
+                    onClick={() => {
+                      onClickExecute(updateReservations);
+                    }}
+                  >
+                    予約を変更する
+                  </PrimaryButton>
+                ) : (
+                  <PrimaryButton
+                    onClick={() => {
+                      onClickExecute(postReservations);
+                    }}
+                  >
+                    予約を確定する
+                  </PrimaryButton>
+                )}
+              </Flex>
+            </Box>
+          )}
         </Box>
       )}
     </ContentLayout>
