@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { useCreateUser } from '../api/useCreateUser';
 import { type UserRequest } from '../types/user';
-import { userFormValidateScheme } from '../validator/userFromValidateScheme';
+import { userFormValidateScheme } from '../validator/userFormValidateScheme';
 import { UserForm } from './UserForm';
 
 type Props = {

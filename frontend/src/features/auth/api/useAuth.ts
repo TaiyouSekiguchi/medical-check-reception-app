@@ -5,9 +5,10 @@ import { axios } from '../../../lib/axios';
 import { useMessage } from '../../message/hooks/useMessage';
 import { type User } from '../../users/types/user';
 import { useLoginUser } from '../hooks/useLoginUser';
+import { type LoginRequest } from '../types/auth';
 
 export const useAuth = (): {
-  login: (username: string, password: string) => void;
+  login: (data: LoginRequest) => void;
   logout: () => void;
   loading: boolean;
 } => {
@@ -38,13 +39,8 @@ export const useAuth = (): {
   );
 
   const login = useCallback(
-    (username: string, password: string) => {
+    (data: LoginRequest) => {
       setLoading(true);
-
-      const data = {
-        username,
-        password,
-      };
 
       axios
         .post<{ jwt: string }>('/login', data)
