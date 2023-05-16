@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { useUpdateUser } from '../api/useUpdateUser';
 import { type UserResponse, type UserRequest } from '../types/user';
-import { userFormValidateScheme } from '../validator/userFromValidateScheme';
+import { userFormValidateScheme } from '../validator/userFormValidateScheme';
 import { SelectedUserCard } from './SelectedUserCard';
 import { UserForm } from './UserForm';
 

@@ -1,5 +1,4 @@
-import { type VFC, memo, useState, type ChangeEvent } from 'react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { type VFC, memo, useState } from 'react';
 import {
   Flex,
   Box,
@@ -9,35 +8,44 @@ import {
   Input,
   InputRightElement,
   InputGroup,
-  IconButton,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
 } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuth } from 'features/auth/api/useAuth';
+import { useForm } from 'react-hook-form';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
+import { ViewIconButton } from 'components/iconButtons/ViewIconButton';
+import { type LoginRequest } from '../types/auth';
+import { loginFormValidateScheme } from '../validator/loginFormValidateScheme';
 
 export const Login: VFC = memo(() => {
   const { login, loading } = useAuth();
 
-  const [username, setUsername] = useState('');
-  const onChangeUserName = (e: ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-
-  const [password, setPassword] = useState('');
-  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const onClickLogin = () => {
-    login(username, password);
+  const onSubmit = (data: LoginRequest) => {
+    login(data);
   };
 
   const [isRevealPassword, setIsRevealPassword] = useState(false);
 
-  const handleClick = () => {
+  const onClickViewIcon = () => {
     setIsRevealPassword(!isRevealPassword);
   };
 
-  // TODO IconButton をコンポーネント化する
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginRequest>({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+    mode: 'onSubmit',
+    resolver: yupResolver(loginFormValidateScheme),
+  });
+
   return (
     <Flex align="center" justify="center" height="100vh">
       <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
@@ -45,41 +53,51 @@ export const Login: VFC = memo(() => {
           人間ドック受付アプリ
         </Heading>
         <Divider my={4} />
-        <Stack spacing={6} py={4} px={10}>
-          <Input
-            placeholder="Username"
-            value={username}
-            onChange={onChangeUserName}
-          />
-          <InputGroup size="md">
-            <Input
-              placeholder="Password"
-              value={password}
-              onChange={onChangePassword}
-              type={isRevealPassword ? 'text' : 'password'}
-              name="password"
-            />
-            <InputRightElement width="3rem">
-              <IconButton
-                aria-label="Password visibility toggle"
-                size="lg"
-                color="gray.500"
-                bg="rgba(0,0,0,0,0)"
-                _hover={{ bg: 'rgba(0,0,0,0,0)' }}
-                _active={{ bg: 'rgba(0,0,0,0,0)' }}
-                icon={isRevealPassword ? <ViewIcon /> : <ViewOffIcon />}
-                onClick={handleClick}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={6} py={4} px={10}>
+            <FormControl isInvalid={errors.username != null}>
+              <FormLabel htmlFor="username" hidden />
+              <Input
+                id="username"
+                type="text"
+                placeholder="Username"
+                {...register('username')}
               />
-            </InputRightElement>
-          </InputGroup>
-          <PrimaryButton
-            isDisabled={username === '' || password === '' || loading}
-            isLoading={loading}
-            onClick={onClickLogin}
-          >
-            ログイン
-          </PrimaryButton>
-        </Stack>
+              <FormErrorMessage fontSize="xs">
+                {errors.username?.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors.password != null}>
+              <FormLabel htmlFor="password" hidden />
+              <InputGroup size="md">
+                <Input
+                  id="password"
+                  type={isRevealPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  {...register('password')}
+                />
+                <InputRightElement width="3rem">
+                  <ViewIconButton
+                    onClick={onClickViewIcon}
+                    isRevealPassword={isRevealPassword}
+                  />
+                </InputRightElement>
+              </InputGroup>
+              <FormErrorMessage fontSize="xs">
+                {errors.password?.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <PrimaryButton
+              type="submit"
+              isDisabled={loading}
+              isLoading={loading}
+            >
+              ログイン
+            </PrimaryButton>
+          </Stack>
+        </form>
       </Box>
     </Flex>
   );
