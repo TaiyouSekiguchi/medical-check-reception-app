@@ -1,7 +1,7 @@
 import { memo, type VFC } from 'react';
 import { Table, Tr, Th, Td, Tbody } from '@chakra-ui/react';
 import { formatStringDate } from 'lib/formatDate';
-import { type InsuredWithReservation } from '../types/insuredWithReservation';
+import { type InsuredWithReservation } from '../../types/insuredWithReservation';
 
 type Props = {
   selectedInsured: InsuredWithReservation;

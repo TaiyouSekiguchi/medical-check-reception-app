@@ -8,11 +8,11 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { type ExamItemInfo } from '../types/examItemInfo';
-import { type InsuredWithReservation } from '../types/insuredWithReservation';
-import { type ReservableSlot } from '../types/reservableSlot';
-import { type SelectExaminationItemFormData } from '../types/selectExaminationItemFormData';
-import { examinationItemCheckboxScheme } from '../validator/examinationItemCheckboxScheme';
+import { type ExamItemInfo } from '../../types/examItemInfo';
+import { type InsuredWithReservation } from '../../types/insuredWithReservation';
+import { type ReservableSlot } from '../../types/reservableSlot';
+import { type SelectExaminationItemFormData } from '../../types/selectExaminationItemFormData';
+import { examinationItemCheckboxScheme } from '../../validator/examinationItemCheckboxScheme';
 import { SelectExaminationItemForm } from './SelectExaminationItemForm';
 
 type Props = {

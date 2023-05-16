@@ -7,7 +7,7 @@ import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { usePostReservations } from '../api/usePostReservation';
 import { useUpdateReservations } from '../api/useUpdateReservation';
-import { CheckReservationTable } from '../components/CheckReservationTable';
+import { CheckReservationTable } from '../components/checkReservation/CheckReservationTable';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
 import { type ReservationRequest } from '../types/reservation';

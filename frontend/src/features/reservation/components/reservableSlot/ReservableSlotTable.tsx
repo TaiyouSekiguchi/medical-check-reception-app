@@ -1,7 +1,7 @@
 import { memo, type VFC } from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import { formatStringDate } from 'lib/formatDate';
-import { type ReservableSlot } from '../types/reservableSlot';
+import { type ReservableSlot } from '../../types/reservableSlot';
 
 type Props = {
   reservableSlots: ReservableSlot[];

@@ -6,7 +6,7 @@ import { PrimaryButton } from 'components/buttons/PrimaryButton';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { CenterSpinner } from 'components/spinner/CenterSpinner';
 import { useDeleteReservations } from '../api/useDeleteReservation';
-import { CheckDeleteReservationTable } from '../components/CheckDeleteReservationTable';
+import { CheckDeleteReservationTable } from '../components/checkReservation/CheckDeleteReservationTable';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 
 export const CheckDeleteReservation: VFC = memo(() => {
