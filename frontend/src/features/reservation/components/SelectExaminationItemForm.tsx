@@ -8,40 +8,23 @@ import {
   type UseFormGetValues,
 } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { type ExamItemInfo } from '../types/examItemInfo';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
-
-type ExamItem = {
-  id:
-    | 'IsGastrointestinalEndoscopyChecked'
-    | 'IsBariumChecked'
-    | 'IsBreastCancerScreeningChecked'
-    | 'IsProstateCancerScreeningChecked';
-  name: string;
-  checked: boolean;
-  disabled: boolean;
-  isReservable: boolean;
-};
-
-type SubmitData = {
-  IsGastrointestinalEndoscopyChecked: boolean;
-  IsBariumChecked: boolean;
-  IsBreastCancerScreeningChecked: boolean;
-  IsProstateCancerScreeningChecked: boolean;
-};
+import { type SelectExaminationItemFormData } from '../types/selectExaminationItemFormData';
 
 type Props = {
   selectedInsured: InsuredWithReservation | null;
   selectedReservableSlot: ReservableSlot | null;
-  examItems: ExamItem[];
-  register: UseFormRegister<SubmitData>;
-  handleSubmit: UseFormHandleSubmit<SubmitData>;
-  getValues: UseFormGetValues<SubmitData>;
+  examItems: ExamItemInfo[];
+  register: UseFormRegister<SelectExaminationItemFormData>;
+  handleSubmit: UseFormHandleSubmit<SelectExaminationItemFormData>;
+  getValues: UseFormGetValues<SelectExaminationItemFormData>;
   isValid: boolean;
   isSubmitting: boolean;
 };
 
-export const SelectExaminationItem: VFC<Props> = memo((props) => {
+export const SelectExaminationItemForm: VFC<Props> = memo((props) => {
   const {
     selectedInsured,
     selectedReservableSlot,
@@ -55,9 +38,9 @@ export const SelectExaminationItem: VFC<Props> = memo((props) => {
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<SubmitData> = useCallback(
-    (data: SubmitData) => {
-      const submitData = {
+  const onSubmit: SubmitHandler<SelectExaminationItemFormData> = useCallback(
+    (data: SelectExaminationItemFormData) => {
+      const submitData: SelectExaminationItemFormData = {
         ...data,
       };
       navigate('/home/reservation_management/check', {

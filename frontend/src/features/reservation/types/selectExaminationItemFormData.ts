@@ -1,4 +1,4 @@
-export type CheckBoxInputs = {
+export type SelectExaminationItemFormData = {
   IsGastrointestinalEndoscopyChecked: boolean;
   IsBariumChecked: boolean;
   IsBreastCancerScreeningChecked: boolean;

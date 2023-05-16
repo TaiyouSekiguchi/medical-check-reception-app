@@ -8,29 +8,12 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { type ExamItemInfo } from '../types/examItemInfo';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
+import { type SelectExaminationItemFormData } from '../types/selectExaminationItemFormData';
 import { examinationItemCheckboxScheme } from '../validator/examinationItemCheckboxScheme';
-import { SelectExaminationItem } from './SelectExaminationItem';
-
-type ExamItem = {
-  id:
-    | 'IsGastrointestinalEndoscopyChecked'
-    | 'IsBariumChecked'
-    | 'IsBreastCancerScreeningChecked'
-    | 'IsProstateCancerScreeningChecked';
-  name: string;
-  checked: boolean;
-  disabled: boolean;
-  isReservable: boolean;
-};
-
-type SubmitData = {
-  IsGastrointestinalEndoscopyChecked: boolean;
-  IsBariumChecked: boolean;
-  IsBreastCancerScreeningChecked: boolean;
-  IsProstateCancerScreeningChecked: boolean;
-};
+import { SelectExaminationItemForm } from './SelectExaminationItemForm';
 
 type Props = {
   isOpen: boolean;
@@ -42,7 +25,7 @@ type Props = {
 export const ReservableSlotModal: VFC<Props> = memo((props) => {
   const { isOpen, onClose, selectedInsured, selectedReservableSlot } = props;
 
-  const [examItems, setExamItems] = useState<ExamItem[]>([]);
+  const [examItems, setExamItems] = useState<ExamItemInfo[]>([]);
 
   useEffect(() => {
     setExamItems([
@@ -95,7 +78,7 @@ export const ReservableSlotModal: VFC<Props> = memo((props) => {
     setValue,
     getValues,
     formState: { isValid, isSubmitting },
-  } = useForm<SubmitData>({
+  } = useForm<SelectExaminationItemFormData>({
     defaultValues: {
       IsGastrointestinalEndoscopyChecked: false,
       IsBariumChecked: false,
@@ -119,7 +102,7 @@ export const ReservableSlotModal: VFC<Props> = memo((props) => {
       <ModalContent>
         <ModalHeader>検査項目選択</ModalHeader>
         <ModalCloseButton />
-        <SelectExaminationItem
+        <SelectExaminationItemForm
           selectedInsured={selectedInsured}
           selectedReservableSlot={selectedReservableSlot}
           examItems={examItems}
