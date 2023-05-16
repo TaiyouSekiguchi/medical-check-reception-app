@@ -4,15 +4,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toHalfWidthKatakana } from 'lib/converter';
 import { useForm } from 'react-hook-form';
 import { BorderedBox } from 'components/box/BorderedBox';
-import { type FormInputs } from '../types/formInputs';
+import { type SearchInsuredFormData } from '../types/searchInsuredFormData';
 import { searchInputFormScheme } from '../validator/searchInputFormValidateScheme';
 import { MyFormSet } from './MyFormSet';
 
 type Props = {
-  getInsuredsWithReservation: (data: FormInputs) => void;
+  getInsuredsWithReservation: (data: SearchInsuredFormData) => void;
 };
 
-export const SearchInputForm: VFC<Props> = memo((props) => {
+export const SearchInsuredForm: VFC<Props> = memo((props) => {
   const { getInsuredsWithReservation } = props;
 
   const {
@@ -21,7 +21,7 @@ export const SearchInputForm: VFC<Props> = memo((props) => {
     formState: { isValid, isDirty, errors },
     setValue,
     getValues,
-  } = useForm<FormInputs>({
+  } = useForm<SearchInsuredFormData>({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -31,7 +31,7 @@ export const SearchInputForm: VFC<Props> = memo((props) => {
     resolver: yupResolver(searchInputFormScheme),
   });
 
-  const onSubmit = (data: FormInputs) => {
+  const onSubmit = (data: SearchInsuredFormData) => {
     const convertedFirstName = toHalfWidthKatakana(data.firstName);
     const convertedLastName = toHalfWidthKatakana(data.lastName);
     setValue('firstName', convertedFirstName);

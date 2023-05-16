@@ -8,7 +8,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { type UseFormRegister } from 'react-hook-form';
-import { type FormInputs } from '../types/formInputs';
+import { type SearchInsuredFormData } from '../types/searchInsuredFormData';
 
 type Props = {
   isInvalid: boolean;
@@ -16,7 +16,7 @@ type Props = {
   id: 'firstName' | 'lastName' | 'birthday';
   placeholder?: string;
   message: string | undefined;
-  register: UseFormRegister<FormInputs>;
+  register: UseFormRegister<SearchInsuredFormData>;
   type?: React.HTMLInputTypeAttribute | undefined;
 };
 

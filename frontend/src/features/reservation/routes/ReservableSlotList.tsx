@@ -4,12 +4,12 @@ import { useLocation } from 'react-router-dom';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useReservableSlots } from '../api/useReservableSlots';
-import { ReservableSlotListTable } from '../components/ReservableSlotListTable';
-import { SelectExaminationItemModal } from '../components/SelectExaminationItemModal';
+import { ReservableSlotModal } from '../components/ReservableSlotModal';
+import { ReservableSlotTable } from '../components/ReservableSlotTable';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
 
-export const SelectReservableSlot: VFC = memo(() => {
+export const ReservableSlotList: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { getReservableSlots, loading, reservableSlots } = useReservableSlots();
@@ -29,7 +29,7 @@ export const SelectReservableSlot: VFC = memo(() => {
   const [selectedReservableSlot, setSelectedReservableSlot] =
     useState<ReservableSlot | null>(null);
 
-  const handleRowClick = (reservableSlot: ReservableSlot) => {
+  const onClickReservableSlot = (reservableSlot: ReservableSlot) => {
     setSelectedReservableSlot(reservableSlot);
     onOpen();
   };
@@ -43,12 +43,12 @@ export const SelectReservableSlot: VFC = memo(() => {
       ) : (
         <>
           <BorderedBox p="24px">
-            <ReservableSlotListTable
+            <ReservableSlotTable
               reservableSlots={reservableSlots}
-              handleRowClick={handleRowClick}
+              onClickReservableSlot={onClickReservableSlot}
             />
           </BorderedBox>
-          <SelectExaminationItemModal
+          <ReservableSlotModal
             isOpen={isOpen}
             onClose={onClose}
             selectedInsured={selectedInsured}

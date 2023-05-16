@@ -1,4 +1,4 @@
-export type FormInputs = {
+export type SearchInsuredFormData = {
   firstName: string;
   lastName: string;
   birthday: string;
