@@ -8,7 +8,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { type UseFormRegister } from 'react-hook-form';
-import { type SearchInsuredFormData } from '../types/searchInsuredFormData';
+import { type SearchInsuredFormData } from '../../types/searchInsuredFormData';
 
 type Props = {
   isInvalid: boolean;

@@ -9,10 +9,10 @@ import {
 } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
-import { type ExamItemInfo } from '../types/examItemInfo';
-import { type InsuredWithReservation } from '../types/insuredWithReservation';
-import { type ReservableSlot } from '../types/reservableSlot';
-import { type SelectExaminationItemFormData } from '../types/selectExaminationItemFormData';
+import { type ExamItemInfo } from '../../types/examItemInfo';
+import { type InsuredWithReservation } from '../../types/insuredWithReservation';
+import { type ReservableSlot } from '../../types/reservableSlot';
+import { type SelectExaminationItemFormData } from '../../types/selectExaminationItemFormData';
 
 type Props = {
   selectedInsured: InsuredWithReservation | null;
@@ -41,14 +41,14 @@ export const SelectExaminationItemForm: VFC<Props> = memo((props) => {
 
   const onSubmit: SubmitHandler<SelectExaminationItemFormData> = useCallback(
     (data: SelectExaminationItemFormData) => {
-      const submitData: SelectExaminationItemFormData = {
+      const examinationItem: SelectExaminationItemFormData = {
         ...data,
       };
       navigate('/home/reservation_management/check', {
         state: {
           selectedInsured,
           selectedReservableSlot,
-          submitData,
+          examinationItem,
         },
       });
     },

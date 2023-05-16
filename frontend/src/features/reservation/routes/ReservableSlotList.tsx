@@ -4,8 +4,8 @@ import { useLocation } from 'react-router-dom';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { ContentLayout } from 'components/layouts/ContentLayout';
 import { useReservableSlots } from '../api/useReservableSlots';
-import { ReservableSlotModal } from '../components/ReservableSlotModal';
-import { ReservableSlotTable } from '../components/ReservableSlotTable';
+import { ReservableSlotModal } from '../components/reservableSlot/ReservableSlotModal';
+import { ReservableSlotTable } from '../components/reservableSlot/ReservableSlotTable';
 import { type InsuredWithReservation } from '../types/insuredWithReservation';
 import { type ReservableSlot } from '../types/reservableSlot';
 

@@ -4,8 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toHalfWidthKatakana } from 'lib/converter';
 import { useForm } from 'react-hook-form';
 import { BorderedBox } from 'components/box/BorderedBox';
-import { type SearchInsuredFormData } from '../types/searchInsuredFormData';
-import { searchInputFormScheme } from '../validator/searchInputFormValidateScheme';
+import { type SearchInsuredFormData } from '../../types/searchInsuredFormData';
+import { searchInputFormScheme } from '../../validator/searchInputFormValidateScheme';
 import { MyFormSet } from './MyFormSet';
 
 type Props = {

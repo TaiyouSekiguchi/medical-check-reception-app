@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
-import { type InsuredWithReservation } from '../types/insuredWithReservation';
+import { type InsuredWithReservation } from '../../types/insuredWithReservation';
 import { ReservationStatusTable } from './ReservationStatusTable';
 
 type Props = {

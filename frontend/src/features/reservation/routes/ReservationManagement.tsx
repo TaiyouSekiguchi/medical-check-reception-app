@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { CheckDeleteReservation } from './CheckDeleteReservation';
 import { CheckReservation } from './CheckReservation';
-import { DeleteReservationResult } from './DeleteReservationResult';
 import { ReservableSlotList } from './ReservableSlotList';
 import { ReservationResult } from './ReservationResult';
 import { SearchInsured } from './SearchInsured';
@@ -14,7 +13,6 @@ export const ReservationManagement = (): JSX.Element => {
       <Route path="check" element={<CheckReservation />} />
       <Route path="delete_check" element={<CheckDeleteReservation />} />
       <Route path="result" element={<ReservationResult />} />
-      <Route path="delete_result" element={<DeleteReservationResult />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

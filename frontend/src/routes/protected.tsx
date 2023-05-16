@@ -21,8 +21,8 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Home /> },
-      { path: 'insureds', element: <InsuredManagement /> },
-      { path: 'reservation_slots', element: <ReservationSlotManagement /> },
+      { path: 'insureds/*', element: <InsuredManagement /> },
+      { path: 'reservation_slots/*', element: <ReservationSlotManagement /> },
       { path: 'reservation_management/*', element: <ReservationManagement /> },
       { path: '*', element: <Page404 /> },
     ],

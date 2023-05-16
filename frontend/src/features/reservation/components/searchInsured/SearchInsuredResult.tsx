@@ -1,7 +1,7 @@
 import { memo, type VFC } from 'react';
 import { Spinner, Text, Center } from '@chakra-ui/react';
 import { BorderedBox } from 'components/box/BorderedBox';
-import { type InsuredWithReservation } from '../types/insuredWithReservation';
+import { type InsuredWithReservation } from '../../types/insuredWithReservation';
 import { SearchInsuredResultModal } from './SearchInsuredResultModal';
 import { SearchInsuredResultTable } from './SearchInsuredResultTable';
 

@@ -6,17 +6,18 @@ import { ContentLayout } from 'components/layouts/ContentLayout';
 export const ReservationResult: VFC = memo(() => {
   const location = useLocation();
 
-  const { isSuccess } = location.state as {
+  const { isSuccess, action } = location.state as {
     isSuccess: boolean;
+    action: string;
   };
 
   return (
     <ContentLayout title={'予約管理'}>
       <Box>
         {isSuccess ? (
-          <Text fontSize="xl">{`🎉 予約処理が完了しました 🎉`}</Text>
+          <Text fontSize="xl">{`🎉 ${action}に成功しました 🎉`}</Text>
         ) : (
-          <Text fontSize="xl">{`💣 予約処理に失敗しました 💣`}</Text>
+          <Text fontSize="xl">{`💣 ${action}に失敗しました 💣`}</Text>
         )}
       </Box>
     </ContentLayout>
