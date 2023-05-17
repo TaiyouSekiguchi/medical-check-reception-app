@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/sirupsen/logrus"
 )
 
 type IUserController interface {
@@ -22,11 +23,12 @@ type IUserController interface {
 }
 
 type userController struct {
-	uu usecase.IUserUsecase
+	log *logrus.Logger
+	uu  usecase.IUserUsecase
 }
 
-func NewUserController(uu usecase.IUserUsecase) IUserController {
-	return &userController{uu}
+func NewUserController(log *logrus.Logger, uu usecase.IUserUsecase) IUserController {
+	return &userController{log, uu}
 }
 
 func (uc *userController) CsrfToken(c echo.Context) error {
@@ -38,6 +40,9 @@ func (uc *userController) CsrfToken(c echo.Context) error {
 }
 
 func (uc *userController) LogIn(c echo.Context) error {
+
+	uc.log.Debug("userController.LogIn() called")
+
 	user := model.User{}
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())

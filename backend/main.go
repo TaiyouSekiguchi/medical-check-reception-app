@@ -7,9 +7,21 @@ import (
 	"backend/router"
 	"backend/usecase"
 	"backend/validator"
+
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
+
+	// Logger
+	log := logrus.New()
+	log.SetLevel(logrus.DebugLevel)
+	log.SetFormatter(&logrus.TextFormatter{
+		TimestampFormat: "2006-01-02 15:04:05",
+		FullTimestamp:   true,
+	})
+
+	// DB
 	db := db.NewDB()
 
 	// Admin
@@ -19,7 +31,7 @@ func main() {
 	userValidator := validator.NewUserValidator()
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator, adminRepository)
-	userController := controller.NewUserController(userUsecase)
+	userController := controller.NewUserController(log, userUsecase)
 
 	// Insured
 	insuredValidator := validator.NewInsuredValidator()
