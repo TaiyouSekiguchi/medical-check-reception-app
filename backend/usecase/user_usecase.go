@@ -112,9 +112,9 @@ func (uu *userUsecase) CreateUser(userReq model.UserRequest) (model.UserResponse
 }
 
 func (uu *userUsecase) UpdateUser(userReq model.UserRequest, userId uint) (model.UserResponse, error) {
-	// if err := tu.tv.TaskValidate(task); err != nil {
-	// 	return model.TaskResponse{}, err
-	// }
+	if err := uu.uv.UserValidate(userReq); err != nil {
+		return model.UserResponse{}, err
+	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(userReq.Password), 10)
 	if err != nil {
