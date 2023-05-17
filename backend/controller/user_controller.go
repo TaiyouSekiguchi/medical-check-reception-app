@@ -120,8 +120,14 @@ func (uc *userController) UpdateUser(c echo.Context) error {
 	// claims := user.Claims.(jwt.MapClaims)
 	// userId := claims["user_id"]
 
-	userIDparam := c.Param("user-id")
-	userID, _ := strconv.Atoi(userIDparam)
+	userIDParam := c.Param("user-id")
+	userID, err := strconv.Atoi(userIDParam)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if userID <= 0 {
+		return c.JSON(http.StatusBadRequest, "user id is invalid")
+	}
 
 	userReq := model.UserRequest{}
 	if err := c.Bind(&userReq); err != nil {
@@ -142,11 +148,15 @@ func (uc *userController) DeleteUser(c echo.Context) error {
 	// userId := claims["user_id"]
 
 	userIDParam := c.Param("user-id")
-	// TODO error handling
-	userID, _ := strconv.Atoi(userIDParam)
-
-	err := uc.uu.DeleteUser(uint(userID))
+	userID, err := strconv.Atoi(userIDParam)
 	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if userID <= 0 {
+		return c.JSON(http.StatusBadRequest, "user id is invalid")
+	}
+
+	if err := uc.uu.DeleteUser(uint(userID)); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.NoContent(http.StatusNoContent)
