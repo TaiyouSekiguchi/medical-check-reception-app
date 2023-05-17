@@ -21,7 +21,7 @@ func str2time(t string) time.Time {
 }
 
 type IInsuredUsecase interface {
-	GetInsureds(birthday string) ([]model.InsuredResponse, error)
+	GetInsureds() ([]model.InsuredResponse, error)
 	GetInsuredsWithReservation(queryParams model.InsuredQueryParams) ([]model.InsuredWithReservationResponse, error)
 	CreateInsureds(insuredsReq []model.InsuredRequest) ([]model.CreateInsuredResponse, error)
 	GetExportInsureds() ([]model.InsuredForExportResponse, error)
@@ -36,9 +36,9 @@ func NewInsuredUsecase(ir repository.IInsuredRepository, iv validator.IInsuredVa
 	return &insuredUsecase{ir, iv}
 }
 
-func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse, error) {
+func (iu *insuredUsecase) GetInsureds() ([]model.InsuredResponse, error) {
 	insureds := []model.Insured{}
-	if err := iu.ir.GetInsureds(&insureds, birthday); err != nil {
+	if err := iu.ir.GetInsureds(&insureds); err != nil {
 		return nil, err
 	}
 

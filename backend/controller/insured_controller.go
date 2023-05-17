@@ -24,10 +24,7 @@ func NewInsuredController(iu usecase.IInsuredUsecase) IInsuredController {
 }
 
 func (ic *insuredController) GetInsureds(c echo.Context) error {
-
-	birthday := c.QueryParam("birthday")
-
-	insuredsRes, err := ic.iu.GetInsureds(birthday)
+	insuredsRes, err := ic.iu.GetInsureds()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
