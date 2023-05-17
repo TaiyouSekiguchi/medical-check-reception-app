@@ -79,9 +79,9 @@ func (uu *userUsecase) GetUsers() ([]model.UserResponse, error) {
 }
 
 func (uu *userUsecase) CreateUser(userReq model.UserRequest) (model.UserResponse, error) {
-	// if err := uu.tv.TaskValidate(task); err != nil {
-	// 	return model.TaskResponse{}, err
-	// }
+	if err := uu.uv.UserValidate(userReq); err != nil {
+		return model.UserResponse{}, err
+	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(userReq.Password), 10)
 	if err != nil {
@@ -101,9 +101,11 @@ func (uu *userUsecase) CreateUser(userReq model.UserRequest) (model.UserResponse
 	}
 
 	resUser := model.UserResponse{
-		ID:       user.ID,
-		Username: user.Username,
-		IsAdmin:  admin.ID > 0,
+		ID:        user.ID,
+		Username:  user.Username,
+		IsAdmin:   admin.ID > 0,
+		CreatedAt: time2str(user.CreatedAt),
+		UpdatedAt: time2str(user.UpdatedAt),
 	}
 
 	return resUser, nil
