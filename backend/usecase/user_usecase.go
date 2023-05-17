@@ -12,7 +12,7 @@ import (
 )
 
 type IUserUsecase interface {
-	Login(user model.User) (string, error)
+	Login(loginReq model.LoginRequest) (string, error)
 	GetUsers() ([]model.UserResponse, error)
 	CreateUser(userReq model.UserRequest) (model.UserResponse, error)
 	UpdateUser(userReq model.UserRequest, userId uint) (model.UserResponse, error)
@@ -29,17 +29,17 @@ func NewUserUsecase(ur repository.IUserRepository, uv validator.IUserValidator, 
 	return &userUsecase{ur, uv, ar}
 }
 
-func (uu *userUsecase) Login(user model.User) (string, error) {
-	if err := uu.uv.UserValidate(user); err != nil {
+func (uu *userUsecase) Login(loginReq model.LoginRequest) (string, error) {
+	if err := uu.uv.LoginValidate(loginReq); err != nil {
 		return "", err
 	}
 
 	storedUser := model.User{}
-	if err := uu.ur.GetUserByUsername(&storedUser, user.Username); err != nil {
+	if err := uu.ur.GetUserByUsername(&storedUser, loginReq.Username); err != nil {
 		return "", err
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
+	err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(loginReq.Password))
 	if err != nil {
 		return "", err
 	}

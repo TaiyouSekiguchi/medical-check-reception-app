@@ -43,12 +43,12 @@ func (uc *userController) LogIn(c echo.Context) error {
 
 	uc.log.Debug("userController.LogIn() called")
 
-	user := model.User{}
-	if err := c.Bind(&user); err != nil {
+	loginReq := model.LoginRequest{}
+	if err := c.Bind(&loginReq); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	tokenString, err := uc.uu.Login(user)
+	tokenString, err := uc.uu.Login(loginReq)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -59,8 +59,8 @@ func (uc *userController) LogIn(c echo.Context) error {
 	cookie.Expires = time.Now().Add(24 * time.Hour)
 	cookie.Path = "/"
 	cookie.Domain = os.Getenv("API_DOMAIN")
-	cookie.Secure = true
-	// cookie.Secure = false // for postman
+	// cookie.Secure = true
+	cookie.Secure = false // for postman
 	cookie.HttpOnly = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
@@ -77,8 +77,8 @@ func (uc *userController) LogOut(c echo.Context) error {
 	cookie.Expires = time.Now()
 	cookie.Path = "/"
 	cookie.Domain = os.Getenv("API_DOMAIN")
-	cookie.Secure = true
-	// cookie.Secure = false // for postman
+	// cookie.Secure = true
+	cookie.Secure = false // for postman
 	cookie.HttpOnly = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
