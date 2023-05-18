@@ -7,9 +7,9 @@ import (
 )
 
 type IReservationUsecase interface {
-	CreateReservation(reservations []model.Reservation) ([]model.CreateReservationResponse, error)
+	CreateReservation(reservationReq []model.ReservationRequest) ([]model.CreateReservationResponse, error)
 	DeleteReservation(insuredId uint) error
-	UpdateReservation(reservations []model.Reservation) ([]model.CreateReservationResponse, error)
+	UpdateReservation(reservationReq []model.ReservationRequest) ([]model.CreateReservationResponse, error)
 }
 
 type reservationUsecase struct {
@@ -21,12 +21,22 @@ func NewReservationUsecase(rr repository.IReservationRepository, rv validator.IR
 	return &reservationUsecase{rr, rv}
 }
 
-func (ru *reservationUsecase) CreateReservation(reservations []model.Reservation) ([]model.CreateReservationResponse, error) {
+func (ru *reservationUsecase) CreateReservation(reservationReq []model.ReservationRequest) ([]model.CreateReservationResponse, error) {
 
-	for _, reservation := range reservations {
-		if err := ru.rv.ReservationValidate(reservation); err != nil {
+	for _, r := range reservationReq {
+		if err := ru.rv.ReservationRequestValidate(r); err != nil {
 			return []model.CreateReservationResponse{}, err
 		}
+	}
+
+	reservations := []model.Reservation{}
+	for _, r := range reservationReq {
+		reservation := model.Reservation{
+			InsuredID:         r.InsuredID,
+			ReservationSlotID: r.ReservationSlotID,
+			ExaminationItemID: r.ExaminationItemID,
+		}
+		reservations = append(reservations, reservation)
 	}
 
 	if err := ru.rr.CreateReservation(&reservations); err != nil {
@@ -41,8 +51,8 @@ func (ru *reservationUsecase) CreateReservation(reservations []model.Reservation
 			InsuredID:         reservations[i].InsuredID,
 			ReservationSlotID: reservations[i].ReservationSlotID,
 			ExaminationItemID: reservations[i].ExaminationItemID,
-			CreatedAt:         reservations[i].CreatedAt,
-			UpdatedAt:         reservations[i].UpdatedAt,
+			CreatedAt:         time2str(reservations[i].CreatedAt),
+			UpdatedAt:         time2str(reservations[i].UpdatedAt),
 		}
 		reservationResponses = append(reservationResponses, reservationResponse)
 	}
@@ -54,12 +64,22 @@ func (ru *reservationUsecase) DeleteReservation(insuredId uint) error {
 	return ru.rr.DeleteReservation(insuredId)
 }
 
-func (ru *reservationUsecase) UpdateReservation(reservations []model.Reservation) ([]model.CreateReservationResponse, error) {
+func (ru *reservationUsecase) UpdateReservation(reservationReq []model.ReservationRequest) ([]model.CreateReservationResponse, error) {
 
-	for _, reservation := range reservations {
-		if err := ru.rv.ReservationValidate(reservation); err != nil {
+	for _, r := range reservationReq {
+		if err := ru.rv.ReservationRequestValidate(r); err != nil {
 			return []model.CreateReservationResponse{}, err
 		}
+	}
+
+	reservations := []model.Reservation{}
+	for _, r := range reservationReq {
+		reservation := model.Reservation{
+			InsuredID:         r.InsuredID,
+			ReservationSlotID: r.ReservationSlotID,
+			ExaminationItemID: r.ExaminationItemID,
+		}
+		reservations = append(reservations, reservation)
 	}
 
 	if err := ru.rr.UpdateReservation(&reservations); err != nil {
@@ -74,8 +94,8 @@ func (ru *reservationUsecase) UpdateReservation(reservations []model.Reservation
 			InsuredID:         reservations[i].InsuredID,
 			ReservationSlotID: reservations[i].ReservationSlotID,
 			ExaminationItemID: reservations[i].ExaminationItemID,
-			CreatedAt:         reservations[i].CreatedAt,
-			UpdatedAt:         reservations[i].UpdatedAt,
+			CreatedAt:         time2str(reservations[i].CreatedAt),
+			UpdatedAt:         time2str(reservations[i].UpdatedAt),
 		}
 		reservationResponses = append(reservationResponses, reservationResponse)
 	}
