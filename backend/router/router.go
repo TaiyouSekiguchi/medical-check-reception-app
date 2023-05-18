@@ -30,6 +30,11 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 		// CookieMaxAge:   60,
 	}))
 
+	// health check
+	e.GET("/health", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK")
+	})
+
 	// User
 	e.GET("/csrf", uc.CsrfToken)
 	e.POST("/login", uc.LogIn)

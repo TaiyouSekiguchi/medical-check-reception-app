@@ -16,6 +16,10 @@ services:
       - 5173:5173
     networks:
       - app-network
+    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
 
   backend:
     build: backend
@@ -27,6 +31,16 @@ services:
     networks:
       - app-network
       - db-network
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: "curl -f http://localhost:8080/health || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   postgres:
     image: postgres:15.1-alpine
@@ -39,16 +53,20 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGPASSWORD: ${PGPASSWORD}
       TZ: "Asia/Tokyo"
-    restart: always
     volumes:
       - ./database/postgres:/var/lib/postgresql/data
     networks:
       - db-network
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
-    restart: always
     ports:
       - 81:80
     environment:
@@ -56,10 +74,12 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
       - ./database/pgadmin:/var/lib/pgadmin
-    depends_on:
-      - postgres
     networks:
       - db-network
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 networks:
   app-network:

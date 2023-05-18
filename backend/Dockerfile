@@ -1,5 +1,5 @@
 # Dockerfile
-FROM golang:1.20
+FROM golang:1.20-bullseye
 
 # ログに出力する時間をJSTにするため、タイムゾーンを設定
 ENV TZ /usr/share/zoneinfo/Asia/Tokyo
@@ -9,6 +9,9 @@ WORKDIR ${ROOT}
 
 # ModuleモードをON
 ENV GO111MODULE=on
+
+RUN apt-get update \
+    && apt-get install -y curl
 
 COPY . .
 EXPOSE 8080
