@@ -5,6 +5,7 @@ import (
 	"backend/usecase"
 	"net/http"
 
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
@@ -48,6 +49,9 @@ func (ic *insuredController) GetInsuredsWithReservation(c echo.Context) error {
 }
 
 func (ic *insuredController) CreateInsureds(c echo.Context) error {
+	if isAdmin := getIsAdmin(c.Get("user").(*jwt.Token)); !isAdmin {
+		return c.JSON(http.StatusUnauthorized, "you are not admin")
+	}
 
 	insuredsReq := []model.InsuredRequest{}
 	if err := c.Bind(&insuredsReq); err != nil {
@@ -63,6 +67,9 @@ func (ic *insuredController) CreateInsureds(c echo.Context) error {
 }
 
 func (ic *insuredController) GetExportInsureds(c echo.Context) error {
+	if isAdmin := getIsAdmin(c.Get("user").(*jwt.Token)); !isAdmin {
+		return c.JSON(http.StatusUnauthorized, "you are not admin")
+	}
 
 	insuredsRes, err := ic.iu.GetExportInsureds()
 	if err != nil {
