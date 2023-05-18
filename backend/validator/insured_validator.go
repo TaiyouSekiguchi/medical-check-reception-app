@@ -46,8 +46,8 @@ func (iv *insuredValidator) InsuredRequestValidate(insuredReq model.InsuredReque
 		validation.Field(
 			&insuredReq.Number,
 			validation.Required.Error("number is required"),
-			validation.Min(1).Error("number must be greater than 0"),
-			validation.Max(99999999).Error("number must be less than 99999999"),
+			validation.Min(uint(1)).Error("number must be greater than 0"),
+			validation.Max(uint(99999999)).Error("number must be less than 99999999"),
 		),
 		validation.Field(
 			&insuredReq.FirstName,
@@ -83,13 +83,13 @@ func (iv *insuredValidator) InsuredRequestValidate(insuredReq model.InsuredReque
 		validation.Field(
 			&insuredReq.SexCode,
 			validation.Required.Error("sex_code is required"),
-			validation.In("1", "2").Error("sex_code must be 1 or 2"),
+			validation.In(uint(1), uint(2)).Error("sex_code must be 1 or 2"),
 		),
 		validation.Field(
 			&insuredReq.Address,
 			validation.Required.Error("address is required"),
 			validation.RuneLength(1, 256).Error("limited max 256 char"),
-			validation.Match(regexp.MustCompile("^[ぁ-んァ-ヶ一-龠]*$")).Error("only hiragana, katakana, kanji"),
+			validation.Match(regexp.MustCompile("^[ぁ-んァ-ヶ一-龠0-9]*$")).Error("only hiragana, katakana, kanji, digit"),
 		),
 	)
 }
