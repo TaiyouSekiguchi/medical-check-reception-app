@@ -5,6 +5,7 @@ import (
 	"backend/usecase"
 	"net/http"
 
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
@@ -54,6 +55,9 @@ func (rsc *reservationSlotController) GetReservableSlots(c echo.Context) error {
 }
 
 func (rsc *reservationSlotController) CreateReservationSlots(c echo.Context) error {
+	if isAdmin := getIsAdmin(c.Get("user").(*jwt.Token)); !isAdmin {
+		return c.JSON(http.StatusUnauthorized, "you are not admin")
+	}
 
 	reservationSlotsReq := []model.ReservationSlotRequest{}
 	if err := c.Bind(&reservationSlotsReq); err != nil {
