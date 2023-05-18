@@ -1,5 +1,6 @@
 import { memo, useState, type VFC } from 'react';
 import { Flex } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
 
@@ -16,9 +17,11 @@ export const ReservationSlotImport: VFC = memo(() => {
   >([]);
 
   const { createReservationSlots } = useCreateReservationSlots();
+  const navigate = useNavigate();
 
   const onClickImport = async () => {
     await createReservationSlots(reservationSlots);
+    navigate('/home/reservation_slots');
   };
 
   return (
