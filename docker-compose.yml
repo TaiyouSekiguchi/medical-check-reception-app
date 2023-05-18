@@ -16,6 +16,7 @@ services:
       - 5173:5173
     networks:
       - app-network
+    restart: always
 
   backend:
     build: backend
@@ -27,6 +28,7 @@ services:
     networks:
       - app-network
       - db-network
+    restart: always
 
   postgres:
     image: postgres:15.1-alpine
@@ -39,16 +41,15 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGPASSWORD: ${PGPASSWORD}
       TZ: "Asia/Tokyo"
-    restart: always
     volumes:
       - ./database/postgres:/var/lib/postgresql/data
     networks:
       - db-network
+    restart: always
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
-    restart: always
     ports:
       - 81:80
     environment:
@@ -60,6 +61,7 @@ services:
       - postgres
     networks:
       - db-network
+    restart: always
 
 networks:
   app-network:
