@@ -1,5 +1,5 @@
 import { memo, useEffect, type VFC } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { BorderedBox } from 'components/box/BorderedBox';
 import { PrimaryButton } from 'components/buttons/PrimaryButton';
@@ -32,10 +32,20 @@ export const InsuredList: VFC<Props> = memo((props) => {
       ) : (
         <Box p={4}>
           {isAdmin && insureds.length === 0 && (
-            <PrimaryButton onClick={onClickImport}>インポート</PrimaryButton>
+            <Flex mb="16px" justify="flex-end">
+              <PrimaryButton onClick={onClickImport}>Import</PrimaryButton>
+            </Flex>
           )}
           <BorderedBox>
-            <InsuredTable insureds={insureds} />
+            {insureds.length === 0 ? (
+              <Center h="100%">
+                <Text color="gray.500">
+                  {'No content. Please import insureds.'}
+                </Text>
+              </Center>
+            ) : (
+              <InsuredTable insureds={insureds} />
+            )}
           </BorderedBox>
         </Box>
       )}
