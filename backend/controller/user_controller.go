@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 )
@@ -87,9 +88,9 @@ func (uc *userController) LogOut(c echo.Context) error {
 }
 
 func (uc *userController) GetUsers(c echo.Context) error {
-	// user := c.Get("user").(*jwt.Token)
-	// claims := user.Claims.(jwt.MapClaims)
-	// userID := claims["userID"]
+	if isAdmin := getIsAdmin(c.Get("user").(*jwt.Token)); !isAdmin {
+		return c.JSON(http.StatusUnauthorized, "you are not admin")
+	}
 
 	usersRes, err := uc.uu.GetUsers()
 	if err != nil {
@@ -99,9 +100,9 @@ func (uc *userController) GetUsers(c echo.Context) error {
 }
 
 func (uc *userController) CreateUser(c echo.Context) error {
-	// user := c.Get("user").(*jwt.Token)
-	// claims := user.Claims.(jwt.MapClaims)
-	// userId := claims["user_id"]
+	if isAdmin := getIsAdmin(c.Get("user").(*jwt.Token)); !isAdmin {
+		return c.JSON(http.StatusUnauthorized, "you are not admin")
+	}
 
 	userReq := model.UserRequest{}
 	if err := c.Bind(&userReq); err != nil {
@@ -116,9 +117,9 @@ func (uc *userController) CreateUser(c echo.Context) error {
 }
 
 func (uc *userController) UpdateUser(c echo.Context) error {
-	// user := c.Get("user").(*jwt.Token)
-	// claims := user.Claims.(jwt.MapClaims)
-	// userId := claims["user_id"]
+	if isAdmin := getIsAdmin(c.Get("user").(*jwt.Token)); !isAdmin {
+		return c.JSON(http.StatusUnauthorized, "you are not admin")
+	}
 
 	userIDParam := c.Param("user-id")
 	userID, err := strconv.Atoi(userIDParam)
@@ -143,9 +144,9 @@ func (uc *userController) UpdateUser(c echo.Context) error {
 }
 
 func (uc *userController) DeleteUser(c echo.Context) error {
-	// user := c.Get("user").(*jwt.Token)
-	// claims := user.Claims.(jwt.MapClaims)
-	// userId := claims["user_id"]
+	if isAdmin := getIsAdmin(c.Get("user").(*jwt.Token)); !isAdmin {
+		return c.JSON(http.StatusUnauthorized, "you are not admin")
+	}
 
 	userIDParam := c.Param("user-id")
 	userID, err := strconv.Atoi(userIDParam)
