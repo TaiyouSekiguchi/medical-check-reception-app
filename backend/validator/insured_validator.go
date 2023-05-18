@@ -89,7 +89,7 @@ func (iv *insuredValidator) InsuredRequestValidate(insuredReq model.InsuredReque
 			&insuredReq.Address,
 			validation.Required.Error("address is required"),
 			validation.RuneLength(1, 256).Error("limited max 256 char"),
-			validation.Match(regexp.MustCompile("^[ぁ-んァ-ヶ一-龠0-9]*$")).Error("only hiragana, katakana, kanji"),
+			validation.Match(regexp.MustCompile("^[ぁ-んァ-ヶ一-龠0-9]*$")).Error("only hiragana, katakana, kanji, digit"),
 		),
 	)
 }
