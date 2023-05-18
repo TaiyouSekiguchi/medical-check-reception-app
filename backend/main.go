@@ -40,9 +40,9 @@ func main() {
 	insuredController := controller.NewInsuredController(insuredUsecase)
 
 	// ReservationSlot
-	// reservationSlotValidator := validator.NewReservationSlotValidator() ok
+	reservationSlotValidator := validator.NewReservationSlotValidator()
 	reservationSlotRepository := repository.NewReservationSlotRepository(db)
-	reservationSlotUsecase := usecase.NewReservationSlotUsecase(reservationSlotRepository)
+	reservationSlotUsecase := usecase.NewReservationSlotUsecase(reservationSlotRepository, reservationSlotValidator)
 	reservationSlotController := controller.NewReservationSlotController(reservationSlotUsecase)
 
 	// Reservation
