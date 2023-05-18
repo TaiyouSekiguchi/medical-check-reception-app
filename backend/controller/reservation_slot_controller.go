@@ -56,7 +56,6 @@ func (rsc *reservationSlotController) GetReservableSlots(c echo.Context) error {
 func (rsc *reservationSlotController) CreateReservationSlots(c echo.Context) error {
 
 	reservationSlotsReq := []model.ReservationSlotRequest{}
-
 	if err := c.Bind(&reservationSlotsReq); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}

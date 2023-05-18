@@ -16,6 +16,11 @@ type User struct {
 	DeletedAt gorm.DeletedAt `json:"-"`
 }
 
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 type UserRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`

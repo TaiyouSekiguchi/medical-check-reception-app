@@ -19,7 +19,6 @@ type Insured struct {
 }
 
 type InsuredRequest struct {
-	ID            uint   `json:"id" gorm:"primaryKey"`
 	Number        uint   `json:"number" gorm:"not null"`
 	FirstName     string `json:"first_name" gorm:"not null; type:varchar(255)"`
 	LastName      string `json:"last_name" gorm:"not null; type:varchar(255)"`
@@ -40,6 +39,8 @@ type InsuredResponse struct {
 	Birthday      string `json:"birthday" gorm:"type:date;not null"`
 	SexCode       uint   `json:"sex_code" gorm:"not null"`
 	Address       string `json:"address" gorm:"not null"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
 }
 
 type InsuredQueryParams struct {
@@ -79,18 +80,4 @@ type InsuredForExportResponse struct {
 	IsBariumReserved                    bool      `json:"is_barium_reserved"`
 	IsBreastCancerScreeningReserved     bool      `json:"is_breast_cancer_screening_reserved"`
 	IsProstateCancerScreeningReserved   bool      `json:"is_prostate_cancer_screening_reserved"`
-}
-
-type CreateInsuredResponse struct {
-	ID            uint      `json:"id" gorm:"primaryKey"`
-	Number        uint      `json:"number" gorm:"not null"`
-	FirstName     string    `json:"first_name" gorm:"not null; type:varchar(255)"`
-	LastName      string    `json:"last_name" gorm:"not null; type:varchar(255)"`
-	FirstNameKana string    `json:"first_name_kana" gorm:"not null; type:varchar(255)"`
-	LastNameKana  string    `json:"last_name_kana" gorm:"not null; type:varchar(255)"`
-	Birthday      time.Time `json:"birthday" gorm:"type:date;not null"`
-	SexCode       uint      `json:"sex_code" gorm:"not null"`
-	Address       string    `json:"address" gorm:"not null"`
-	CreatedAt     time.Time `json:"created_at"`
-	UpdatedAt     time.Time `json:"updated_at"`
 }

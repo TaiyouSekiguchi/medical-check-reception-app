@@ -25,8 +25,8 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 		CookiePath:     "/",
 		CookieDomain:   os.Getenv("API_DOMAIN"),
 		CookieHTTPOnly: true,
-		CookieSameSite: http.SameSiteNoneMode,
-		// CookieSameSite: http.SameSiteDefaultMode, // for postman
+		// CookieSameSite: http.SameSiteNoneMode,
+		CookieSameSite: http.SameSiteDefaultMode, // for postman
 		// CookieMaxAge:   60,
 	}))
 
@@ -34,6 +34,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	e.GET("/csrf", uc.CsrfToken)
 	e.POST("/login", uc.LogIn)
 	e.POST("/logout", uc.LogOut)
+
 	u := e.Group("/users")
 	u.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),

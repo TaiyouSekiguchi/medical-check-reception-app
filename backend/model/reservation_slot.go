@@ -23,14 +23,14 @@ type ReservationSlotRequest struct {
 }
 
 type CreateReservationSlotResponse struct {
-	ID                        uint      `json:"id" gorm:"primaryKey"`
-	Date                      string    `json:"date" gorm:"not null"`
-	Basic                     uint      `json:"basic" gorm:"not null"`
-	GastrointestinalEndoscopy uint      `json:"gastrointestinal_endoscopy" gorm:"not null"`
-	Barium                    uint      `json:"barium" gorm:"not null"`
-	BreastCancerScreening     uint      `json:"breast_cancer_screening" gorm:"not null"`
-	CreatedAt                 time.Time `json:"created_at"`
-	UpdatedAt                 time.Time `json:"updated_at"`
+	ID                        uint   `json:"id" gorm:"primaryKey"`
+	Date                      string `json:"date" gorm:"not null"`
+	Basic                     uint   `json:"basic" gorm:"not null"`
+	GastrointestinalEndoscopy uint   `json:"gastrointestinal_endoscopy" gorm:"not null"`
+	Barium                    uint   `json:"barium" gorm:"not null"`
+	BreastCancerScreening     uint   `json:"breast_cancer_screening" gorm:"not null"`
+	CreatedAt                 string `json:"created_at"`
+	UpdatedAt                 string `json:"updated_at"`
 }
 
 type ReservationSlotResponse struct {

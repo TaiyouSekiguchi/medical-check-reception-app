@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/sirupsen/logrus"
 )
 
 type IUserController interface {
@@ -22,11 +23,12 @@ type IUserController interface {
 }
 
 type userController struct {
-	uu usecase.IUserUsecase
+	log *logrus.Logger
+	uu  usecase.IUserUsecase
 }
 
-func NewUserController(uu usecase.IUserUsecase) IUserController {
-	return &userController{uu}
+func NewUserController(log *logrus.Logger, uu usecase.IUserUsecase) IUserController {
+	return &userController{log, uu}
 }
 
 func (uc *userController) CsrfToken(c echo.Context) error {
@@ -38,12 +40,15 @@ func (uc *userController) CsrfToken(c echo.Context) error {
 }
 
 func (uc *userController) LogIn(c echo.Context) error {
-	user := model.User{}
-	if err := c.Bind(&user); err != nil {
+
+	uc.log.Debug("userController.LogIn() called")
+
+	loginReq := model.LoginRequest{}
+	if err := c.Bind(&loginReq); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	tokenString, err := uc.uu.Login(user)
+	tokenString, err := uc.uu.Login(loginReq)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -54,8 +59,8 @@ func (uc *userController) LogIn(c echo.Context) error {
 	cookie.Expires = time.Now().Add(24 * time.Hour)
 	cookie.Path = "/"
 	cookie.Domain = os.Getenv("API_DOMAIN")
-	cookie.Secure = true
-	// cookie.Secure = false // for postman
+	// cookie.Secure = true
+	cookie.Secure = false // for postman
 	cookie.HttpOnly = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
@@ -72,8 +77,8 @@ func (uc *userController) LogOut(c echo.Context) error {
 	cookie.Expires = time.Now()
 	cookie.Path = "/"
 	cookie.Domain = os.Getenv("API_DOMAIN")
-	cookie.Secure = true
-	// cookie.Secure = false // for postman
+	// cookie.Secure = true
+	cookie.Secure = false // for postman
 	cookie.HttpOnly = true
 	cookie.SameSite = http.SameSiteNoneMode
 	c.SetCookie(cookie)
@@ -115,8 +120,14 @@ func (uc *userController) UpdateUser(c echo.Context) error {
 	// claims := user.Claims.(jwt.MapClaims)
 	// userId := claims["user_id"]
 
-	userIDparam := c.Param("user-id")
-	userID, _ := strconv.Atoi(userIDparam)
+	userIDParam := c.Param("user-id")
+	userID, err := strconv.Atoi(userIDParam)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if userID <= 0 {
+		return c.JSON(http.StatusBadRequest, "user id is invalid")
+	}
 
 	userReq := model.UserRequest{}
 	if err := c.Bind(&userReq); err != nil {
@@ -137,11 +148,15 @@ func (uc *userController) DeleteUser(c echo.Context) error {
 	// userId := claims["user_id"]
 
 	userIDParam := c.Param("user-id")
-	// TODO error handling
-	userID, _ := strconv.Atoi(userIDParam)
-
-	err := uc.uu.DeleteUser(uint(userID))
+	userID, err := strconv.Atoi(userIDParam)
 	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if userID <= 0 {
+		return c.JSON(http.StatusBadRequest, "user id is invalid")
+	}
+
+	if err := uc.uu.DeleteUser(uint(userID)); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.NoContent(http.StatusNoContent)

@@ -3,6 +3,7 @@ package usecase
 import (
 	"backend/model"
 	"backend/repository"
+	"backend/validator"
 )
 
 const (
@@ -21,11 +22,11 @@ type IReservationSlotUsecase interface {
 
 type reservationSlotUsecase struct {
 	rsr repository.IReservationSlotRepository
-	// iv validator.IInsuredValidator
+	rsv validator.IReservationSlotValidator
 }
 
-func NewReservationSlotUsecase(rsr repository.IReservationSlotRepository) IReservationSlotUsecase {
-	return &reservationSlotUsecase{rsr}
+func NewReservationSlotUsecase(rsr repository.IReservationSlotRepository, rsv validator.IReservationSlotValidator) IReservationSlotUsecase {
+	return &reservationSlotUsecase{rsr, rsv}
 }
 
 func (rsu *reservationSlotUsecase) GetAllReservationSlots() ([]model.ReservationSlotResponse, error) {
@@ -153,9 +154,11 @@ func (rsu *reservationSlotUsecase) GetReservableSlots() ([]model.ReservableSlot,
 
 func (rsu *reservationSlotUsecase) CreateReservationSlots(reservationSlotsReq []model.ReservationSlotRequest) ([]model.CreateReservationSlotResponse, error) {
 
-	// if err := iu.iv.InsuredsValidate(insureds); err != nil {
-	// 	return err
-	// }
+	for _, v := range reservationSlotsReq {
+		if err := rsu.rsv.ReservationSlotRequestValidate(v); err != nil {
+			return []model.CreateReservationSlotResponse{}, err
+		}
+	}
 
 	reservationSlots := []model.ReservationSlot{}
 	for _, v := range reservationSlotsReq {
@@ -182,8 +185,8 @@ func (rsu *reservationSlotUsecase) CreateReservationSlots(reservationSlotsReq []
 			GastrointestinalEndoscopy: v.GastrointestinalEndoscopy,
 			Barium:                    v.Barium,
 			BreastCancerScreening:     v.BreastCancerScreening,
-			CreatedAt:                 v.CreatedAt,
-			UpdatedAt:                 v.UpdatedAt,
+			CreatedAt:                 time2str(v.CreatedAt),
+			UpdatedAt:                 time2str(v.UpdatedAt),
 		}
 		resReservationSlots = append(resReservationSlots, rs)
 	}

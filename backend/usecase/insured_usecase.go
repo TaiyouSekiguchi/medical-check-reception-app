@@ -4,7 +4,6 @@ import (
 	"backend/model"
 	"backend/repository"
 	"backend/validator"
-	"fmt"
 	"time"
 )
 
@@ -21,9 +20,9 @@ func str2time(t string) time.Time {
 }
 
 type IInsuredUsecase interface {
-	GetInsureds(birthday string) ([]model.InsuredResponse, error)
+	GetInsureds() ([]model.InsuredResponse, error)
 	GetInsuredsWithReservation(queryParams model.InsuredQueryParams) ([]model.InsuredWithReservationResponse, error)
-	CreateInsureds(insuredsReq []model.InsuredRequest) ([]model.CreateInsuredResponse, error)
+	CreateInsureds(insuredsReq []model.InsuredRequest) ([]model.InsuredResponse, error)
 	GetExportInsureds() ([]model.InsuredForExportResponse, error)
 }
 
@@ -36,9 +35,9 @@ func NewInsuredUsecase(ir repository.IInsuredRepository, iv validator.IInsuredVa
 	return &insuredUsecase{ir, iv}
 }
 
-func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse, error) {
+func (iu *insuredUsecase) GetInsureds() ([]model.InsuredResponse, error) {
 	insureds := []model.Insured{}
-	if err := iu.ir.GetInsureds(&insureds, birthday); err != nil {
+	if err := iu.ir.GetInsureds(&insureds); err != nil {
 		return nil, err
 	}
 
@@ -54,6 +53,8 @@ func (iu *insuredUsecase) GetInsureds(birthday string) ([]model.InsuredResponse,
 			Birthday:      time2str(v.Birthday),
 			SexCode:       v.SexCode,
 			Address:       v.Address,
+			CreatedAt:     time2str(v.CreatedAt),
+			UpdatedAt:     time2str(v.UpdatedAt),
 		}
 		resInsureds = append(resInsureds, i)
 	}
@@ -98,11 +99,13 @@ func (iu *insuredUsecase) GetInsuredsWithReservation(queryParams model.InsuredQu
 	return resInsuredsWithReservation, nil
 }
 
-func (iu *insuredUsecase) CreateInsureds(insuredsReq []model.InsuredRequest) ([]model.CreateInsuredResponse, error) {
+func (iu *insuredUsecase) CreateInsureds(insuredsReq []model.InsuredRequest) ([]model.InsuredResponse, error) {
 
-	// if err := iu.iv.InsuredsValidate(insureds); err != nil {
-	// 	return err
-	// }
+	for _, v := range insuredsReq {
+		if err := iu.iv.InsuredRequestValidate(v); err != nil {
+			return []model.InsuredResponse{}, err
+		}
+	}
 
 	insureds := []model.Insured{}
 	for _, v := range insuredsReq {
@@ -116,34 +119,32 @@ func (iu *insuredUsecase) CreateInsureds(insuredsReq []model.InsuredRequest) ([]
 			SexCode:       v.SexCode,
 			Address:       v.Address,
 		}
-		fmt.Printf("%+v\n", v)
-		fmt.Printf("%+v\n", i)
 		insureds = append(insureds, i)
 	}
 
 	if err := iu.ir.CreateInsureds(&insureds); err != nil {
-		return []model.CreateInsuredResponse{}, err
+		return []model.InsuredResponse{}, err
 	}
 
-	resIusureds := []model.CreateInsuredResponse{}
+	resInsureds := []model.InsuredResponse{}
 	for _, v := range insureds {
-		i := model.CreateInsuredResponse{
+		i := model.InsuredResponse{
 			ID:            v.ID,
 			Number:        v.Number,
 			FirstName:     v.FirstName,
 			LastName:      v.LastName,
 			FirstNameKana: v.FirstNameKana,
 			LastNameKana:  v.LastNameKana,
-			Birthday:      v.Birthday,
+			Birthday:      time2str(v.Birthday),
 			SexCode:       v.SexCode,
 			Address:       v.Address,
-			CreatedAt:     v.CreatedAt,
-			UpdatedAt:     v.UpdatedAt,
+			CreatedAt:     time2str(v.CreatedAt),
+			UpdatedAt:     time2str(v.UpdatedAt),
 		}
-		resIusureds = append(resIusureds, i)
+		resInsureds = append(resInsureds, i)
 	}
 
-	return resIusureds, nil
+	return resInsureds, nil
 }
 
 func (iu *insuredUsecase) GetExportInsureds() ([]model.InsuredForExportResponse, error) {

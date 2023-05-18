@@ -24,10 +24,7 @@ func NewInsuredController(iu usecase.IInsuredUsecase) IInsuredController {
 }
 
 func (ic *insuredController) GetInsureds(c echo.Context) error {
-
-	birthday := c.QueryParam("birthday")
-
-	insuredsRes, err := ic.iu.GetInsureds(birthday)
+	insuredsRes, err := ic.iu.GetInsureds()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -38,13 +35,11 @@ func (ic *insuredController) GetInsureds(c echo.Context) error {
 func (ic *insuredController) GetInsuredsWithReservation(c echo.Context) error {
 
 	queryParams := model.InsuredQueryParams{}
-
 	if err := c.Bind(&queryParams); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	insuredsRes, err := ic.iu.GetInsuredsWithReservation(queryParams)
-
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -55,7 +50,6 @@ func (ic *insuredController) GetInsuredsWithReservation(c echo.Context) error {
 func (ic *insuredController) CreateInsureds(c echo.Context) error {
 
 	insuredsReq := []model.InsuredRequest{}
-
 	if err := c.Bind(&insuredsReq); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -71,7 +65,6 @@ func (ic *insuredController) CreateInsureds(c echo.Context) error {
 func (ic *insuredController) GetExportInsureds(c echo.Context) error {
 
 	insuredsRes, err := ic.iu.GetExportInsureds()
-
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

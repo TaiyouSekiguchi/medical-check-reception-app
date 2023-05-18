@@ -19,6 +19,12 @@ type Reservation struct {
 	DeletedAt         gorm.DeletedAt  `json:"-"`
 }
 
+type ReservationRequest struct {
+	InsuredID         uint `json:"insured_id"`
+	ReservationSlotID uint `json:"reservation_slot_id"`
+	ExaminationItemID uint `json:"examination_item_id"`
+}
+
 type ReservationResponse struct {
 	ID              uint                    `json:"id" gorm:"primaryKey"`
 	Insured         InsuredResponse         `json:"insured"`
@@ -27,12 +33,12 @@ type ReservationResponse struct {
 }
 
 type CreateReservationResponse struct {
-	ID                uint      `json:"id" gorm:"primaryKey"`
-	InsuredID         uint      `json:"insured_id" validate:"required"`
-	ReservationSlotID uint      `json:"reservation_slot_id" validate:"required"`
-	ExaminationItemID uint      `json:"examination_item_id" validate:"required"`
-	CreatedAt         time.Time `json:"created_at"`
-	UpdatedAt         time.Time `json:"updated_at"`
+	ID                uint   `json:"id" gorm:"primaryKey"`
+	InsuredID         uint   `json:"insured_id"`
+	ReservationSlotID uint   `json:"reservation_slot_id"`
+	ExaminationItemID uint   `json:"examination_item_id"`
+	CreatedAt         string `json:"created_at"`
+	UpdatedAt         string `json:"updated_at"`
 }
 
 type ReservationLimitError struct {
