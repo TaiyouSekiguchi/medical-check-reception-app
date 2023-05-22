@@ -12,3 +12,6 @@ prod_down:
 
 prod_build:
 	docker compose -f docker-compose-prod.yml --env-file ./config/.env.prod build
+
+prod_build_no_cache:
+	docker compose -f docker-compose-prod.yml --env-file ./config/.env.prod build --no-cache
