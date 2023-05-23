@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "@types/eslint": "^8.37.0",
+    "@types/eslint-config-prettier": "^6.11.0",
+    "@types/lint-staged": "^13.2.0",
     "@types/papaparse": "^5.3.7",
     "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.33",

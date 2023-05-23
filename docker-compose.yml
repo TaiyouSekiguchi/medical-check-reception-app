@@ -7,13 +7,13 @@ services:
       args:
         - NODE_VER=18.15.0-slim
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.${ENV}
     container_name: frontend
     tty: true
     volumes:
       - ./frontend:/home/node/app
     ports:
-      - 5173:5173
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
     networks:
       - app-network
     restart: always
@@ -22,7 +22,9 @@ services:
         condition: service_healthy
 
   backend:
-    build: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.${ENV}
     container_name: backend
     volumes:
       - ./backend/:/go/src/app

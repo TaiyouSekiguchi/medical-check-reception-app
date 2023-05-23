@@ -12,13 +12,17 @@ import (
 
 func NewDB() *gorm.DB {
 	if os.Getenv("GO_ENV") == "dev" {
-		err := godotenv.Load(".env.example")
+		err := godotenv.Load(".env.dev")
 		if err != nil {
 			fmt.Printf("godotenv error\n")
 			log.Fatalln(err)
 		}
 	} else {
-		fmt.Printf("GO_ENV is not dev.\n")
+		err := godotenv.Load(".env.prod")
+		if err != nil {
+			fmt.Printf("godotenv error\n")
+			log.Fatalln(err)
+		}
 	}
 	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
 		os.Getenv("POSTGRES_USER"),
