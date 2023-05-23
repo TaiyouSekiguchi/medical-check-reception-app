@@ -1,0 +1,14 @@
+package main
+
+import (
+	"backend/db"
+	"backend/model"
+	"fmt"
+)
+
+func main() {
+	dbConn := db.NewDB()
+	defer fmt.Println("Successfully Migrated")
+	defer db.CloseDB(dbConn)
+	dbConn.AutoMigrate(&model.Admin{}, &model.User{}, &model.Sex{}, &model.Insured{}, &model.ReservationSlot{}, &model.ExaminationItem{}, &model.Reservation{})
+}
