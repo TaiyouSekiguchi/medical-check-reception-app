@@ -4,6 +4,12 @@ dev:
 dev_down:
 	docker compose -f docker-compose-dev.yml --env-file ./config/.env.dev down
 
+dev_build:
+	docker compose -f docker-compose-dev.yml --env-file ./config/.env.dev build
+
+dev_build_no_cache:
+	docker compose -f docker-compose-dev.yml --env-file ./config/.env.dev build --no-cache
+
 prod:
 	docker compose -f docker-compose-prod.yml --env-file ./config/.env.prod up -d
 

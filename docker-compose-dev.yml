@@ -22,7 +22,9 @@ services:
         condition: service_healthy
 
   backend:
-    build: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
     container_name: backend
     volumes:
       - ./backend/:/go/src/app

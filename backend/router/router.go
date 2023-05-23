@@ -14,7 +14,7 @@ func NewRouter(uc controller.IUserController, ic controller.IInsuredController, 
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:5173", os.Getenv("FE_URL")},
+		AllowOrigins: []string{os.Getenv("FE_URL")},
 		AllowHeaders: []string{
 			echo.HeaderOrigin,
 			echo.HeaderContentType,

@@ -1,0 +1,31 @@
+FROM golang:1.20-alpine
+
+# タイムゾーンを設定
+ENV TZ /usr/share/zoneinfo/Asia/Tokyo
+
+# ビルドに必要なパッケージをインストール
+RUN apk update \
+    && apk add --no-cache curl
+
+ENV ROOT=/go/src/app
+WORKDIR ${ROOT}
+
+# ModuleモードをON
+ENV GO111MODULE=on
+
+# ビルド用の依存関係をインストール
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
+# ソースコードをコピー
+COPY . .
+
+# ビルド
+RUN go build -o /go/bin/app
+
+# ポートを公開
+EXPOSE 8080
+
+# アプリケーションを実行
+CMD ["/go/bin/app"]
