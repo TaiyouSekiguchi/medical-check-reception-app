@@ -13,18 +13,18 @@ import (
 func NewRouter(uc controller.IUserController, ic controller.IInsuredController, rsc controller.IReservationSlotController, rc controller.IReservationController) *echo.Echo {
 	e := echo.New()
 
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{os.Getenv("FE_URL")},
-		AllowHeaders: []string{
-			echo.HeaderOrigin,
-			echo.HeaderContentType,
-			echo.HeaderAccept,
-			echo.HeaderAccessControlAllowHeaders,
-			echo.HeaderXCSRFToken,
-		},
-		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
-		AllowCredentials: true,
-	}))
+	// e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	// 	AllowOrigins: []string{os.Getenv("FE_URL")},
+	// 	AllowHeaders: []string{
+	// 		echo.HeaderOrigin,
+	// 		echo.HeaderContentType,
+	// 		echo.HeaderAccept,
+	// 		echo.HeaderAccessControlAllowHeaders,
+	// 		echo.HeaderXCSRFToken,
+	// 	},
+	// 	AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
+	// 	AllowCredentials: true,
+	// }))
 
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
 		CookiePath:     "/",
