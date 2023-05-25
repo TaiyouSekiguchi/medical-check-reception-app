@@ -6,6 +6,7 @@ services:
     build:
       args:
         - NODE_VER=18.15.0-slim
+        - CERTS_DIR=${CERTS_DIR}
       context: ./frontend
       dockerfile: Dockerfile.${ENV}
     container_name: frontend
