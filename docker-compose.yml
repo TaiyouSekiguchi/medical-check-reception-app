@@ -6,13 +6,15 @@ services:
     build:
       args:
         - NODE_VER=18.15.0-slim
-        - CERTS_DIR=${CERTS_DIR}
       context: ./frontend
       dockerfile: Dockerfile.${ENV}
     container_name: frontend
     tty: true
     volumes:
       - ./frontend:/home/node/app
+      - ${SSL_CRT_PATH}:/etc/nginx/certs/server.crt
+      - ${SSL_KEY_PATH}:/etc/nginx/certs/server.key
+      - ${SSL_PASS_PATH}:/etc/nginx/certs/server.password
     ports:
       - ${FRONTEND_PORT}:${FRONTEND_PORT}
     networks:
