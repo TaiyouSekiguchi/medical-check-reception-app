@@ -7,6 +7,10 @@
 
 デモ用URL https://app.medicalcheckreception.com/
 
+以下のテストユーザーでログインすることが出来ます。  
+Username: testuser  
+Password: TestUser000  
+
 ## 使用技術
 
 ### Frontend
